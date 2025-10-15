@@ -3,6 +3,9 @@
 # EUREKA
 A very utilitarian note taking application, designed to consolidate the hundreds of text documents I keep in random places into one centralized web application that I can access from anywhere. It's got users, it's got notes, what more do you need?
 
+> [!WARNING]
+> This project is in its early stages. So early in fact, there's no subdomain, no deployment, not even 50% of the backend, not even 0% of the frontend. It'll be awhile before it's production ready.
+
 ## Features
 - Folders to neatly organize your notes
 - Multiple notes at once; draggable note 'windows' that can be moved, resized and collapsed
