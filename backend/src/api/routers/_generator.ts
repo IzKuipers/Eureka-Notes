@@ -1,9 +1,8 @@
+import { randomUUID } from "crypto";
 import express, { NextFunction, Request, Response, Router } from "express";
+import { Logger } from "../../logging";
 import { Method } from "../../types/api";
 import { RouteCallback } from "../../types/routes";
-import { Logger } from "../../logging";
-import { randomUUID } from "crypto";
-import { AuthorizationError } from "../auth";
 
 export function RouterGenerator(
   routes: Record<string, RouteCallback>,
@@ -16,14 +15,14 @@ export function RouterGenerator(
     const [method, path] = key.split("@") as [Method, string];
     const func = translations?.[method];
 
-    func(path, (req: Request, res: Response, next: NextFunction) => {
+    func(path, async (req: Request, res: Response, next: NextFunction) => {
       const requestId = randomUUID();
       const start = Date.now();
 
       Logger.info(`${requestId}: Handling incoming ${path} on router ${name}`);
 
       const stop = (c = 400) => {
-        Logger.error(`${requestId}: STOP => ${c}`);
+        Logger.info(`${requestId}: STOP => ${c}`);
 
         res.status(c);
         res.end();
@@ -32,13 +31,17 @@ export function RouterGenerator(
       };
 
       try {
-        routes[key]!(req, res, stop, next);
+        await routes[key]!(req, res, stop, next); // Call the endpoint
       } catch (e) {
-        if (e instanceof AuthorizationError) {
-          stop(401);
+        const error = `${e}`;
+        if (error.startsWith("AuthorizationError")) {
+          stop(401); // Some authentication thing failed
+        } else if (error.startsWith("RequirementError")) {
+          stop(400); // The request was malformed
         } else {
-          stop(500);
+          stop(500); // Assume that a server error occurred if the error class isn't created by us
         }
+
         Logger.error(`${requestId}: ${e}`);
       } finally {
         const end = Date.now() - start;

@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { ValidateToken } from "../db/token";
+import { ExistingEurekaUser } from "../types/model/user";
 
 export class AuthorizationError extends Error {
   constructor(message: string) {
@@ -17,15 +18,10 @@ export class RequirementError extends Error {
   }
 }
 
-export async function AssumeAuthorization(req: Request) {
-  if (!req.headers.authorization)
-    throw new AuthorizationError("Missing authorization header");
-
-  const [type, token] = req.headers.authorization.split(" ");
-
-  if (type !== "Bearer" || !token)
-    throw new AuthorizationError("Invalid authorization header");
-
+export async function AssumeAuthorization(
+  req: Request
+): Promise<ExistingEurekaUser> {
+  const token = GetTokenFromRequest(req);
   const user = await ValidateToken(token);
 
   if (!user) throw new AuthorizationError("Invalid token");
@@ -38,4 +34,16 @@ export function AssumeNoAuthorization(req: Request) {
     throw new AuthorizationError(
       "Can't access this endpoint with authorization"
     );
+}
+
+export function GetTokenFromRequest(req: Request) {
+  if (!req.headers.authorization)
+    throw new AuthorizationError("Missing authorization header");
+
+  const [type, token] = req.headers.authorization.split(" ");
+
+  if (type !== "Bearer" || !token)
+    throw new AuthorizationError("Invalid authorization header");
+
+  return token;
 }

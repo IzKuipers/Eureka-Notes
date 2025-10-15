@@ -13,3 +13,8 @@ export function RequireDefined(req: Request, ...fields: string[]) {
 
   return values;
 }
+
+export function RequireContentType(req: Request, type: string) {
+  if (req.headers["content-type"]?.toLowerCase() !== type.toLowerCase())
+    throw new RequirementError(`Content type has to be ${type}`);
+}
