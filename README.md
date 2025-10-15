@@ -4,7 +4,9 @@
 A very utilitarian note taking application, designed to consolidate the hundreds of text documents I keep in random places into one centralized web application that I can access from anywhere. It's got users, it's got notes, what more do you need?
 
 > [!WARNING]
-> This project is in its early stages. So early in fact, there's no subdomain, no deployment, not even 50% of the backend, not even 0% of the frontend. It'll be awhile before it's production ready.
+> This project is in its early stages. So early in fact, there's no subdomain, no deployment, not even 50% of the backend, not even 0% of the frontend. It'll be awhile before it's production ready. View the figma here:
+>
+> https://www.figma.com/design/EIVODbiIA6kg6PxvAYzZee/Note-taking-thing?node-id=24-935&t=3bSpQEQ0pvRQfTS7-1
 
 ## Features
 - Folders to neatly organize your notes
