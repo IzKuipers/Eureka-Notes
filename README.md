@@ -6,7 +6,7 @@ A very utilitarian note taking application, designed to consolidate the hundreds
 > [!WARNING]
 > This project is in its early stages. So early in fact, there's no subdomain, no deployment, not even 50% of the backend, not even 0% of the frontend. It'll be awhile before it's production ready. View the figma here:
 >
-> https://www.figma.com/design/EIVODbiIA6kg6PxvAYzZee/Note-taking-thing?node-id=24-935&t=3bSpQEQ0pvRQfTS7-1
+> https://www.figma.com/design/EIVODbiIA6kg6PxvAYzZee
 
 ## Features
 - Folders to neatly organize your notes
