@@ -1,0 +1,51 @@
+{
+  "name": "eureka-backend",
+  "version": "1.0.0",
+  "description": "The backend of Eureka Notes",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IzKuipers/Eureka.git"
+  },
+  "author": {
+    "name": "Izaak Kuipers",
+    "email": "izaak.kuipers@gmail.com"
+  },
+  "license": "GPL-3.0-only",
+  "private": false,
+  "dependencies": {
+    "@node-cli/logger": "^1.3.2",
+    "@types/chalk": "^2.2.4",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.7.2",
+    "argon2": "^0.44.0",
+    "axios": "^1.12.2",
+    "chalk": "^5.6.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.18",
+    "express.js": "^1.0.0",
+    "mongoose": "^8.19.1",
+    "multer": "^2.0.2",
+    "tslint": "^6.1.3",
+    "typescript": "^5.9.3"
+  },
+  "bugs": {
+    "url": "https://github.com/IzKuipers/Eureka/issues"
+  },
+  "homepage": "https://github.com/IzKuipers/Eureka#readme",
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "prepublish": "npm run build",
+    "start": "npx tsc && node dist/index.js"
+  }
+}

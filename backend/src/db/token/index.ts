@@ -1,0 +1,44 @@
+import { randomUUID } from "crypto";
+import { ExistingEurekaToken, Tokens } from "../../types/model/token";
+import { ExistingEurekaUser } from "../../types/model/user";
+import { GetUserById, GetUserByUsername } from "../user";
+import { verify } from "argon2";
+
+export async function GenerateToken(userId: string) {
+  const uuid = randomUUID();
+
+  await Tokens.create({
+    value: uuid,
+    userId,
+  });
+
+  return uuid;
+}
+
+export async function ValidateToken(
+  value: string
+): Promise<ExistingEurekaUser | null> {
+  const tokenData = await Tokens.findOne<ExistingEurekaToken>({ value });
+  if (!tokenData) return null;
+
+  return await GetUserById(tokenData?.userId!);
+}
+
+export async function InvalidateTokenByValue(value: string): Promise<boolean> {
+  const result = await Tokens.findOneAndDelete({ value });
+
+  return !!result;
+}
+
+export async function AuthenticateUser(
+  username: string,
+  password: string
+): Promise<string | undefined> {
+  const user = await GetUserByUsername(username);
+  if (!user) return undefined;
+
+  const passwordValid = await verify(user.passwordHash, password);
+  if (!passwordValid) return undefined;
+
+  return await GenerateToken(user._id);
+}

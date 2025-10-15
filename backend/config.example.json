@@ -1,0 +1,8 @@
+{
+  "port": 3141,
+  "db": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "eureka"
+  }
+}
