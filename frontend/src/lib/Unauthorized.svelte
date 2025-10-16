@@ -6,7 +6,7 @@
 </script>
 
 {#if registering}
-  <Register {registering} />
+  <Register bind:registering />
 {:else}
-  <Login {registering} />
+  <Login bind:registering />
 {/if}
