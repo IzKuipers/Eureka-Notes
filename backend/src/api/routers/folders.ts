@@ -7,13 +7,13 @@ import {
   FoldersReadRootRoute,
 } from "../routes/folders/read";
 import FoldersRenameRoute from "../routes/folders/rename";
-import { Path } from "./_generator";
+import { DELETE, GET, PATCH, POST } from "./_generator";
 
 export const FolderRoutes: Record<string, RouteCallback> = {
-  [Path("/read")]: FoldersReadRootRoute,
-  [Path("/read/:path(*)")]: FoldersReadPathRoute,
-  [Path("/delete", "delete")]: FoldersDeleteRoute,
-  [Path("/move", "patch")]: FoldersMoveRoute,
-  [Path("/rename/:id", "patch")]: FoldersRenameRoute,
-  [Path("/", "post")]: FoldersCreateRoute,
+  [GET("/read")]: FoldersReadRootRoute,
+  [GET("/read/:path(*)")]: FoldersReadPathRoute,
+  [DELETE("/delete")]: FoldersDeleteRoute,
+  [PATCH("/move")]: FoldersMoveRoute,
+  [PATCH("/rename/:id")]: FoldersRenameRoute,
+  [POST("/")]: FoldersCreateRoute,
 };

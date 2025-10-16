@@ -76,3 +76,12 @@ export function RouterMethodTranslations(
 
 export const Path = (path: string, method: Method = "get") =>
   `${method}@${path}`;
+
+// Filler methods to make route definitions cleaner
+
+export const POST = (path: string) => `post@${path}`;
+export const GET = (path: string) => `get@${path}`;
+export const PUT = (path: string) => `put@${path}`;
+export const PATCH = (path: string) => `patch@${path}`;
+export const DELETE = (path: string) => `delete@${path}`;
+export const ALL = (path: string) => `all@${path}`;

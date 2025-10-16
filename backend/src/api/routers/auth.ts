@@ -7,15 +7,15 @@ import {
   AuthUserPreferencesGetRoute,
   AuthUserPreferencesPutRoute,
 } from "../routes/auth/user/preferences";
-import { Path } from "./_generator";
+import { GET, POST, PUT } from "./_generator";
 
 export const AuthRoutes: Record<string, RouteCallback> = {
-  [Path("/login", "post")]: AuthLoginRoute,
-  [Path("/logout", "post")]: AuthLogoutRoute,
-  [Path("/register", "post")]: AuthRegisterRoute,
-  [Path("/user/info")]: AuthUserInfoRoute,
-  [Path("/user/preferences")]: AuthUserPreferencesGetRoute,
-  [Path("/user/preferences", "put")]: AuthUserPreferencesPutRoute,
+  [POST("/login")]: AuthLoginRoute,
+  [POST("/logout")]: AuthLogoutRoute,
+  [POST("/register")]: AuthRegisterRoute,
+  [GET("/user/info")]: AuthUserInfoRoute,
+  [GET("/user/preferences")]: AuthUserPreferencesGetRoute,
+  [PUT("/user/preferences")]: AuthUserPreferencesPutRoute,
 };
 
 export default AuthRoutes;
