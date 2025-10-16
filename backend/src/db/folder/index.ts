@@ -1,4 +1,11 @@
-import { ExistingEurekaFolder, Folders } from "../../types/model/folder";
+import { join } from "path";
+import { NotFoundError } from "../../api/error";
+import {
+  ExistingEurekaFolder,
+  FolderRead,
+  Folders,
+} from "../../types/model/folder";
+import { DeleteNote, GetAllNotesOfUserWithData } from "../note";
 
 export async function GetAllFolders(userId: string) {
   return await Folders.find<ExistingEurekaFolder>({ userId });
@@ -66,4 +73,39 @@ export async function CreateFolderByPath(userId: string, path: string) {
     userId,
     parentId: parent?.parentId ?? "",
   });
+}
+
+export async function ReadFolder(
+  userId: string,
+  path: string = "/"
+): Promise<FolderRead> {
+  const topLevel = await GetFolderFromPath(userId, path);
+
+  if (!topLevel) throw new NotFoundError("Folder not found");
+
+  const childFolders = await GetAllFoldersOf(userId, topLevel._id);
+  const childNotes = await GetAllNotesOfUserWithData(userId, topLevel._id);
+  const totalSize = childNotes
+    .map((n) => n.data.length)
+    .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+  return {
+    folders: childFolders,
+    notes: childNotes.map((n) => ({ ...(n as any)._doc, data: undefined })),
+    totalSize,
+    folderId: topLevel._id,
+    folderName: topLevel.name
+  };
+}
+
+export async function DeleteFolder(userId: string, path: string) {
+  const read = await ReadFolder(userId, path);
+
+  for (const folder of read.folders) {
+    await DeleteFolder(userId, join(path, folder.name));
+  }
+
+  for (const note of read.notes) {
+    await DeleteNote(userId, note._id);
+  }
 }

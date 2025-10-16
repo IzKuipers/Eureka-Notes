@@ -18,6 +18,8 @@ export type PartialEurekaNote = Omit<
   "userId"
 >;
 
+export type PartialEurekaNoteWithData = PartialEurekaNote & { data: string };
+
 const schema = new Schema<EurekaNote>(
   {
     userId: {

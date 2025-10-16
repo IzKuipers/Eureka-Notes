@@ -3,6 +3,7 @@ import {
   ExistingEurekaNote,
   Notes,
   PartialEurekaNote,
+  PartialEurekaNoteWithData,
 } from "../../types/model/note";
 import { GetFolderFromPath } from "../folder";
 
@@ -14,6 +15,19 @@ export async function GetAllNotesOfUser(
     folderId ? { userId, folderId } : { userId },
     {
       data: false,
+      userId: false,
+      folderId: false,
+    }
+  );
+}
+
+export async function GetAllNotesOfUserWithData(
+  userId: string,
+  folderId?: string
+): Promise<PartialEurekaNoteWithData[]> {
+  return await Notes.find<PartialEurekaNoteWithData>(
+    folderId ? { userId, folderId } : { userId },
+    {
       userId: false,
       folderId: false,
     }
