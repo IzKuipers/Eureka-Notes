@@ -1,5 +1,5 @@
 import { join } from "path";
-import { NotFoundError } from "../../api/error";
+import { ConflictError, NotFoundError } from "../../api/error";
 import {
   ExistingEurekaFolder,
   FolderRead,
@@ -66,12 +66,16 @@ export function GetFolderName(path: string) {
 
 export async function CreateFolderByPath(userId: string, path: string) {
   const parentPath = GetParentDirectory(path);
-  const parent = await GetFolderFromPath(userId, parentPath);
+  const parent = await ReadFolder(userId, parentPath);
+  const name = GetFolderName(path);
+
+  if (!!parent.folders.find((f) => f.name === name))
+    throw new ConflictError("A folder with that name already exists");
 
   await Folders.create({
     name: GetFolderName(path),
     userId,
-    parentId: parent?.parentId ?? "",
+    parentId: parent?.folderId ?? "",
   });
 }
 
@@ -94,7 +98,7 @@ export async function ReadFolder(
     notes: childNotes.map((n) => ({ ...(n as any)._doc, data: undefined })),
     totalSize,
     folderId: topLevel._id,
-    folderName: topLevel.name
+    folderName: topLevel.name,
   };
 }
 
@@ -108,4 +112,12 @@ export async function DeleteFolder(userId: string, path: string) {
   for (const note of read.notes) {
     await DeleteNote(userId, note._id);
   }
+}
+
+export async function RenameFolder(
+  userId: string,
+  folderId: string,
+  newName: string
+) {
+  return await Folders.updateOne({ userId, _id: folderId }, { name: newName });
 }
