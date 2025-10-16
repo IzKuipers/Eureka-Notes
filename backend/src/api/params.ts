@@ -1,6 +1,5 @@
-import { RequirementError } from "./auth";
 import { Request } from "express";
-
+import { RequirementError } from "./auth";
 
 /**
  * A method to get required fields from a request body, erroring if one of them can't be found.
@@ -13,8 +12,7 @@ export function RequireDefined<T = any[]>(req: Request, ...fields: string[]) {
   const values: any[] = [];
 
   for (const field of fields) {
-    if (req.body[field] === undefined)
-      throw new RequirementError(`Required field ${field} is missing`);
+    if (req.body[field] === undefined) throw new RequirementError(`Required field ${field} is missing`);
 
     values.push(req.body[field]);
   }
@@ -49,8 +47,7 @@ export function RequireDefinedParam<T = any[]>(req: Request, ...params: string[]
   const values: any[] = [];
 
   for (const param of params) {
-    if (req.params[param] === undefined)
-      throw new RequirementError(`Required parameter ${param} is missing`);
+    if (req.params[param] === undefined) throw new RequirementError(`Required parameter ${param} is missing`);
 
     values.push(req.params[param]);
   }

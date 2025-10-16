@@ -1,7 +1,7 @@
-import { ApiInterface } from "./api";
 import config from "../config.json";
-import { Logger } from "./logging";
+import { ApiInterface } from "./api";
 import connectDB from "./db";
+import { Logger } from "./logging";
 
 export async function Main() {
   Logger.info("Starting backend");

@@ -1,7 +1,7 @@
 import { CreateNote, GetNoteByName } from "../../../db/note";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
-import { ConflictError } from "../../error";
+import { ConflictError } from "../../error/classes";
 import { MaybeDefined, RequireDefined } from "../../params";
 
 const NotesCreateRoute = (async (req, _, stop) => {
@@ -11,10 +11,7 @@ const NotesCreateRoute = (async (req, _, stop) => {
 
   const existing = await GetNoteByName(user._id, name.toLowerCase(), folderId);
 
-  if (existing)
-    throw new ConflictError(
-      "A note with that name already exists in the specified folder."
-    );
+  if (existing) throw new ConflictError("A note with that name already exists in the specified folder.");
 
   await CreateNote(user._id, name, data, folderId);
 

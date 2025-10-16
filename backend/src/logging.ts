@@ -1,4 +1,5 @@
 import chalk, { ChalkInstance } from "chalk";
+import config from "../config.json";
 
 type LogLevel = "info" | "warn" | "error" | "debug";
 
@@ -9,17 +10,10 @@ const levelColors: Record<LogLevel, ChalkInstance> = {
   debug: chalk.gray,
 };
 
-export function log(
-  level: LogLevel,
-  message: string,
-  ...args: unknown[]
-): void {
+export function log(level: LogLevel, message: string, ...args: unknown[]): void {
   const color = levelColors[level];
   const timestamp = chalk.dim(new Date().toLocaleString());
-  console.log(
-    `${timestamp} ${color(`[${level.toUpperCase()}]`)} ${message}`,
-    ...args
-  );
+  console.log(`${timestamp} ${color(`[${level.toUpperCase()}]`)} ${message}`, ...args);
 }
 
 // Convenience wrappers
@@ -28,4 +22,6 @@ export const Logger = {
   warn: (msg: string, ...a: unknown[]) => log("warn", msg, ...a),
   error: (msg: string, ...a: unknown[]) => log("error", msg, ...a),
   debug: (msg: string, ...a: unknown[]) => log("debug", msg, ...a),
+  // VERBOSE: only log this stuff if config.verbose is true
+  verbose: (msg: string, ...a: unknown[]) => config.verbose && log("debug", msg, ...a),
 };

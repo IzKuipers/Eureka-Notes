@@ -1,7 +1,7 @@
 import { CreateUser } from "../../../db/user";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeNoAuthorization } from "../../auth";
-import { ConflictError } from "../../error";
+import { ConflictError } from "../../error/classes";
 import { RequireDefined } from "../../params";
 
 const AuthRegisterRoute = (async (req, _) => {

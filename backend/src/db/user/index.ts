@@ -1,9 +1,7 @@
 import { ExistingEurekaUser, Users } from "../../types/model/user";
 import { HashPassword, NormalizeUsername } from "./util";
 
-export async function GetUserByUsername(
-  username: string
-): Promise<ExistingEurekaUser | undefined> {
+export async function GetUserByUsername(username: string): Promise<ExistingEurekaUser | undefined> {
   return (
     (await Users.findOne<ExistingEurekaUser>({
       username: NormalizeUsername(username),

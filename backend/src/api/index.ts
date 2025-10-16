@@ -2,32 +2,22 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import multer from "multer";
+import { Logger } from "../logging";
 import { Method } from "../types/api";
 import { corsOptions } from "./cors";
-import errorHandler from "./error";
+import errorHandler from "./error/handler";
 import { RouteDefinitions as RouterDefinitions } from "./routers/_definitions";
 import { trackRequests } from "./tracking";
-import { Logger } from "../logging";
 
 export let GlobalApiInstance: ApiInterface | undefined;
 
 export class ApiInterface {
   App = express();
 
-  constructor(
-    private port = 3141,
-    private routerDefinitions = RouterDefinitions
-  ) {
+  constructor(private port = 3141, private routerDefinitions = RouterDefinitions) {
     Logger.info("Constructing API");
 
-    this.App.use(
-      multer().any(),
-      express.json(),
-      cors(corsOptions),
-      errorHandler,
-      cookieParser(),
-      trackRequests
-    );
+    this.App.use(multer().any(), express.json(), cors(corsOptions), errorHandler, cookieParser(), trackRequests);
   }
 
   async start(): Promise<ApiInterface> {

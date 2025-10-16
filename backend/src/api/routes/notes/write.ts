@@ -1,7 +1,7 @@
 import { WriteNote } from "../../../db/note";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
-import { NotFoundError } from "../../error";
+import { NotFoundError } from "../../error/classes";
 import { RequireDefined, RequireDefinedParam } from "../../params";
 
 const NotesWriteRoute = (async (req, _, stop) => {

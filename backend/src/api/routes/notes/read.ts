@@ -1,7 +1,7 @@
 import { GetFullNote } from "../../../db/note";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
-import { NotFoundError } from "../../error";
+import { NotFoundError } from "../../error/classes";
 import { RequireDefinedParam } from "../../params";
 
 const NotesReadRoute = (async (req, res) => {

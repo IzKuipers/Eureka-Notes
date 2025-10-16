@@ -3,7 +3,7 @@ import { GetFullNote } from "../../../db/note";
 import { Notes } from "../../../types/model/note";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
-import { ConflictError, NotFoundError } from "../../error";
+import { ConflictError, NotFoundError } from "../../error/classes";
 import { MaybeDefined, RequireDefinedParam } from "../../params";
 
 const NotesMoveRoute = (async (req, _, stop) => {
@@ -16,11 +16,12 @@ const NotesMoveRoute = (async (req, _, stop) => {
   if (!note) throw new NotFoundError("Note not found");
   if (!targetFolder) throw new NotFoundError("Destination not found");
 
-  if (targetFolder.notes.filter((n) => n.name === note.name).length) throw new ConflictError("A note with that name exists in the destination folder.")
+  if (targetFolder.notes.filter((n) => n.name === note.name).length)
+    throw new ConflictError("A note with that name exists in the destination folder.");
 
   await Notes.findByIdAndUpdate(id, { folderId: targetFolder.folderId });
 
-  stop(200)
+  stop(200);
 }) satisfies RouteCallback;
 
 export default NotesMoveRoute;

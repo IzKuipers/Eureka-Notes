@@ -1,7 +1,7 @@
 import { RenameFolder } from "../../../db/folder";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
-import { NotFoundError } from "../../error";
+import { NotFoundError } from "../../error/classes";
 import { RequireDefined, RequireDefinedParam } from "../../params";
 
 const FoldersRenameRoute = (async (req, _, stop) => {

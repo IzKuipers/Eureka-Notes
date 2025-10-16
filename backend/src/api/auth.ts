@@ -23,9 +23,7 @@ export class RequirementError extends Error {
  * @param req The Express Request
  * @returns An existing Eureka user
  */
-export async function AssumeAuthorization(
-  req: Request
-): Promise<ExistingEurekaUser> {
+export async function AssumeAuthorization(req: Request): Promise<ExistingEurekaUser> {
   const token = GetTokenFromRequest(req);
   const user = await ValidateToken(token);
 
@@ -39,10 +37,7 @@ export async function AssumeAuthorization(
  * @param req The Express Request
  */
 export function AssumeNoAuthorization(req: Request) {
-  if (req.headers.authorization)
-    throw new AuthorizationError(
-      "Can't access this endpoint with authorization"
-    );
+  if (req.headers.authorization) throw new AuthorizationError("Can't access this endpoint with authorization");
 }
 
 /**
@@ -51,13 +46,11 @@ export function AssumeNoAuthorization(req: Request) {
  * @returns the token
  */
 export function GetTokenFromRequest(req: Request) {
-  if (!req.headers.authorization)
-    throw new AuthorizationError("Missing authorization header");
+  if (!req.headers.authorization) throw new AuthorizationError("Missing authorization header");
 
   const [type, token] = req.headers.authorization.split(" ");
 
-  if (type !== "Bearer" || !token)
-    throw new AuthorizationError("Invalid authorization header");
+  if (type !== "Bearer" || !token) throw new AuthorizationError("Invalid authorization header");
 
   return token;
 }

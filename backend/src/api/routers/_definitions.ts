@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { RouterGenerator } from "./_generator";
 import AuthRoutes from "./auth";
-import NotesRoutes from "./notes";
 import { FolderRoutes } from "./folders";
+import NotesRoutes from "./notes";
 
 export const RouteDefinitions: Record<string, Router> = {
   "/auth": RouterGenerator(AuthRoutes, "Authorization"),

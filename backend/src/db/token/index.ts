@@ -1,10 +1,13 @@
+import { verify } from "argon2";
 import { randomUUID } from "crypto";
 import { ExistingEurekaToken, Tokens } from "../../types/model/token";
 import { ExistingEurekaUser } from "../../types/model/user";
 import { GetUserById, GetUserByUsername } from "../user";
-import { verify } from "argon2";
+import { Logger } from "../../logging";
 
 export async function GenerateToken(userId: string) {
+  Logger.verbose(`GenerateToken: ${userId}`);
+
   const uuid = randomUUID();
 
   await Tokens.create({
@@ -15,9 +18,9 @@ export async function GenerateToken(userId: string) {
   return uuid;
 }
 
-export async function ValidateToken(
-  value: string
-): Promise<ExistingEurekaUser | null> {
+export async function ValidateToken(value: string): Promise<ExistingEurekaUser | null> {
+  Logger.verbose(`ValidateToken: ${value}`);
+
   const tokenData = await Tokens.findOne<ExistingEurekaToken>({ value });
   if (!tokenData) return null;
 
@@ -25,15 +28,16 @@ export async function ValidateToken(
 }
 
 export async function InvalidateTokenByValue(value: string): Promise<boolean> {
+  Logger.verbose(`InvalidateTokenByValue: ${value}`);
+
   const result = await Tokens.deleteOne({ value });
 
   return !!result;
 }
 
-export async function AuthenticateUser(
-  username: string,
-  password: string
-): Promise<string | undefined> {
+export async function AuthenticateUser(username: string, password: string): Promise<string | undefined> {
+  Logger.verbose(`AuthenticateUser: ${username}, ************`);
+
   const user = await GetUserByUsername(username);
   if (!user) return undefined;
 
