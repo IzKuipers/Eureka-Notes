@@ -36,7 +36,7 @@ export async function WriteNote(userId: string, noteId: string, data: string) {
 }
 
 export async function DeleteNote(userId: string, noteId: string) {
-  return await Notes.findOneAndDelete({ userId, _id: noteId });
+  return await Notes.deleteOne({ userId, _id: noteId });
 }
 
 export async function CreateNote(
@@ -53,8 +53,13 @@ export async function RenameNote(
   noteId: string,
   newName: string
 ) {
-  return await Notes.findOneAndUpdate(
-    { userId, _id: noteId },
-    { name: newName }
-  );
+  return await Notes.updateOne({ userId, _id: noteId }, { name: newName });
+}
+
+export async function GetNoteByName(
+  userId: string,
+  name: string,
+  folderId?: string
+) {
+  return await Notes.findOne({ userId, name, folderId });
 }

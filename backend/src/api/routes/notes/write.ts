@@ -1,20 +1,19 @@
-import { RenameNote } from "../../../db/note";
+import { WriteNote } from "../../../db/note";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
 import { NotFoundError } from "../../error";
 import { RequireDefined, RequireDefinedParam } from "../../params";
 
-const NotesRenameRoute = (async (req, res) => {
+const NotesWriteRoute = (async (req, _, stop) => {
   const user = await AssumeAuthorization(req);
+  const [data] = RequireDefined<[string]>(req, "data");
   const [id] = RequireDefinedParam<[string]>(req, "id");
-  const [newName] = RequireDefined<[string]>(req, "newName");
 
-  const result = await RenameNote(user._id, id, newName);
-  const ack = result.acknowledged;
+  const ack = (await WriteNote(user._id, id, data)).acknowledged;
 
   if (!ack) throw new NotFoundError("Note not found");
 
-  res.json(result);
+  stop(200);
 }) satisfies RouteCallback;
 
-export default NotesRenameRoute;
+export default NotesWriteRoute;

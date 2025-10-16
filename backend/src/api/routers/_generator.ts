@@ -40,6 +40,8 @@ export function RouterGenerator(
           stop(400); // The request was malformed
         } else if (error.startsWith("NotFoundError")) {
           stop(404); // The resource was not found
+        } else if (error.startsWith("ConflictError")) {
+          stop(409); // The resource already exists
         } else {
           stop(500); // Assume that a server error occurred if the error class isn't created by us
         }

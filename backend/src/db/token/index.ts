@@ -25,7 +25,7 @@ export async function ValidateToken(
 }
 
 export async function InvalidateTokenByValue(value: string): Promise<boolean> {
-  const result = await Tokens.findOneAndDelete({ value });
+  const result = await Tokens.deleteOne({ value });
 
   return !!result;
 }

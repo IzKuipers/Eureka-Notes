@@ -1,16 +1,17 @@
 import { CreateUser } from "../../../db/user";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeNoAuthorization } from "../../auth";
+import { ConflictError } from "../../error";
 import { RequireDefined } from "../../params";
 
-const AuthRegisterRoute = (async (req, _, stop) => {
+const AuthRegisterRoute = (async (req, _) => {
   AssumeNoAuthorization(req);
   const [username, password] = RequireDefined(req, "username", "password");
 
   try {
     await CreateUser(username, password);
   } catch {
-    stop(409);
+    throw new ConflictError("Username is already in use");
   }
 }) satisfies RouteCallback;
 
