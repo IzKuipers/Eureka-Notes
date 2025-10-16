@@ -41,10 +41,10 @@ export async function GetFolderFromPath(userId: string, path?: string): Promise<
 
     const folder = currentFolderContent.filter((f) => f.name === part)[0];
 
-    if (!folder) return currentFolder;
+    if (!folder) throw new NotFoundError("Folder not found");
 
     currentFolder = folder;
-    currentFolderContent = allFolders.filter((f) => f.parentId === folder._id);
+    currentFolderContent = allFolders.filter((f) => f.parentId === folder._id.toString());
   }
 
   return currentFolder;
@@ -96,7 +96,7 @@ export async function ReadFolder(userId: string, path: string = "/"): Promise<Fo
 
   const childFolders = await GetAllFoldersOf(userId, topLevel._id);
   const childNotes = await GetAllNotesOfUserWithData(userId, topLevel._id);
-  const totalSize = childNotes.map((n) => n.data.length).reduce((accumulator, currentValue) => accumulator + currentValue);
+  const totalSize = childNotes.map((n) => n.data.length).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   return {
     folders: childFolders,

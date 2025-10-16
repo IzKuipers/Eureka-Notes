@@ -1,0 +1,29 @@
+.message-dialog-wrapper {
+  background-color: var(--background-transparent);
+}
+
+.message-dialog {
+  width: 400px;
+  height: 128px;
+}
+
+.message-dialog div.dialog-body {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.message-dialog div.dialog-body h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.message-dialog div.dialog-body span.lucide {
+  color: var(--red);
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}

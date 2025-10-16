@@ -1,9 +1,22 @@
-import { mount } from 'svelte'
-import './app.css'
-import App from './App.svelte'
+import "./css/main.css";
+import { mount } from "svelte";
+import App from "./App.svelte";
+import { ServerConnector } from "./ts/api";
+import { Dialogs } from "./ts/dialog";
 
-const app = mount(App, {
-  target: document.getElementById('app')!,
-})
+async function Main() {
+  document.title = "Loading...";
+  await new ServerConnector().Connect();
 
-export default app
+  document.title = "Eureka";
+
+  Dialogs.subscribe((v) => {
+    console.log(v);
+  });
+
+  mount(App, {
+    target: document.getElementById("app")!,
+  });
+}
+
+Main();

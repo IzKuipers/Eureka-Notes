@@ -1,0 +1,6 @@
+input {
+  padding: 0 10px;
+  height: 30px;
+  background-color: var(--background);
+  border: var(--border-color) 1px solid;
+}

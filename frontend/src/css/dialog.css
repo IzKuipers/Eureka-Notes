@@ -1,0 +1,83 @@
+.dialog {
+  border: var(--border-color) 1px solid;
+  background-color: var(--background);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  max-width: 90%;
+  min-height: 100px;
+  max-height: 90%;
+}
+
+.dialog div.dialog-title {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-bottom: var(--border-color) 1px solid;
+  background-color: var(--background-secondary);
+}
+
+.dialog div.dialog-title div.title {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.dialog div.dialog-title div.title-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.dialog div.dialog-title div.title-actions button {
+  font-size: 16px;
+  background-color: var(--background-secondary);
+  border-left: var(--border-color) 1px solid;
+  width: 30px;
+  height: 30px;
+}
+
+.dialog div.dialog-title div.title-actions button:disabled span.lucide {
+  opacity: 0.5;
+}
+
+.dialog div.dialog-body {
+  height: 0;
+  flex-grow: 1;
+  padding: 15px;
+  height: fit-content;
+}
+
+.dialog div.dialog-actions {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  border-top: var(--border-color) 1px solid;
+  justify-content: end;
+  background-color: var(--background-secondary);
+}
+
+.dialog div.dialog-actions button {
+  padding: 0 10px;
+  border-left: var(--border-color) 1px solid;
+  height: 29px;
+  background-color: var(--background-secondary);
+}
+
+.dialog div.dialog-title div.title-actions button:hover,
+.dialog div.dialog-actions button:hover {
+  background-color: var(--button-hover);
+}
+
+.dialog div.dialog-title div.title-actions button:active,
+.dialog div.dialog-actions button:active {
+  background-color: var(--button-active);
+}
+
+.dialog div.dialog-title div.title-actions button:disabled,
+.dialog div.dialog-actions button:disabled {
+  background-color: var(--background-secondary) !important;
+  color: var(--foreground-transparent);
+}

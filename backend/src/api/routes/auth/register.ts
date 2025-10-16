@@ -4,12 +4,13 @@ import { AssumeNoAuthorization } from "../../auth";
 import { ConflictError } from "../../error/classes";
 import { RequireDefined } from "../../params";
 
-const AuthRegisterRoute = (async (req, _) => {
+const AuthRegisterRoute = (async (req, _, stop) => {
   AssumeNoAuthorization(req);
   const [username, password] = RequireDefined(req, "username", "password");
 
   try {
     await CreateUser(username, password);
+    stop(200);
   } catch {
     throw new ConflictError("Username is already in use");
   }

@@ -20,5 +20,11 @@
   },
   "resolutions": {
     "vite": "npm:rolldown-vite@7.1.14"
+  },
+  "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.12.2",
+    "dayjs": "^1.11.18",
+    "js-cookie": "^3.0.5"
   }
 }

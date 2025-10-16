@@ -1,0 +1,30 @@
+div.status-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-secondary);
+  border-top: var(--border-color) 1px solid;
+  height: 25px;
+}
+
+div.status-bar div.segment {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+  border-right: var(--border-color) 1px solid;
+}
+
+div.status-bar div.segment.unimportant span {
+  opacity: 0.5;
+}
+
+div.status-bar div.right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+div.status-bar div.right div.segment {
+  border-left: var(--border-color) 1px solid;
+  border-right: unset;
+}

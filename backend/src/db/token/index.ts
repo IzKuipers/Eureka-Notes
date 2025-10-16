@@ -4,6 +4,7 @@ import { ExistingEurekaToken, Tokens } from "../../types/model/token";
 import { ExistingEurekaUser } from "../../types/model/user";
 import { GetUserById, GetUserByUsername } from "../user";
 import { Logger } from "../../logging";
+import { AuthorizationError } from "../../api/auth";
 
 export async function GenerateToken(userId: string) {
   Logger.verbose(`GenerateToken: ${userId}`);
@@ -24,6 +25,8 @@ export async function ValidateToken(value: string): Promise<ExistingEurekaUser |
   const tokenData = await Tokens.findOne<ExistingEurekaToken>({ value });
   if (!tokenData) return null;
 
+  await Tokens.updateOne({ _id: tokenData._id.toString() }, { createdAt: Date.now() }); // Refresh the token
+
   return await GetUserById(tokenData?.userId!);
 }
 
@@ -39,10 +42,10 @@ export async function AuthenticateUser(username: string, password: string): Prom
   Logger.verbose(`AuthenticateUser: ${username}, ************`);
 
   const user = await GetUserByUsername(username);
-  if (!user) return undefined;
+  if (!user) throw new AuthorizationError("Username or password incorrect");
 
   const passwordValid = await verify(user.passwordHash, password);
-  if (!passwordValid) return undefined;
+  if (!passwordValid) throw new AuthorizationError("Username or password incorrect");
 
   return await GenerateToken(user._id);
 }
