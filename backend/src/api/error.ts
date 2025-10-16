@@ -19,3 +19,11 @@ const errorHandler = (
 };
 
 export default errorHandler;
+
+export class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+
+    this.name = "NotFoundError";
+  }
+}

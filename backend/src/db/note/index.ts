@@ -1,14 +1,17 @@
+import { NotFoundError } from "../../api/error";
 import {
   ExistingEurekaNote,
   Notes,
   PartialEurekaNote,
 } from "../../types/model/note";
+import { GetFolderFromPath } from "../folder";
 
 export async function GetAllNotesOfUser(
-  userId: string
+  userId: string,
+  folderId?: string
 ): Promise<PartialEurekaNote[]> {
   return await Notes.find<PartialEurekaNote>(
-    { userId },
+    folderId ? { userId, folderId } : { userId },
     {
       data: false,
       userId: false,
@@ -16,17 +19,24 @@ export async function GetAllNotesOfUser(
     }
   );
 }
+export async function GetNotesByPath(userId: string, path: string) {
+  const folder = await GetFolderFromPath(userId, path);
 
-export async function GetFullNote(noteId: string) {
-  return await Notes.findById<ExistingEurekaNote>(noteId);
+  if (!folder) throw new NotFoundError("Folder not found.");
+
+  return await GetAllNotesOfUser(userId, folder._id);
 }
 
-export async function WriteNote(noteId: string, data: string) {
-  return await Notes.updateOne({ _id: noteId }, { data });
+export async function GetFullNote(userId: string, noteId: string) {
+  return await Notes.findOne<ExistingEurekaNote>({ userId, _id: noteId });
 }
 
-export async function DeleteNote(noteId: string) {
-  return await Notes.findByIdAndDelete(noteId);
+export async function WriteNote(userId: string, noteId: string, data: string) {
+  return await Notes.updateOne({ userId, _id: noteId }, { data });
+}
+
+export async function DeleteNote(userId: string, noteId: string) {
+  return await Notes.findOneAndDelete({ userId, _id: noteId });
 }
 
 export async function CreateNote(
@@ -36,4 +46,15 @@ export async function CreateNote(
   folderId?: string
 ) {
   return await Notes.create({ userId, name, data, folderId });
+}
+
+export async function RenameNote(
+  userId: string,
+  noteId: string,
+  newName: string
+) {
+  return await Notes.findOneAndUpdate(
+    { userId, _id: noteId },
+    { name: newName }
+  );
 }

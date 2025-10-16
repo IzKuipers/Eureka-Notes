@@ -38,6 +38,8 @@ export function RouterGenerator(
           stop(401); // Some authentication thing failed
         } else if (error.startsWith("RequirementError")) {
           stop(400); // The request was malformed
+        } else if (error.startsWith("NotFoundError")) {
+          stop(404); // The resource was not found
         } else {
           stop(500); // Assume that a server error occurred if the error class isn't created by us
         }
