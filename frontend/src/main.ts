@@ -1,22 +1,20 @@
-import "./css/main.css";
 import { mount } from "svelte";
 import App from "./App.svelte";
+import "./css/main.css";
 import { ServerConnector } from "./ts/api";
-import { Dialogs } from "./ts/dialog";
+import { ViewerState } from "./ts/state";
+import { OpenedState } from "./ts/state/opened";
 
 async function Main() {
-  document.title = "Loading...";
-  await new ServerConnector().Connect();
-
-  document.title = "Eureka";
-
-  Dialogs.subscribe((v) => {
-    console.log(v);
-  });
-
   mount(App, {
     target: document.getElementById("app")!,
   });
+
+  document.title = "Loading...";
+  await new ServerConnector().Connect();
+  new OpenedState();
+  await new ViewerState().initialize();
+  document.title = "Eureka";
 }
 
 Main();
