@@ -4,6 +4,7 @@ div.status-bar {
   background-color: var(--background-secondary);
   border-top: var(--border-color) 1px solid;
   height: 25px;
+  overflow: hidden;
 }
 
 div.status-bar div.segment {
@@ -12,6 +13,19 @@ div.status-bar div.segment {
   gap: 5px;
   padding: 0 8px;
   border-right: var(--border-color) 1px solid;
+  height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: fit-content;
+}
+
+div.status-bar div.segment span {
+  width: fit-content;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 div.status-bar div.segment.unimportant span {

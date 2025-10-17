@@ -1,0 +1,40 @@
+div.main-viewer {
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: calc(15px + 270px + 15px);
+}
+
+div.main-viewer > div.listing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 5px;
+}
+div.main-viewer button.viewer-item {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  height: 30px;
+  gap: 5px;
+  padding: 3px;
+}
+
+div.main-viewer button.viewer-item span:not(.lucide) {
+  width: 0;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+div.main-viewer button.viewer-item span.lucide {
+  margin: 0 5px;
+  opacity: 0.5;
+}
+
+div.main-viewer button.viewer-item:active,
+div.main-viewer button.viewer-item.selected {
+  background-color: var(--button-hover);
+}

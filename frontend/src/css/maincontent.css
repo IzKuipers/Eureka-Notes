@@ -1,0 +1,14 @@
+@import url("./maincontent/userbar.css");
+@import url("./maincontent/viewer.css");
+
+main.authorized {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main.authorized > div.content {
+  height: 0;
+  flex-grow: 1;
+  position: relative;
+}

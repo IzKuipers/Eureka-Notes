@@ -28,7 +28,7 @@ export async function Confirmation(title: string, message: string, icon = "octag
       icon,
       buttons: [
         { caption: "No", action: () => r(false) },
-        { caption: "Yes", action: () => r(true) },
+        { caption: "Yes", action: () => r(true), className: "red" },
       ],
     });
   });

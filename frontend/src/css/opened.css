@@ -1,0 +1,63 @@
+div.opened-editors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  flex-direction: column-reverse;
+  padding: 15px;
+  gap: 10px;
+  overflow-y: scroll;
+}
+
+div.opened-editors > div.note-editor {
+  pointer-events: initial;
+  width: 700px;
+  height: 500px;
+  min-width: 450px;
+  min-height: 400px;
+  resize: both;
+  overflow: hidden;
+}
+
+div.opened-editors > div.note-editor:not(.collapsed) {
+  position: fixed;
+  top: calc(calc(50vh - 250px) / 2);
+  left: calc(calc(50vw - 350px) / 1);
+}
+
+div.opened-editors > div.note-editor.collapsed {
+  width: 270px;
+  height: 30px;
+  max-width: 270px;
+  max-height: 30px;
+  max-width: 270px;
+  min-height: 30px;
+  translate: none !important;
+  transform: none !important;
+  min-width: unset !important;
+  resize: none !important;
+  box-shadow: none;
+}
+
+div.opened-editors > div.note-editor.collapsed div.dialog-title,
+div.opened-editors > div.note-editor.collapsed div.dialog-title button {
+  background-color: var(--background);
+}
+
+div.opened-editors > div.note-editor div.dialog-body {
+  padding: 0;
+}
+
+div.opened-editors > div.note-editor textarea {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  border: none;
+  padding: 10px;
+  resize: none;
+}

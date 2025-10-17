@@ -1,0 +1,51 @@
+<script lang="ts">
+  import { NoteIcon } from "../../../ts/images";
+  import { GlobalViewerState } from "../../../ts/state";
+  import { GlobalOpenedState } from "../../../ts/state/opened";
+  import type { PartialEurekaNote } from "../../../types/note";
+
+  const { note, i }: { note: PartialEurekaNote; i: number } = $props();
+  const { selection, read } = GlobalViewerState!;
+
+  function onclick(e: MouseEvent) {
+    if (!e.shiftKey) {
+      $selection = [note];
+    } else if ($selection.length) {
+      console.log($selection);
+      const lastSelection = $selection[$selection.length - 1];
+      const lastIndex = $read?.notes.findIndex((n) => n._id === lastSelection._id);
+
+      if (lastIndex === undefined || lastIndex < 0) return;
+
+      if (lastIndex < i) {
+        for (let j = lastIndex; j <= i; j++) {
+          const item = $read?.notes[j];
+          console.log(item);
+          if (item && !$selection.find((n) => item._id === n._id)) {
+            $selection.push(item);
+          }
+        }
+      } else if (lastIndex > i) {
+        for (let j = i; j <= lastIndex; j++) {
+          const item = $read?.notes[j];
+          console.log(item);
+          if (item && !$selection.find((n) => item._id === n._id)) {
+            $selection.push(item);
+          }
+        }
+      }
+    }
+
+    $selection = $selection;
+  }
+</script>
+
+<button
+  class="viewer-item"
+  class:selected={$selection.find((n) => n._id === note._id)}
+  {onclick}
+  ondblclick={() => GlobalOpenedState?.openNote(note)}
+>
+  <img src={NoteIcon} alt="" />
+  <span>{note.name}</span>
+</button>

@@ -7,8 +7,11 @@ import type { UserPreferences } from "../../types/preferences";
 import type { ExistingEurekaUser } from "../../types/user";
 import { globalErrorHandler } from "../error";
 import { type Unsubscriber } from "../writable";
-import { Connected, LoggedIn, Preferences, UserInfo } from "./stores";
+import { Connected, Connecting, LoggedIn, Preferences, UserInfo } from "./stores";
 import { ShowDialog } from "../dialog";
+import { GlobalViewerState } from "../state";
+import { sortByKey } from "../util";
+import { GlobalOpenedState } from "../state/opened";
 
 export let GlobalServerConnector: ServerConnector | undefined;
 
@@ -29,6 +32,7 @@ export class ServerConnector {
   //#region CONNECTION
 
   async Connect() {
+    Connecting.set(true);
     this.axios = axios?.create({
       baseURL: this.url,
     });
@@ -38,12 +42,14 @@ export class ServerConnector {
 
       if (response.data?.ping !== "Pong!") throw "";
     } catch (e) {
+      Connected.set(false);
       globalErrorHandler(e);
       return false;
     }
 
-    Connected.set(true);
     await this.loadToken();
+
+    Connected.set(true);
 
     if (this.token) {
       this.startPreferencesSubscriber();
@@ -57,13 +63,18 @@ export class ServerConnector {
     const token = Cookies.get("eurekaToken");
     if (!token) return;
 
-    const valid = await this.continueWithToken(token);
+    await this.continueWithToken(token);
   }
 
-  saveToken(token: string) {
+  saveToken(token: string, username: string) {
     Cookies.set("eurekaToken", token, {
       expires: 365, // backend kicks us out after 1 day of inactivity, so this property doesn't matter.
-      domain: import.meta.env.DEV ? "localhost" : location.hostname,
+      domain: location.hostname,
+    });
+
+    Cookies.set("eurekaUsername", username, {
+      expires: 365,
+      domain: location.hostname,
     });
   }
 
@@ -91,12 +102,13 @@ export class ServerConnector {
       return false;
     }
 
-    this.saveToken(token);
+    this.saveToken(token, userInfo.username);
     this.userInfo = userInfo;
     this.token = token;
     Preferences.set(userInfo.preferences);
     UserInfo.set(userInfo);
     LoggedIn.set(true);
+    await GlobalViewerState?.initialize();
 
     return true;
   }
@@ -107,6 +119,7 @@ export class ServerConnector {
     Preferences.set({});
     LoggedIn.set(false);
     UserInfo.set(undefined);
+    GlobalOpenedState?.reset();
     this.token = undefined;
     this.userInfo = undefined;
   }
@@ -247,14 +260,36 @@ export class ServerConnector {
     }
   }
 
+  async createNote(name: string, data: string, folderId?: string) {
+    try {
+      const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }), {
+        headers: { Authorization: `Bearer ${this.token}` },
+      });
+
+      console.log(response.data);
+
+      GlobalViewerState?.navigate(GlobalViewerState.path(), true);
+
+      return response.data as ExistingEurekaNote;
+    } catch (e) {
+      globalErrorHandler(e);
+      return undefined;
+    }
+  }
+
   //#endregion
   //#region FOLDERS
 
   async readFolder(path = "") {
     try {
-      const response = await this.axios!.get(path ? `/folders/read/${path}`.replace("//", "/") : `/folders/read`, {
+      const response = await this.axios!.get(path ? `/folders/read/${path}`.replaceAll("//", "/") : `/folders/read`, {
         headers: { Authorization: `Bearer ${this.token}` },
       });
+
+      const data = response.data as FolderRead;
+
+      data.folders = sortByKey(data.folders, "name");
+      data.notes = sortByKey(data.notes, "name");
 
       return response.data as FolderRead;
     } catch (e) {

@@ -33,10 +33,9 @@
 
 .dialog div.dialog-title div.title-actions button {
   font-size: 16px;
-  background-color: var(--background-secondary);
   border-left: var(--border-color) 1px solid;
   width: 30px;
-  height: 30px;
+  height: 29px;
 }
 
 .dialog div.dialog-title div.title-actions button:disabled span.lucide {
@@ -63,21 +62,4 @@
   padding: 0 10px;
   border-left: var(--border-color) 1px solid;
   height: 29px;
-  background-color: var(--background-secondary);
-}
-
-.dialog div.dialog-title div.title-actions button:hover,
-.dialog div.dialog-actions button:hover {
-  background-color: var(--button-hover);
-}
-
-.dialog div.dialog-title div.title-actions button:active,
-.dialog div.dialog-actions button:active {
-  background-color: var(--button-active);
-}
-
-.dialog div.dialog-title div.title-actions button:disabled,
-.dialog div.dialog-actions button:disabled {
-  background-color: var(--background-secondary) !important;
-  color: var(--foreground-transparent);
 }

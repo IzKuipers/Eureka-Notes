@@ -1,5 +1,6 @@
 <script lang="ts">
   import { GlobalServerConnector } from "../../ts/api";
+  import { BlockingOkay, Confirmation } from "../../ts/dialog";
 
   let { registering = $bindable() }: { registering: boolean } = $props();
 
@@ -12,13 +13,23 @@
     if (!username || !password || !confirmPassword) return;
 
     if (password !== confirmPassword) {
-      // TODO : DIALOG HERE
+      await BlockingOkay("Can't register", "The passwords you entered don't match. Please try again.");
       return;
     }
 
     loading = true;
-    await GlobalServerConnector?.register(username, password);
+    const result = await GlobalServerConnector?.register(username, password);
     loading = false;
+
+    if (!result) {
+      await BlockingOkay(
+        "Registration failed",
+        "Your account could not be created. The username you tried to use is already in use by someone else.",
+      );
+
+      return;
+    }
+
     registering = false;
   }
 </script>

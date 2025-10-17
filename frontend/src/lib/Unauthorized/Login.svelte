@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { GlobalServerConnector } from "../../ts/api";
+  import { BlockingOkay } from "../../ts/dialog";
+  import Cookies from "js-cookie";
 
   let { registering = $bindable() }: { registering: boolean } = $props();
 
@@ -7,11 +10,20 @@
   let password = $state<string>();
   let loading = $state<boolean>(false);
 
+  onMount(() => {
+    username = Cookies.get("eurekaUsername") || "";
+  });
+
   async function Login() {
     if (!username || !password) return;
 
     loading = true;
-    await GlobalServerConnector?.login(username, password);
+    const token = await GlobalServerConnector?.login(username, password);
+
+    if (!token) {
+      await BlockingOkay("Login failed", "The credentials you entered are invalid. Please try again.");
+    }
+
     loading = false;
   }
 </script>
