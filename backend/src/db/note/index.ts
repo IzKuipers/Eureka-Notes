@@ -16,9 +16,8 @@ export async function GetAllNotesOfUser(userId: string, folderId?: string): Prom
 export async function GetAllNotesOfUserWithData(userId: string, folderId?: string): Promise<PartialEurekaNoteWithData[]> {
   Logger.verbose(`GetAllNotesOfUserWithData: ${userId}, ${folderId}`);
 
-  return await Notes.find<PartialEurekaNoteWithData>(folderId ? { userId, folderId } : { userId }, {
+  return await Notes.find<PartialEurekaNoteWithData>(folderId ? { userId, folderId: folderId ?? "" } : { userId }, {
     userId: false,
-    folderId: false,
   });
 }
 export async function GetNotesByPath(userId: string, path: string) {

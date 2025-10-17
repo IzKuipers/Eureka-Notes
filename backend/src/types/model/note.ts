@@ -15,7 +15,7 @@ export interface ExistingEurekaNote extends EurekaNote {
 
 export type PartialEurekaNote = Omit<Omit<Omit<ExistingEurekaNote, "data">, "folderId">, "userId">;
 
-export type PartialEurekaNoteWithData = PartialEurekaNote & { data: string };
+export type PartialEurekaNoteWithData = PartialEurekaNote & { data: string; folderId?: string };
 
 const schema = new Schema<EurekaNote>(
   {

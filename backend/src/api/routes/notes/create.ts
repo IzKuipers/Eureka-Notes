@@ -4,7 +4,7 @@ import { AssumeAuthorization } from "../../auth";
 import { ConflictError } from "../../error/classes";
 import { MaybeDefined, RequireDefined } from "../../params";
 
-const NotesCreateRoute = (async (req, _, stop) => {
+const NotesCreateRoute = (async (req, res) => {
   const [name, data] = RequireDefined<[string, string]>(req, "name", "data");
   const [folderId] = MaybeDefined<[string?]>(req, "folderId");
   const user = await AssumeAuthorization(req);
@@ -13,9 +13,9 @@ const NotesCreateRoute = (async (req, _, stop) => {
 
   if (existing) throw new ConflictError("A note with that name already exists in the specified folder.");
 
-  await CreateNote(user._id, name, data, folderId);
+  const note = await CreateNote(user._id, name, data, folderId);
 
-  stop(200);
+  res.json(note);
 }) satisfies RouteCallback;
 
 export default NotesCreateRoute;

@@ -95,7 +95,9 @@ export async function ReadFolder(userId: string, path: string = "/"): Promise<Fo
   if (!topLevel) throw new NotFoundError("Folder not found");
 
   const childFolders = await GetAllFoldersOf(userId, topLevel._id);
-  const childNotes = await GetAllNotesOfUserWithData(userId, topLevel._id);
+  const childNotes = (await GetAllNotesOfUserWithData(userId, topLevel._id)).filter((n) =>
+    !path || path === "/" ? !n.folderId : true
+  );
   const totalSize = childNotes.map((n) => n.data.length).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   return {

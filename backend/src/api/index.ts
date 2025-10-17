@@ -17,7 +17,15 @@ export class ApiInterface {
   constructor(private port = 3141, private routerDefinitions = RouterDefinitions) {
     Logger.info("Constructing API");
 
-    this.App.use(multer().any(), express.json(), cors(corsOptions), errorHandler, cookieParser(), trackRequests);
+    // 10MB field size max
+    this.App.use(
+      multer({ limits: { fieldSize: 10 * 1024 ** 2 } }).any(),
+      express.json(),
+      cors(corsOptions),
+      errorHandler,
+      cookieParser(),
+      trackRequests
+    );
   }
 
   async start(): Promise<ApiInterface> {
