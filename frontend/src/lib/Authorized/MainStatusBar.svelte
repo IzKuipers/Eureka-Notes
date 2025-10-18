@@ -1,7 +1,7 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onDestroy, onMount } from "svelte";
-  import { GlobalViewerState } from "../../ts/state";
+  import { GlobalViewerState } from "../../ts/state/viewer";
   import Segment from "../StatusBar/Segment.svelte";
   import StatusBar from "../StatusBar.svelte";
   import { formatBytes } from "../../ts/bytes";

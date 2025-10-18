@@ -1,13 +1,13 @@
-import { GlobalViewerState } from ".";
+import { GlobalViewerState } from "./viewer";
 import type { ExistingEurekaNote, PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
 import { ShowDialog } from "../dialog";
-import { UUID } from "../uuid";
 import { Store } from "../writable";
 import { GlobalOpenedState } from "./opened";
+import { Sleep } from "../sleep";
 
 export class EditorState {
-  partialNote?: PartialEurekaNote;
+  partialNote: PartialEurekaNote;
   noteId?: string;
   fullNote = Store<ExistingEurekaNote>();
   notFound = Store<boolean>(false);
@@ -16,28 +16,17 @@ export class EditorState {
   collapsed = Store<boolean>(false);
   modified = Store<boolean>(false);
   path = Store<string>();
-  // NEW NOTE
-  isNew = Store<boolean>(false);
-  newData = Store<string>("");
-  newName = Store<string>("");
-  // END NEW NOTE
 
-  constructor(partial?: PartialEurekaNote) {
+  constructor(partial: PartialEurekaNote) {
     this.partialNote = partial;
 
     this.fullNote.subscribe(() => {
       this.modified.set(true);
-      GlobalViewerState?.status.set(!this.partialNote ? "Creating new note" : `Editing ${this.partialNote?.name}`);
+      GlobalViewerState?.status.set(`Editing ${this.partialNote?.name}`);
     });
   }
 
   async read() {
-    if (!this.partialNote) {
-      this.isNew.set(true);
-      this.noteId = `new$${UUID()}`;
-      return;
-    }
-
     this.noteId = this.partialNote._id;
     this.loading.set(true);
     const noteData = await GlobalServerConnector!.readNote(this.partialNote._id);
@@ -45,32 +34,15 @@ export class EditorState {
 
     if (!noteData) {
       this.notFound.set(true);
-      this.isNew.set(false);
       return;
     }
 
     this.path.set(`${GlobalViewerState?.path()}/${noteData.name}`.replaceAll("//", "/"));
     this.fullNote.set(noteData);
     this.modified.set(false);
-    this.isNew.set(false);
   }
 
   async writeData() {
-    if (this.isNew()) {
-      this.writing.set(true);
-
-      const fullNote = await GlobalServerConnector?.createNote(
-        this.newName(),
-        this.newData(),
-        GlobalViewerState!.read()?.folderId
-      );
-      this.partialNote = fullNote;
-
-      this.writing.set(false);
-
-      return await this.read();
-    }
-
     this.writing.set(true);
 
     await GlobalServerConnector?.writeNote(this.partialNote!._id, this.fullNote().data);
@@ -80,6 +52,8 @@ export class EditorState {
 
       return v;
     });
+
+    await Sleep(100); // Artificial delay is only here for UX purposes
 
     this.modified.set(false);
     this.writing.set(false);

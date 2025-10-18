@@ -2,9 +2,9 @@
   import { GlobalServerConnector } from "../../ts/api";
   import { UserInfo } from "../../ts/api/stores";
   import { ShowDialog } from "../../ts/dialog";
-  import { GlobalViewerState } from "../../ts/state";
+  import { GlobalViewerState } from "../../ts/state/viewer";
 
-  const { path } = GlobalViewerState!;
+  const { path, selection } = GlobalViewerState!;
 
   async function logout() {
     ShowDialog({
@@ -26,6 +26,15 @@
 
 <div class="user-bar">
   <div class="path">{$path || "/"}</div>
+  <div class="selection-actions">
+    {#if $selection.length === 1}
+      <button class="lucide icon-text-cursor-input" aria-label="Rename note"></button>
+    {/if}
+    {#if $selection.length}
+      <button class="lucide icon-trash" aria-label="Delete note(s)"></button>
+      <button class="lucide icon-folder-output" aria-label="Move note(s)"></button>
+    {/if}
+  </div>
   <div class="account-area">
     <p class="username">{$UserInfo?.username}</p>
     <button class="lucide icon-log-out" aria-label="Log out" onclick={logout}></button>

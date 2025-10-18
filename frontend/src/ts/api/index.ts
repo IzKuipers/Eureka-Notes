@@ -9,7 +9,7 @@ import { globalErrorHandler } from "../error";
 import { type Unsubscriber } from "../writable";
 import { Connected, Connecting, LoggedIn, Preferences, UserInfo } from "./stores";
 import { ShowDialog } from "../dialog";
-import { GlobalViewerState } from "../state";
+import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
 import { GlobalOpenedState } from "../state/opened";
 

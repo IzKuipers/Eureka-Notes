@@ -1,0 +1,26 @@
+@import url("./modularitydialog/newnote.css");
+
+.modularity-dialog-wrapper {
+  background-color: var(--background-transparent);
+  z-index: 100000000000000;
+}
+
+.modularity-dialog {
+  width: var(--width, 400px);
+  height: var(--height, 128px);
+}
+
+.modularity-dialog div.dialog-body h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.modularity-dialog div.dialog-body span.lucide {
+  color: var(--red);
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}

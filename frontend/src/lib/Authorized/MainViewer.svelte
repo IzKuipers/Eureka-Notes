@@ -1,7 +1,7 @@
 <script lang="ts">
   import { FolderIcon } from "../../ts/images";
-  import { GlobalViewerState } from "../../ts/state";
   import { GlobalOpenedState } from "../../ts/state/opened";
+  import { GlobalViewerState } from "../../ts/state/viewer";
   import { GetParentDirectory } from "../../ts/util";
   import CenterLoader from "../CenterLoader.svelte";
   import FolderButton from "./MainViewer/FolderButton.svelte";

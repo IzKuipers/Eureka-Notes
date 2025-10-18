@@ -6,6 +6,7 @@ import { BlockingOkay } from "../dialog";
 import { Store } from "../writable";
 
 export let GlobalViewerState: ViewerState | undefined;
+export const ViewerReady = Store<boolean>(false);
 
 export class ViewerState {
   private readonly START_PATH: string;
@@ -37,6 +38,7 @@ export class ViewerState {
 
     this.reset();
     await this.navigate(this.path(), true);
+    ViewerReady.set(true);
   }
 
   async navigate(path: string, force = false): Promise<boolean> {

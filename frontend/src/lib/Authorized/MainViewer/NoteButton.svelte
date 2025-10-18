@@ -1,6 +1,6 @@
 <script lang="ts">
   import { NoteIcon } from "../../../ts/images";
-  import { GlobalViewerState } from "../../../ts/state";
+  import { GlobalViewerState } from "../../../ts/state/viewer";
   import { GlobalOpenedState } from "../../../ts/state/opened";
   import type { PartialEurekaNote } from "../../../types/note";
 

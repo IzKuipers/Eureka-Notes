@@ -1,0 +1,12 @@
+.dialog.new-note {
+  --width: 330px;
+  --height: 150px;
+}
+
+.dialog.new-note p {
+  margin-bottom: 15px;
+}
+
+.dialog.new-note input {
+  width: 100%;
+}

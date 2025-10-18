@@ -1,6 +1,6 @@
 <script lang="ts">
   import { FolderIcon } from "../../../ts/images";
-  import { GlobalViewerState } from "../../../ts/state";
+  import { GlobalViewerState } from "../../../ts/state/viewer";
   import type { ExistingEurekaFolder } from "../../../types/folder";
 
   const { folder }: { folder: ExistingEurekaFolder } = $props();

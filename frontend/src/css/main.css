@@ -4,11 +4,13 @@
 @import url("./dialog.css");
 @import url("./loader.css");
 @import url("./messagedialog.css");
+@import url("./modularitydialog.css");
 @import url("./statusbar.css");
 @import url("./login.css");
 @import url("./input.css");
 @import url("./maincontent.css");
 @import url("./opened.css");
+@import url("./progressbar.css");
 html,
 body {
   width: 100%;

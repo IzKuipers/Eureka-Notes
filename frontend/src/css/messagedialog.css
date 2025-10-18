@@ -1,5 +1,6 @@
 .message-dialog-wrapper {
   background-color: var(--background-transparent);
+  z-index: 10000000000;
 }
 
 .message-dialog {

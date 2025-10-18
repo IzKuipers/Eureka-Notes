@@ -1,0 +1,12 @@
+div.progress-bar {
+  width: 100%;
+  height: 7px;
+  border: var(--border-color) 1px solid;
+  padding: 1px;
+}
+
+div.progress-bar div.inner {
+  width: var(--progress, 0%);
+  height: 3px;
+  background-color: var(--red);
+}

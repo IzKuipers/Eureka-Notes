@@ -10,8 +10,27 @@ div.user-bar div.path {
   padding: 0 10px;
 }
 
-div.user-bar div.account-area {
+div.user-bar div.selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-left: auto;
+  padding: 0 12px;
+}
+
+div.user-bar div.selection-actions button {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  opacity: 0.5;
+  background-color: transparent;
+}
+
+div.user-bar div.selection-actions button:hover {
+  opacity: 1;
+}
+
+div.user-bar div.account-area {
   display: flex;
   align-items: center;
   height: 39px;
