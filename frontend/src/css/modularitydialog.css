@@ -1,4 +1,6 @@
 @import url("./modularitydialog/newnote.css");
+@import url("./modularitydialog/deletenotes.css");
+@import url("./modularitydialog/renamenote.css");
 
 .modularity-dialog-wrapper {
   background-color: var(--background-transparent);

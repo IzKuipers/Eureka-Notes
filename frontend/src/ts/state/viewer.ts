@@ -1,9 +1,12 @@
+import { DeleteNotesDialog } from "../../dialogs/DeleteNotes/DeleteNotes";
+import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
 import type { FolderRead } from "../../types/folder";
 import type { PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
-import { BlockingOkay } from "../dialog";
+import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
+import { GlobalModularityState } from "./modular";
 
 export let GlobalViewerState: ViewerState | undefined;
 export const ViewerReady = Store<boolean>(false);
@@ -61,6 +64,10 @@ export class ViewerState {
     return true;
   }
 
+  async refresh() {
+    return await this.navigate(this.path(), true);
+  }
+
   reset() {
     this.read.set(undefined);
     this.path.set(this.START_PATH);
@@ -78,5 +85,43 @@ export class ViewerState {
 
   resetStatus() {
     this.status.set(this.DEFAULT_STATUS);
+  }
+
+  deleteSelection() {
+    const notes = this.selection();
+
+    if (!notes.length) return;
+
+    ShowDialog({
+      title: notes.length === 1 ? `Delete note?` : `Delete notes?`,
+      message:
+        notes.length === 1
+          ? `Are you sure you want to delete '${notes[0].name}'? This cannot be undone.`
+          : `Are you sure you want to delete these ${notes.length} notes? This cannot be undone.`,
+      buttons: [
+        {
+          caption: "Cancel",
+        },
+        {
+          caption: "Delete",
+          action: async () => {
+            if (notes.length === 1) {
+              await GlobalServerConnector?.deleteNote(notes[0]._id);
+              await this.refresh();
+            } else {
+              GlobalModularityState?.ShowDialog(DeleteNotesDialog, ...notes);
+            }
+          },
+        },
+      ],
+    });
+  }
+
+  renameSelection() {
+    const note = this.selection()[0];
+
+    if (!note) return;
+
+    GlobalModularityState?.ShowDialog(RenameNoteDialog, note);
   }
 }

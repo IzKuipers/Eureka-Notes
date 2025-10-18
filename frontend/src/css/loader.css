@@ -1,3 +1,7 @@
+.loader.fill-absolute {
+  background-color: var(--background-transparent);
+}
+
 .loader::after {
   content: "";
   font-size: 16px;

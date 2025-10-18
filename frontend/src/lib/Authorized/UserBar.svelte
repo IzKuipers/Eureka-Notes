@@ -28,10 +28,11 @@
   <div class="path">{$path || "/"}</div>
   <div class="selection-actions">
     {#if $selection.length === 1}
-      <button class="lucide icon-text-cursor-input" aria-label="Rename note"></button>
+      <button class="lucide icon-text-cursor-input" aria-label="Rename note" onclick={() => GlobalViewerState?.renameSelection()}
+      ></button>
     {/if}
     {#if $selection.length}
-      <button class="lucide icon-trash" aria-label="Delete note(s)"></button>
+      <button class="lucide icon-trash" aria-label="Delete note(s)" onclick={() => GlobalViewerState?.deleteSelection()}></button>
       <button class="lucide icon-folder-output" aria-label="Move note(s)"></button>
     {/if}
   </div>

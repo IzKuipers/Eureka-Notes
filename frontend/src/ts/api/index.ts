@@ -268,7 +268,7 @@ export class ServerConnector {
 
       console.log(response.data);
 
-      GlobalViewerState?.navigate(GlobalViewerState.path(), true);
+      await GlobalViewerState?.refresh();
 
       return response.data as ExistingEurekaNote;
     } catch (e) {

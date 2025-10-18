@@ -8,7 +8,7 @@
   import CenterLoader from "../CenterLoader.svelte";
 
   const { state: State }: { state: EditorState } = $props();
-  const { fullNote, writing, collapsed, modified, path } = State;
+  const { fullNote, writing, collapsed, modified, path, loading } = State;
   const { maxZIndex } = GlobalViewerState!;
   let zIndex = $state<number>($maxZIndex + 1);
   let editor = $state<HTMLDivElement>();
@@ -29,7 +29,7 @@
   use:draggable={{
     disabled: $collapsed,
     handle: ".dialog-title",
-    defaultPosition: { x: 100, y: 100 },
+    defaultPosition: { x: 0, y: 0 },
     cancel: ".title-actions",
   }}
   onmousedown={updateZIndex}
@@ -59,9 +59,8 @@
   </div>
   {#if !$collapsed}
     <div class="dialog-body">
-      {#if !$writing}
-        <textarea name="" id="" bind:value={$fullNote.data}></textarea>
-      {:else}
+      <textarea name="" id="" bind:value={$fullNote.data}></textarea>
+      {#if $writing || $loading}
         <CenterLoader />
       {/if}
     </div>

@@ -43,6 +43,7 @@
 }
 
 .dialog div.dialog-body {
+  position: relative;
   height: 0;
   flex-grow: 1;
   padding: 15px;

@@ -45,6 +45,7 @@
   class:selected={$selection.find((n) => n._id === note._id)}
   {onclick}
   ondblclick={() => GlobalOpenedState?.openNote(note)}
+  title={note.name}
 >
   <img src={NoteIcon} alt="" />
   <span>{note.name}</span>

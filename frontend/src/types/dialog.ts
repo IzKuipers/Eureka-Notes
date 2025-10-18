@@ -19,9 +19,11 @@ export class ModularityDialogInstance {
   public component?: Component<{ dialog: ModularityDialogInstance }>;
   public className?: string;
   public buttons: DialogButton[] = [];
+  protected props;
 
-  constructor(id: string) {
+  constructor(id: string, ...props: any[]) {
     this.id = id;
+    this.props = props;
   }
 
   close() {

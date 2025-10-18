@@ -16,6 +16,7 @@ export class EditorState {
   collapsed = Store<boolean>(false);
   modified = Store<boolean>(false);
   path = Store<string>();
+  currentFolder: string;
 
   constructor(partial: PartialEurekaNote) {
     this.partialNote = partial;
@@ -24,6 +25,8 @@ export class EditorState {
       this.modified.set(true);
       GlobalViewerState?.status.set(`Editing ${this.partialNote?.name}`);
     });
+
+    this.currentFolder = GlobalViewerState?.path()!;
   }
 
   async read() {
@@ -37,7 +40,7 @@ export class EditorState {
       return;
     }
 
-    this.path.set(`${GlobalViewerState?.path()}/${noteData.name}`.replaceAll("//", "/"));
+    this.path.set(`${this.currentFolder}/${noteData.name}`.replaceAll("//", "/"));
     this.fullNote.set(noteData);
     this.modified.set(false);
   }

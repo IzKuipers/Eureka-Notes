@@ -1,5 +1,6 @@
 import { NewNoteDialog } from "../../dialogs/NewNote/NewNote";
 import type { PartialEurekaNote } from "../../types/note";
+import { UserInfo } from "../api/stores";
 import { Store } from "../writable";
 import { EditorState } from "./editor";
 import { GlobalModularityState } from "./modular";
@@ -17,18 +18,23 @@ export class OpenedState {
     if (this.editors().has(partial._id)) return false;
 
     const editor = new EditorState(partial);
-    await editor.read();
-
+    editor.fullNote.set({ ...partial, userId: UserInfo()?._id!, data: "" });
     this.editors.update((v) => {
       v.set(partial._id, editor);
       return v;
     });
+
+    await editor.read();
 
     return true;
   }
 
   newNote() {
     GlobalModularityState?.ShowDialog(NewNoteDialog);
+  }
+
+  newFolder() {
+    // TODO
   }
 
   closeEditor(editor: EditorState) {

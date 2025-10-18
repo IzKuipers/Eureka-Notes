@@ -1,0 +1,12 @@
+.dialog.rename-note {
+  --width: 330px;
+  --height: 150px;
+}
+
+.dialog.rename-note p {
+  margin-bottom: 15px;
+}
+
+.dialog.rename-note input {
+  width: 100%;
+}

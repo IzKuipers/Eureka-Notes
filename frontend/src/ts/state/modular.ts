@@ -11,9 +11,9 @@ export class ModularityState {
     GlobalModularityState = this;
   }
 
-  public ShowDialog(dialog: typeof ModularityDialogInstance) {
+  public ShowDialog(dialog: typeof ModularityDialogInstance, ...props: any[]) {
     const uuid = UUID();
-    const instance = new dialog(uuid);
+    const instance = new dialog(uuid, ...props);
 
     this.store.update((v) => {
       v.set(uuid, instance);
