@@ -51,7 +51,7 @@ export class EditorState {
     await GlobalServerConnector?.writeNote(this.partialNote!._id, this.fullNote().data);
 
     this.fullNote.update((v) => {
-      v.modifiedAt = Date.now().toLocaleString();
+      v.updatedAt = new Date().toISOString();
 
       return v;
     });

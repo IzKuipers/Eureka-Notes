@@ -18,4 +18,5 @@ export interface FolderRead {
   totalSize: number;
   folderId: string;
   folderName: string;
+  parentFolderId?: string;
 }

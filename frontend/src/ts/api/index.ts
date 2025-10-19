@@ -234,9 +234,9 @@ export class ServerConnector {
     }
   }
 
-  async moveNote(id: string, path: string) {
+  async moveNote(id: string, newFolderId: string) {
     try {
-      const response = await this.axios!.patch(`/notes/move/${id}`, toFormData({ path }), {
+      const response = await this.axios!.patch(`/notes/move/${id}`, toFormData({ newFolderId }), {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
@@ -260,15 +260,13 @@ export class ServerConnector {
     }
   }
 
-  async createNote(name: string, data: string, folderId?: string) {
+  async createNote(name: string, data: string, folderId?: string, refresh = true) {
     try {
       const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }), {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
-      console.log(response.data);
-
-      await GlobalViewerState?.refresh();
+      if (refresh) await GlobalViewerState?.refresh();
 
       return response.data as ExistingEurekaNote;
     } catch (e) {
@@ -280,9 +278,9 @@ export class ServerConnector {
   //#endregion
   //#region FOLDERS
 
-  async readFolder(path = "") {
+  async readFolderByPath(path = "") {
     try {
-      const response = await this.axios!.get(path ? `/folders/read/${path}`.replaceAll("//", "/") : `/folders/read`, {
+      const response = await this.axios!.get(path ? `/folders/read/path/${path}`.replaceAll("//", "/") : `/folders/read/path`, {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
@@ -298,9 +296,27 @@ export class ServerConnector {
     }
   }
 
-  async deleteFolder(path: string) {
+  async readFolderById(id: string) {
+    if (!id) return await this.readFolderByPath("");
+
     try {
-      const response = await this.axios!.delete(`/folders/delete/${path}`, {
+      const response = await this.axios!.get(`/folders/read/id/${id}`, { headers: { Authorization: `Bearer ${this.token}` } });
+
+      const data = response.data as FolderRead;
+
+      data.folders = sortByKey(data.folders, "name");
+      data.notes = sortByKey(data.notes, "name");
+
+      return response.data as FolderRead;
+    } catch (e) {
+      globalErrorHandler(e);
+      return undefined;
+    }
+  }
+
+  async deleteFolder(id: string) {
+    try {
+      const response = await this.axios!.delete(`/folders/delete/${id}`, {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
@@ -311,11 +327,18 @@ export class ServerConnector {
     }
   }
 
-  async moveFolder(path: string) {
+  async moveFolder(folderId: string, destinationId?: string) {
     try {
-      const response = await this.axios!.delete(`/folders/move/${path}`, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.post(
+        `/folders/move`,
+        toFormData({
+          id: folderId,
+          destinationId,
+        }),
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+        }
+      );
 
       return response.status === 200;
     } catch (e) {
@@ -324,9 +347,9 @@ export class ServerConnector {
     }
   }
 
-  async renameFolder(path: string) {
+  async renameFolder(folderId: string, newName: string) {
     try {
-      const response = await this.axios!.delete(`/folders/rename/${path}`, {
+      const response = await this.axios!.post(`/folders/rename/${folderId}`, toFormData({ newName }), {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
@@ -339,9 +362,13 @@ export class ServerConnector {
 
   async createFolder(path: string) {
     try {
-      const response = await this.axios!.delete(`/folders/create/${path}`, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.post(
+        `/folders/create/${path}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+        }
+      );
 
       return response.status === 200;
     } catch (e) {

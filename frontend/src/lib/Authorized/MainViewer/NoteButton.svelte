@@ -3,6 +3,10 @@
   import { GlobalViewerState } from "../../../ts/state/viewer";
   import { GlobalOpenedState } from "../../../ts/state/opened";
   import type { PartialEurekaNote } from "../../../types/note";
+  import { contextMenu } from "../../../ts/state/context";
+  import { SEP_ITEM } from "../../../types/context";
+  import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
+  import { MoveNotesDialog } from "../../../dialogs/MoveNotes/MoveNotes";
 
   const { note, i }: { note: PartialEurekaNote; i: number } = $props();
   const { selection, read } = GlobalViewerState!;
@@ -46,6 +50,38 @@
   {onclick}
   ondblclick={() => GlobalOpenedState?.openNote(note)}
   title={note.name}
+  use:contextMenu={[
+    {
+      caption: "Open note",
+      action: () => GlobalOpenedState?.openNote(note),
+    },
+    SEP_ITEM,
+    {
+      caption: "Rename...",
+      action: () => RenameNoteDialog.Invoke(note),
+    },
+    {
+      caption: "Delete this note",
+      action: () => GlobalViewerState?.deleteSelection([note]),
+    },
+    {
+      caption: "Move this note...",
+      action: () => {
+        MoveNotesDialog.Invoke(note);
+      },
+    },
+    SEP_ITEM,
+    {
+      caption: "Delete selection",
+      action: () => GlobalViewerState?.deleteSelection(),
+    },
+    {
+      caption: "Move selection...",
+      action: () => {
+        MoveNotesDialog.Invoke(...$selection);
+      },
+    },
+  ]}
 >
   <img src={NoteIcon} alt="" />
   <span>{note.name}</span>

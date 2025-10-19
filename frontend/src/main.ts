@@ -5,6 +5,7 @@ import { ServerConnector } from "./ts/api";
 import { ViewerState } from "./ts/state/viewer";
 import { OpenedState } from "./ts/state/opened";
 import { ModularityState } from "./ts/state/modular";
+import { ContextMenuState } from "./ts/state/context";
 
 async function Main() {
   mount(App, {
@@ -14,6 +15,7 @@ async function Main() {
   document.title = "Loading...";
 
   await new ServerConnector().Connect();
+  new ContextMenuState();
   new ModularityState();
   new OpenedState();
   await new ViewerState().initialize();

@@ -1,15 +1,51 @@
 <script lang="ts">
   import { FolderIcon } from "../../ts/images";
+  import { contextMenu } from "../../ts/state/context";
   import { GlobalOpenedState } from "../../ts/state/opened";
   import { GlobalViewerState } from "../../ts/state/viewer";
   import { GetParentDirectory } from "../../ts/util";
+  import { SEP_ITEM } from "../../types/context";
   import CenterLoader from "../CenterLoader.svelte";
   import FolderButton from "./MainViewer/FolderButton.svelte";
   import NoteButton from "./MainViewer/NoteButton.svelte";
   const { loading, read, path } = GlobalViewerState!;
 </script>
 
-<div class="main-viewer">
+<div
+  class="main-viewer"
+  use:contextMenu={[
+    {
+      caption: "New note",
+      action: () => GlobalOpenedState?.newNote(),
+    },
+    {
+      caption: "New folder",
+      action: () => GlobalOpenedState?.newFolder(),
+    },
+    SEP_ITEM,
+    {
+      caption: "Select all",
+      action: () => GlobalViewerState?.selection.set($read?.notes || []),
+    },
+    {
+      caption: "Import...",
+      action: () => GlobalViewerState?.importNotes(),
+    },
+    SEP_ITEM,
+    {
+      caption: "Rename selection",
+      action: () => GlobalViewerState?.renameSelection(),
+    },
+    {
+      caption: "Delete selection",
+      action: () => GlobalViewerState?.deleteSelection(),
+    },
+    {
+      caption: "Move selection",
+      action: () => GlobalViewerState?.moveSelection(),
+    },
+  ]}
+>
   <div class="listing">
     {#if $path && $path !== "/"}
       <button class="viewer-item parent" ondblclick={() => GlobalViewerState?.navigate(GetParentDirectory($path))}>
@@ -24,16 +60,6 @@
     {#each $read?.notes as note, i (note._id)}
       <NoteButton {note} {i} />
     {/each}
-  </div>
-  <div class="new-options">
-    <button class="viewer-item new-option" ondblclick={() => GlobalOpenedState?.newNote()}>
-      <span>New note</span>
-      <span class="lucide icon-plus"></span>
-    </button>
-    <button class="viewer-item new-option" ondblclick={() => GlobalOpenedState?.newFolder()}>
-      <span>New folder</span>
-      <span class="lucide icon-plus"></span>
-    </button>
   </div>
   {#if $loading}
     <CenterLoader />

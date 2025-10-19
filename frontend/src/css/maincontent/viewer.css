@@ -3,7 +3,6 @@ div.main-viewer {
   height: 100%;
   overflow-y: auto;
   padding-right: calc(15px + 270px + 15px); /* content padding + collapsed view + collapsed view padding */
-  padding-bottom: calc(10px + 30px + 10px); /* content padding + newoptions + newoptions offset */
 }
 
 div.main-viewer > div.listing {
@@ -38,20 +37,4 @@ div.main-viewer button.viewer-item span.lucide {
 div.main-viewer button.viewer-item:active,
 div.main-viewer button.viewer-item.selected {
   background-color: var(--button-hover);
-}
-
-div.main-viewer div.new-options {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: var(--background);
-  width: 100%;
-}
-
-div.main-viewer div.new-options button {
-  padding-left: 10px;
 }

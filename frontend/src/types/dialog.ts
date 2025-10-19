@@ -29,4 +29,8 @@ export class ModularityDialogInstance {
   close() {
     GlobalModularityState?.DisposeDialog(this.id);
   }
+
+  static Invoke(...args: any[]) {
+    GlobalModularityState?.ShowDialog(this, ...args);
+  }
 }

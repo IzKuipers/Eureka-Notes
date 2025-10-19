@@ -1,0 +1,31 @@
+div.context-menu {
+  position: fixed;
+  top: var(--y, -100px);
+  left: var(--x, -100px);
+  width: 170px;
+  height: fit-content;
+  display: none;
+  flex-direction: column;
+  box-shadow: var(--box-shadow);
+  border: var(--border-color) 1px solid;
+  text-align: left;
+  padding: 3px;
+  background-color: var(--background-secondary);
+}
+
+div.context-menu.show {
+  display: flex;
+}
+
+div.context-menu button {
+  text-align: left;
+  height: 20px;
+  padding: 0 5px;
+  line-height: 20px;
+}
+
+div.context-menu hr {
+  margin: 3px 0;
+  border: none;
+  border-top: var(--border-color) 1px solid;
+}

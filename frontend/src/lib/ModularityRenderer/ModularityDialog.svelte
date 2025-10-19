@@ -12,10 +12,12 @@
 <div class="modularity-dialog-wrapper flex-center fill-absolute">
   <div class="dialog modularity-dialog {dialog.className}">
     <Component {dialog} />
-    <div class="dialog-actions">
-      {#each dialog.buttons as button}
-        <DialogButton {button} {key} bind:loading />
-      {/each}
-    </div>
+    {#if dialog.buttons?.length}
+      <div class="dialog-actions">
+        {#each dialog.buttons as button}
+          <DialogButton {button} {key} bind:loading />
+        {/each}
+      </div>
+    {/if}
   </div>
 </div>

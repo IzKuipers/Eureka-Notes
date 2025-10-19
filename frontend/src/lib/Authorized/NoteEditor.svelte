@@ -1,21 +1,35 @@
 <script lang="ts">
   import { draggable } from "@neodrag/svelte";
+  import dayjs from "dayjs";
+  import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
   import type { EditorState } from "../../ts/state/editor";
-  import StatusBar from "../StatusBar.svelte";
-  import Segment from "../StatusBar/Segment.svelte";
   import { GlobalViewerState } from "../../ts/state/viewer";
   import CenterLoader from "../CenterLoader.svelte";
+  import StatusBar from "../StatusBar.svelte";
+  import Segment from "../StatusBar/Segment.svelte";
 
   const { state: State }: { state: EditorState } = $props();
   const { fullNote, writing, collapsed, modified, path, loading } = State;
   const { maxZIndex } = GlobalViewerState!;
+
   let zIndex = $state<number>($maxZIndex + 1);
   let editor = $state<HTMLDivElement>();
+  let timeout: number | undefined;
+
+  $Preferences.zoomLevel ??= 100;
 
   function updateZIndex() {
     zIndex = ++$maxZIndex;
     editor!.style.zIndex = zIndex.toString();
+  }
+
+  function oninput() {
+    if (timeout) clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      State.writeData();
+    }, 2000);
   }
 </script>
 
@@ -59,8 +73,15 @@
   </div>
   {#if !$collapsed}
     <div class="dialog-body">
-      <textarea name="" id="" bind:value={$fullNote.data}></textarea>
-      {#if $writing || $loading}
+      <textarea
+        name=""
+        id=""
+        bind:value={$fullNote.data}
+        style="--font-size: {(12 / 100) * ($Preferences.zoomLevel ?? 100)}px;"
+        {oninput}
+        disabled={$writing}
+      ></textarea>
+      {#if $loading}
         <CenterLoader />
       {/if}
     </div>
@@ -68,6 +89,16 @@
       <Segment unimportant>
         {formatBytes($fullNote.data.length)}
       </Segment>
+      {#snippet rightContent()}
+        <Segment className="zoom-level">
+          <!-- svelte-ignore a11y_consider_explicit_label -->
+          <button class="lucide icon-minus" onclick={() => ($Preferences.zoomLevel! -= 5)}></button>
+          <span class="level">{$Preferences.zoomLevel ?? 100}%</span>
+          <button class="lucide icon-plus" onclick={() => ($Preferences.zoomLevel! += 5)}></button>
+        </Segment>
+        <Segment unimportant>Last saved: {$writing ? "saving..." : dayjs($fullNote.updatedAt).format("DD/MM/YYYY HH:mm")}</Segment
+        >
+      {/snippet}
     </StatusBar>
   {/if}
 </div>

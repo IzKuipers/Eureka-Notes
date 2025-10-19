@@ -1,19 +1,22 @@
 import { DeleteNotesDialog } from "../../dialogs/DeleteNotes/DeleteNotes";
+import { ImportNotesDialog } from "../../dialogs/ImportNotes/ImportNotes";
+import { MoveFolderDialog } from "../../dialogs/MoveFolder/MoveFolder";
+import { MoveNotesDialog } from "../../dialogs/MoveNotes/MoveNotes";
+import { RenameFolderDialog } from "../../dialogs/RenameFolder/RenameFolder";
 import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
-import type { FolderRead } from "../../types/folder";
+import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
 import type { PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
-import { GlobalModularityState } from "./modular";
 
 export let GlobalViewerState: ViewerState | undefined;
 export const ViewerReady = Store<boolean>(false);
 
 export class ViewerState {
   private readonly START_PATH: string;
-  private readonly DEFAULT_STATUS = "Press TAB to create a note";
+  private readonly DEFAULT_STATUS = "Ready.";
   public path = Store<string>();
   public read = Store<FolderRead | undefined>();
   public loading = Store<boolean>(false);
@@ -48,7 +51,7 @@ export class ViewerState {
     if (this.path() === path && !force) return false;
 
     this.loading.set(true);
-    const newContent = await GlobalServerConnector?.readFolder(path);
+    const newContent = await GlobalServerConnector?.readFolderByPath(path);
 
     if (!newContent) {
       await this.FolderNotFound();
@@ -87,9 +90,7 @@ export class ViewerState {
     this.status.set(this.DEFAULT_STATUS);
   }
 
-  deleteSelection() {
-    const notes = this.selection();
-
+  deleteSelection(notes = this.selection()) {
     if (!notes.length) return;
 
     ShowDialog({
@@ -109,7 +110,7 @@ export class ViewerState {
               await GlobalServerConnector?.deleteNote(notes[0]._id);
               await this.refresh();
             } else {
-              GlobalModularityState?.ShowDialog(DeleteNotesDialog, ...notes);
+              DeleteNotesDialog.Invoke(...notes);
             }
           },
         },
@@ -118,10 +119,50 @@ export class ViewerState {
   }
 
   renameSelection() {
+    if (this.selection().length !== 1) return;
+
     const note = this.selection()[0];
 
     if (!note) return;
 
-    GlobalModularityState?.ShowDialog(RenameNoteDialog, note);
+    RenameNoteDialog.Invoke(note);
+  }
+
+  renameFolder(folder: ExistingEurekaFolder) {
+    RenameFolderDialog.Invoke(folder);
+  }
+
+  deleteFolder(folder: ExistingEurekaFolder) {
+    ShowDialog({
+      title: "Delete folder?",
+      message: "Are you sure you want to delete this folder? Anything inside of it will also be deleted.",
+      buttons: [
+        {
+          caption: "Cancel",
+        },
+        {
+          caption: "Delete",
+          className: "red",
+          action: async () => {
+            await GlobalServerConnector?.deleteFolder(folder._id);
+            await GlobalViewerState?.refresh();
+          },
+        },
+      ],
+    });
+  }
+
+  moveFolder(folder: ExistingEurekaFolder) {
+    MoveFolderDialog.Invoke(folder);
+  }
+
+  moveSelection() {
+    if (!this.selection().length) return;
+
+    MoveNotesDialog.Invoke(...this.selection());
+  }
+
+  importNotes() {
+    ImportNotesDialog.Invoke();
   }
 }

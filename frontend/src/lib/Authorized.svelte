@@ -5,6 +5,7 @@
   import OpenedRenderer from "./Authorized/OpenedRenderer.svelte";
   import UserBar from "./Authorized/UserBar.svelte";
   import CenterLoader from "./CenterLoader.svelte";
+  import ContextMenuRenderer from "./ContextMenuRenderer.svelte";
   import ModularityRenderer from "./ModularityRenderer.svelte";
 </script>
 
@@ -20,4 +21,5 @@
     <CenterLoader />
   {/if}
   <ModularityRenderer />
+  <ContextMenuRenderer />
 </main>

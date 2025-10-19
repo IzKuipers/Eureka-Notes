@@ -68,4 +68,27 @@ div.opened-editors > div.note-editor textarea {
   border: none;
   padding: 10px;
   resize: none;
+  font-size: var(--font-size);
+}
+
+div.opened-editors > div.note-editor div.zoom-level {
+  padding: 0;
+  border-left: var(--border-color) 1px solid;
+}
+
+div.opened-editors > div.note-editor div.zoom-level span {
+  display: flex;
+  align-items: center;
+}
+
+div.opened-editors > div.note-editor div.zoom-level button {
+  width: 25px;
+  height: 24px;
+}
+
+div.opened-editors > div.note-editor div.zoom-level span.level {
+  padding: 0 10px;
+  border-left: var(--border-color) 1px solid;
+  border-right: var(--border-color) 1px solid;
+  line-height: 24px;
 }
