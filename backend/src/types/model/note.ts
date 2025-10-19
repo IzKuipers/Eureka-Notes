@@ -13,7 +13,7 @@ export interface ExistingEurekaNote extends EurekaNote {
   createdAt: string;
 }
 
-export type PartialEurekaNote = Omit<Omit<Omit<ExistingEurekaNote, "data">, "folderId">, "userId">;
+export type PartialEurekaNote = Omit<Omit<ExistingEurekaNote, "data">, "userId">;
 
 export type PartialEurekaNoteWithData = PartialEurekaNote & { data: string; folderId?: string };
 

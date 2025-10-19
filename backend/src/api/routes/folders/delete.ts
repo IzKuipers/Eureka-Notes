@@ -5,9 +5,9 @@ import { RequireDefinedParam } from "../../params";
 
 const FoldersDeleteRoute = (async (req, _, stop) => {
   const user = await AssumeAuthorization(req);
-  const [path] = RequireDefinedParam<[string]>(req, "path");
+  const [id] = RequireDefinedParam<[string]>(req, "id");
 
-  await DeleteFolder(user._id, path);
+  await DeleteFolder(user._id, id);
 
   stop(200);
 }) satisfies RouteCallback;

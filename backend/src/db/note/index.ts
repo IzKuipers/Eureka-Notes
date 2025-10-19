@@ -6,11 +6,12 @@ import { GetFolderFromPath } from "../folder";
 export async function GetAllNotesOfUser(userId: string, folderId?: string): Promise<PartialEurekaNote[]> {
   Logger.verbose(`GetAllNotesOfUser: ${userId}, ${folderId}`);
 
-  return await Notes.find<PartialEurekaNote>(folderId ? { userId, folderId } : { userId }, {
-    data: false,
-    userId: false,
-    folderId: false,
-  });
+  return (
+    await Notes.find<PartialEurekaNote>(folderId ? { userId, folderId } : { userId }, {
+      data: false,
+      userId: false,
+    })
+  ).filter((n) => (folderId ? true : !n.folderId));
 }
 
 export async function GetAllNotesOfUserWithData(userId: string, folderId?: string): Promise<PartialEurekaNoteWithData[]> {
@@ -64,4 +65,15 @@ export async function GetNoteByName(userId: string, name: string, folderId?: str
   Logger.verbose(`GetNoteByName: ${userId}, ${name}`);
 
   return await Notes.findOne({ userId, name, folderId });
+}
+
+export async function GetPartialNote(userId: string, noteId: string) {
+  return await Notes.findOne<PartialEurekaNote>(
+    { userId, _id: noteId },
+    {
+      data: false,
+      userId: false,
+      folderId: false,
+    }
+  );
 }

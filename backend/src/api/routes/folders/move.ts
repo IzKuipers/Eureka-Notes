@@ -1,16 +1,16 @@
-import { ReadFolder } from "../../../db/folder";
-import { Notes } from "../../../types/model/note";
+import { ReadFolderById } from "../../../db/folder";
+import { Folders } from "../../../types/model/folder";
 import { RouteCallback } from "../../../types/routes";
 import { AssumeAuthorization } from "../../auth";
 import { ConflictError, NotFoundError } from "../../error/classes";
-import { MaybeDefined, RequireDefinedParam } from "../../params";
+import { MaybeDefined, RequireDefined } from "../../params";
 
 const FoldersMoveRoute = (async (req, _, stop) => {
   const user = await AssumeAuthorization(req);
-  const [path] = RequireDefinedParam<[string]>(req, "id");
-  const [destination] = MaybeDefined<[string?]>(req, "path");
-  const sourceFolder = await ReadFolder(user._id, path);
-  const destinationFolder = await ReadFolder(user._id, destination);
+  const [sourceId] = RequireDefined<[string]>(req, "id");
+  const [destinationId] = MaybeDefined<[string?]>(req, "destinationId");
+  const sourceFolder = await ReadFolderById(user._id, sourceId);
+  const destinationFolder = await ReadFolderById(user._id, destinationId);
 
   if (!sourceFolder) throw new NotFoundError("Note not found");
   if (!destinationFolder) throw new NotFoundError("Destination not found");
@@ -18,11 +18,13 @@ const FoldersMoveRoute = (async (req, _, stop) => {
   if (destinationFolder.folders.filter((f) => f.name === sourceFolder.folderName).length)
     throw new ConflictError("A folder with that name exists in the destination folder.");
 
-  await Notes.findByIdAndUpdate(sourceFolder.folderId, {
-    folderId: destinationFolder.folderId,
+  const result = await Folders.findByIdAndUpdate(sourceId, {
+    parentId: destinationId,
   });
 
-  stop(200);
+  if (!result) return stop(404);
+
+  return stop(200);
 }) satisfies RouteCallback;
 
 export default FoldersMoveRoute;
