@@ -1,0 +1,15 @@
+.dialog.move-notes {
+  --width: 330px;
+  --height: 430px;
+}
+
+.dialog.move-notes div.folder-selector {
+  margin: 10px 0;
+}
+
+.dialog.move-notes p.status {
+  margin-bottom: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

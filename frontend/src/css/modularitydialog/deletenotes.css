@@ -1,3 +1,6 @@
 .dialog.delete-notes p {
   margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

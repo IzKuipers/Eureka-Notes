@@ -4,7 +4,7 @@ import { BlockingOkay } from "../../ts/dialog";
 import { GlobalViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
-import type { PartialEurekaNote } from "../../types/note";
+import type { EurekaNote, PartialEurekaNote } from "../../types/note";
 import NewNote from "./RenameNote.svelte";
 import { GlobalOpenedState } from "../../ts/state/opened";
 
@@ -22,6 +22,12 @@ export class RenameNoteDialog extends ModularityDialogInstance {
   ];
   override className = "rename-note";
   newName = Store<string>();
+  oldName: string;
+
+  constructor(id: string, ...props: any[]) {
+    super(id, ...props);
+    this.oldName = (props[0] as EurekaNote)?.name;
+  }
 
   async rename() {
     const note = this.props[0] as PartialEurekaNote;

@@ -1,0 +1,15 @@
+.dialog.import-notes {
+  --width: 400px;
+  --height: 200px;
+}
+
+.dialog.import-notes p.info {
+  margin-bottom: 15px;
+}
+
+.dialog.import-notes p.status {
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

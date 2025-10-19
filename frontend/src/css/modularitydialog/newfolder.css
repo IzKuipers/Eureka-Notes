@@ -1,0 +1,12 @@
+.dialog.new-folder {
+  --width: 330px;
+  --height: 150px;
+}
+
+.dialog.new-folder p {
+  margin-bottom: 15px;
+}
+
+.dialog.new-folder input {
+  width: 100%;
+}

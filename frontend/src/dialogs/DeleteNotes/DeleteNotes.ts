@@ -25,6 +25,8 @@ export class DeleteNotesDialog extends ModularityDialogInstance {
       this.done.set(this.done() + 1);
     }
 
+    this.status.set("Finishing up...");
+
     this.close();
     GlobalViewerState?.refresh();
   }
