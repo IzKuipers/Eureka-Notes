@@ -7,7 +7,7 @@ import type { UserPreferences } from "../../types/preferences";
 import type { ExistingEurekaUser } from "../../types/user";
 import { globalErrorHandler } from "../error";
 import { type Unsubscriber } from "../writable";
-import { Connected, Connecting, LoggedIn, Preferences, UserInfo } from "./stores";
+import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
 import { ShowDialog } from "../dialog";
 import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
@@ -41,6 +41,9 @@ export class ServerConnector {
       const response = await this.axios.get("/ping");
 
       if (response.data?.ping !== "Pong!") throw "";
+
+      BuildHash.set(response.data.build)
+      EurekaVersion.set(response.data.version)
     } catch (e) {
       Connected.set(false);
       globalErrorHandler(e);

@@ -62,7 +62,7 @@
         ></button>
       {/if}
       <button
-        class="collapser lucide"
+        class="collapser lucide no-mobile"
         class:icon-minimize-2={!$collapsed}
         class:icon-maximize-2={$collapsed}
         aria-label="Collapse"
@@ -90,7 +90,7 @@
         {formatBytes($fullNote.data.length)}
       </Segment>
       {#snippet rightContent()}
-        <Segment className="zoom-level">
+        <Segment className="zoom-level no-mobile">
           <!-- svelte-ignore a11y_consider_explicit_label -->
           <button class="lucide icon-minus" onclick={() => ($Preferences.zoomLevel! -= 5)}></button>
           <span class="level">{$Preferences.zoomLevel ?? 100}%</span>

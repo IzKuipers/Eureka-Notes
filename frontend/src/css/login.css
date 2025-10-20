@@ -1,3 +1,12 @@
+div.login-screen {
+  display:flex;
+  flex-direction: column;
+}
+
+div.login-screen div.login-wrapper {
+  flex-grow: 1;
+}
+
 div.login-screen div.dialog {
   width: 290px;
   height: fit-content;

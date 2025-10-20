@@ -1,6 +1,9 @@
 <script lang="ts">
   import { GlobalServerConnector } from "../../ts/api";
+    import { BuildHash, EurekaVersion } from "../../ts/api/stores";
   import { BlockingOkay, Confirmation } from "../../ts/dialog";
+    import StatusBar from "../StatusBar.svelte";
+    import Segment from "../StatusBar/Segment.svelte";
 
   let { registering = $bindable() }: { registering: boolean } = $props();
 
@@ -34,32 +37,39 @@
   }
 </script>
 
-<div class="fill-absolute flex-center login-screen">
-  <div class="dialog">
-    <div class="dialog-body">
-      <div class="header">
-        <h1>Register</h1>
-        <p>To store your notes here</p>
-      </div>
+<div class="fill-absolute login-screen">
+  <div class="login-wrapper flex-center">
+    <div class="dialog">
+      <div class="dialog-body">
+        <div class="header">
+          <h1>Register</h1>
+          <p>To store your notes here</p>
+        </div>
 
-      <div class="field username">
-        <label for="registerUsernameField">Username</label>
-        <input type="text" id="registerUsernameField" bind:value={username} />
-      </div>
+        <div class="field username">
+          <label for="registerUsernameField">Username</label>
+          <input type="text" id="registerUsernameField" bind:value={username} />
+        </div>
 
-      <div class="field password">
-        <label for="registerPasswordField">Password</label>
-        <input type="password" id="registerPasswordField" bind:value={password} />
-      </div>
+        <div class="field password">
+          <label for="registerPasswordField">Password</label>
+          <input type="password" id="registerPasswordField" bind:value={password} />
+        </div>
 
-      <div class="field password">
-        <label for="registerPasswordConfirmField">Confirm password</label>
-        <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} />
+        <div class="field password">
+          <label for="registerPasswordConfirmField">Confirm password</label>
+          <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} />
+        </div>
       </div>
-    </div>
-    <div class="dialog-actions">
-      <button onclick={() => (registering = false)}>Log in...</button>
-      <button onclick={Register} disabled={!username || !password || !confirmPassword}>Register</button>
+      <div class="dialog-actions">
+        <button onclick={() => (registering = false)}>Log in...</button>
+        <button onclick={Register} disabled={!username || !password || !confirmPassword}>Register</button>
+      </div>
     </div>
   </div>
+  <StatusBar>
+    <Segment unimportant>Version {$EurekaVersion}</Segment>
+    <Segment unimportant>{$BuildHash}</Segment>
+    <Segment className="status no-mobile">Registering for Eureka</Segment>
+  </StatusBar>
 </div>

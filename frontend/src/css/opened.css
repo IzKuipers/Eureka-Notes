@@ -92,3 +92,27 @@ div.opened-editors > div.note-editor div.zoom-level span.level {
   border-right: var(--border-color) 1px solid;
   line-height: 24px;
 }
+
+@media screen and (max-width: 700px) {
+  div.opened-editors > div.note-editor.collapsed {
+    display: none !important;
+  }
+
+  div.opened-editors > div.note-editor {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    top: 0 !important;
+    left: 0 !important;
+    border:none !important;
+    translate: none !important;
+    transform: none !important;
+    min-width: unset !important;
+    resize: none !important;
+    box-shadow: none;
+    z-index: 10000;
+  }
+}

@@ -26,10 +26,10 @@
   <Segment unimportant>{$read?.folders.length ?? 0} folders</Segment>
   <Segment unimportant>{$read?.notes.length ?? 0} notes</Segment>
   <Segment unimportant>{formatBytes($read?.totalSize ?? 0)}</Segment>
-  <Segment className="status">{$status}</Segment>
+  <Segment className="status no-mobile">{$status}</Segment>
   {#snippet rightContent()}
-    <Segment unimportant>{currentTime}</Segment>
-    <Segment unimportant>
+    <Segment unimportant className="no-mobile">{currentTime}</Segment>
+    <Segment unimportant className="no-mobile">
       {#if !$selection?.length}
         No selection
       {:else if $selection.length === 1}
@@ -37,6 +37,9 @@
       {:else}
         Selecting {$selection.length} notes
       {/if}
+    </Segment>
+    <Segment className="mobile-only">
+      Read-only
     </Segment>
   {/snippet}
 </StatusBar>

@@ -7,3 +7,5 @@ export const Connecting = Store<boolean>(true);
 export const LoggedIn = Store<boolean>(false);
 export const Preferences = Store<UserPreferences>();
 export const UserInfo = Store<ExistingEurekaUser | undefined>();
+export const BuildHash = Store<string>();
+export const EurekaVersion = Store<string>();
