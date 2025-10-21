@@ -12,10 +12,15 @@
   const { selection, read } = GlobalViewerState!;
 
   function onclick(e: MouseEvent) {
-    if (!e.shiftKey) {
-      $selection = [note];
-    } else if ($selection.length) {
-      console.log($selection);
+    if (e.ctrlKey) {
+      const existingIndex = $selection.findIndex((n) => n._id === note._id);
+
+      if (existingIndex > -1) {
+        $selection.splice(existingIndex, 1);
+      } else {
+        $selection.push(note);
+      }
+    } else if (e.shiftKey) {
       const lastSelection = $selection[$selection.length - 1];
       const lastIndex = $read?.notes.findIndex((n) => n._id === lastSelection._id);
 
@@ -24,7 +29,7 @@
       if (lastIndex < i) {
         for (let j = lastIndex; j <= i; j++) {
           const item = $read?.notes[j];
-          console.log(item);
+
           if (item && !$selection.find((n) => item._id === n._id)) {
             $selection.push(item);
           }
@@ -32,12 +37,14 @@
       } else if (lastIndex > i) {
         for (let j = i; j <= lastIndex; j++) {
           const item = $read?.notes[j];
-          console.log(item);
+
           if (item && !$selection.find((n) => item._id === n._id)) {
             $selection.push(item);
           }
         }
       }
+    } else {
+      $selection = [note];
     }
 
     $selection = $selection;
@@ -57,28 +64,28 @@
     },
     SEP_ITEM,
     {
-      caption: "Rename...",
+      caption: "Rename this note",
       action: () => RenameNoteDialog.Invoke(note),
     },
     {
-      caption: "Delete this note",
-      action: () => GlobalViewerState?.deleteSelection([note]),
+      caption: "Delete...",
+      action: () => GlobalViewerState?.deleteSelection(),
     },
     {
-      caption: "Move this note...",
+      caption: "Move...",
       action: () => {
-        MoveNotesDialog.Invoke(note);
+        MoveNotesDialog.Invoke(...$selection);
       },
     },
     SEP_ITEM,
     {
-      caption: "Delete selection",
-      action: () => GlobalViewerState?.deleteSelection(),
+      caption: "Delete just this note",
+      action: () => GlobalViewerState?.deleteSelection([note]),
     },
     {
-      caption: "Move selection...",
+      caption: "Move just this note",
       action: () => {
-        MoveNotesDialog.Invoke(...$selection);
+        MoveNotesDialog.Invoke(note);
       },
     },
   ]}

@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { DialogButton } from "../../../types/dialog";
+  import type { DialogButton, ModularityDialogInstance } from "../../../types/dialog";
 
-  let { button, key, loading = $bindable() }: { button: DialogButton; key: string; loading: boolean } = $props();
-
+  let { button, key, dialog }: { button: DialogButton; key: string; dialog: ModularityDialogInstance } = $props();
+  
+  const { loading } = dialog;
   async function execute() {
-    loading = true;
+    $loading = true;
     await button.action?.();
-    loading = false;
+    $loading = false;
   }
 </script>
 
-<button class={button.className} disabled={loading} onclick={execute}>{button.caption}</button>
+<button class={button.className} disabled={$loading} onclick={execute}>{button.caption}</button>

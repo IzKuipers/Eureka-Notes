@@ -24,7 +24,8 @@
   </div>
 </div>
 <div class="dialog-body">
-  <textarea name="" id="" bind:value={$saveContent}></textarea>
+  <!-- svelte-ignore a11y_autofocus -->
+  <textarea name="" id="" bind:value={$saveContent} autofocus></textarea>
 </div>
 <StatusBar>
   <Segment unimportant>

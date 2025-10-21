@@ -1,5 +1,6 @@
 import type { Component } from "svelte";
 import { GlobalModularityState } from "../ts/state/modular";
+import { Store } from "../ts/writable";
 
 export interface DialogOptions {
   title: string;
@@ -19,6 +20,7 @@ export class ModularityDialogInstance {
   public component?: Component<{ dialog: ModularityDialogInstance }>;
   public className?: string;
   public buttons: DialogButton[] = [];
+  public loading = Store<boolean>(false);
   protected props;
 
   constructor(id: string, ...props: any[]) {
