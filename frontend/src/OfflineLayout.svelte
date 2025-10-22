@@ -6,7 +6,7 @@
     ShowDialog({
       title: "Eureka offline",
       message: "The server could not be reached",
-      buttons: [{ caption: "Retry", action: () => location.reload() }],
+      buttons: [{ caption: "Retry", action: () => location.reload(), autofocus: true }],
     });
   });
 </script>

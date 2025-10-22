@@ -1,10 +1,10 @@
 import type { Component } from "svelte";
+import { GlobalServerConnector } from "../../ts/api";
+import { BlockingOkay } from "../../ts/dialog";
+import { GlobalViewerState } from "../../ts/state/viewer";
+import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import ImportNotes from "./ImportNotes.svelte";
-import { GlobalViewerState } from "../../ts/state/viewer";
-import { GlobalServerConnector } from "../../ts/api";
-import { Store } from "../../ts/writable";
-import { BlockingOkay, ShowDialog } from "../../ts/dialog";
 
 export class ImportNotesDialog extends ModularityDialogInstance {
   public Done = Store<number>(0);
@@ -21,6 +21,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
     {
       caption: "Begin import",
       action: () => this.begin(),
+      autofocus: true,
     },
   ];
   override className = "import-notes";

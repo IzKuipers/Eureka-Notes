@@ -2,6 +2,8 @@ import { DeleteNotesDialog } from "../../dialogs/DeleteNotes/DeleteNotes";
 import { ImportNotesDialog } from "../../dialogs/ImportNotes/ImportNotes";
 import { MoveFolderDialog } from "../../dialogs/MoveFolder/MoveFolder";
 import { MoveNotesDialog } from "../../dialogs/MoveNotes/MoveNotes";
+import { NewFolderDialog } from "../../dialogs/NewFolder/NewFolder";
+import { NewNoteDialog } from "../../dialogs/NewNote/NewNote";
 import { RenameFolderDialog } from "../../dialogs/RenameFolder/RenameFolder";
 import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
 import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
@@ -10,6 +12,7 @@ import { GlobalServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
+import { GlobalModularityState } from "./modular";
 
 export let GlobalViewerState: ViewerState | undefined;
 export const ViewerReady = Store<boolean>(false);
@@ -22,7 +25,7 @@ export class ViewerState {
   public loading = Store<boolean>(false);
   public status = Store<string>();
   public selection = Store<PartialEurekaNote[]>([]);
-  public maxZIndex = Store<number>(1);
+  public maxZIndex = Store<number>(100000000);
 
   constructor(startPath = "") {
     this.path.set(startPath);
@@ -39,6 +42,17 @@ export class ViewerState {
         console.log("TAB KEY!");
         e.preventDefault();
         return false;
+      } else if (e.altKey || e.shiftKey) {
+        switch (`${e.altKey}-${e.shiftKey}-${e.key.toLowerCase()}`) {
+          case `true-false-n`:
+            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof NewNoteDialog)) break;
+            NewNoteDialog.Invoke();
+            break;
+          case `true-true-n`:
+            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof NewFolderDialog)) break;
+            NewFolderDialog.Invoke();
+            break;
+        }
       }
     });
 
@@ -113,6 +127,7 @@ export class ViewerState {
               DeleteNotesDialog.Invoke(...notes);
             }
           },
+          autofocus: true,
         },
       ],
     });
@@ -147,6 +162,7 @@ export class ViewerState {
             await GlobalServerConnector?.deleteFolder(folder._id);
             await GlobalViewerState?.refresh();
           },
+          autofocus: true,
         },
       ],
     });

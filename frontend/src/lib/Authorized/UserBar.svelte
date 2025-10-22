@@ -18,6 +18,7 @@
           action: async () => {
             await GlobalServerConnector?.logout(); // await this to hide the dialog at the right moment
           },
+          autofocus: true,
         },
       ],
     });

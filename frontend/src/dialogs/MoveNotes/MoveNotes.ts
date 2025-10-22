@@ -1,12 +1,12 @@
 import type { Component } from "svelte";
 import { GlobalServerConnector } from "../../ts/api";
+import { BlockingOkay } from "../../ts/dialog";
 import { GlobalViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import type { FolderRead } from "../../types/folder";
 import type { PartialEurekaNote } from "../../types/note";
 import MoveNotes from "./MoveNotes.svelte";
-import type { FolderRead } from "../../types/folder";
-import { BlockingOkay } from "../../ts/dialog";
 
 export class MoveNotesDialog extends ModularityDialogInstance {
   override component = MoveNotes as Component;

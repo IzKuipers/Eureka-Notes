@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { ShowDialog } from "./dialog";
 
 export function globalErrorHandler(e: any) {
@@ -20,7 +20,7 @@ export function globalErrorHandler(e: any) {
           ShowDialog({
             title: "Eureka Error",
             message: `The server encountered an error: ${axiosError.code} ${e}`,
-            buttons: [{ caption: "Okay" }],
+            buttons: [{ caption: "Okay", autofocus: true }],
           });
         break;
     }

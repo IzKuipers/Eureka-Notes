@@ -28,7 +28,7 @@ export async function Confirmation(title: string, message: string, icon = "octag
       icon,
       buttons: [
         { caption: "No", action: () => r(false) },
-        { caption: "Yes", action: () => r(true), className: "red" },
+        { caption: "Yes", action: () => r(true), className: "red", autofocus: true },
       ],
     });
   });
@@ -40,7 +40,7 @@ export async function BlockingOkay(title: string, message: string, icon = "octag
       title,
       message,
       icon,
-      buttons: [{ caption: "Okay", action: () => r() }],
+      buttons: [{ caption: "Okay", action: () => r(), autofocus: true }],
     });
   });
 }

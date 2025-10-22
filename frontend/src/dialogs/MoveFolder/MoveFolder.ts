@@ -1,10 +1,10 @@
 import type { Component } from "svelte";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
-import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
-import MoveFolder from "./MoveFolder.svelte";
-import { Store } from "../../ts/writable";
 import { GlobalServerConnector } from "../../ts/api";
 import { GlobalViewerState } from "../../ts/state/viewer";
+import { Store } from "../../ts/writable";
+import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import type { ExistingEurekaFolder } from "../../types/folder";
+import MoveFolder from "./MoveFolder.svelte";
 
 export class MoveFolderDialog extends ModularityDialogInstance {
   override component = MoveFolder as Component;

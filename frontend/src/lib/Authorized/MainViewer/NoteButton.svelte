@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { NoteIcon } from "../../../ts/images";
-  import { GlobalViewerState } from "../../../ts/state/viewer";
-  import { GlobalOpenedState } from "../../../ts/state/opened";
-  import type { PartialEurekaNote } from "../../../types/note";
-  import { contextMenu } from "../../../ts/state/context";
-  import { SEP_ITEM } from "../../../types/context";
-  import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
   import { MoveNotesDialog } from "../../../dialogs/MoveNotes/MoveNotes";
+  import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
+  import { NoteIcon } from "../../../ts/images";
+  import { contextMenu } from "../../../ts/state/context";
+  import { GlobalOpenedState } from "../../../ts/state/opened";
+  import { GlobalViewerState } from "../../../ts/state/viewer";
+  import { SEP_ITEM } from "../../../types/context";
+  import type { PartialEurekaNote } from "../../../types/note";
 
   const { note, i }: { note: PartialEurekaNote; i: number } = $props();
   const { selection, read } = GlobalViewerState!;

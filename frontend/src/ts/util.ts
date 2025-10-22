@@ -23,3 +23,11 @@ export function GetFolderName(path: string) {
 
   return pathParts[pathParts.length - 1];
 }
+
+export function OnEnterJumpTo(selector: string): (e: KeyboardEvent) => void {
+  return (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      document.querySelector<HTMLInputElement>(selector)?.focus();
+    }
+  };
+}

@@ -1,9 +1,10 @@
 <script lang="ts">
   import { GlobalServerConnector } from "../../ts/api";
-    import { BuildHash, EurekaVersion } from "../../ts/api/stores";
-  import { BlockingOkay, Confirmation } from "../../ts/dialog";
-    import StatusBar from "../StatusBar.svelte";
-    import Segment from "../StatusBar/Segment.svelte";
+  import { BuildHash, EurekaVersion } from "../../ts/api/stores";
+  import { BlockingOkay } from "../../ts/dialog";
+  import { OnEnterJumpTo } from "../../ts/util";
+  import StatusBar from "../StatusBar.svelte";
+  import Segment from "../StatusBar/Segment.svelte";
 
   let { registering = $bindable() }: { registering: boolean } = $props();
 
@@ -35,6 +36,10 @@
 
     registering = false;
   }
+
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === "Enter") Register();
+  }
 </script>
 
 <div class="fill-absolute login-screen">
@@ -48,17 +53,18 @@
 
         <div class="field username">
           <label for="registerUsernameField">Username</label>
-          <input type="text" id="registerUsernameField" bind:value={username} />
+          <!-- svelte-ignore a11y_autofocus -->
+          <input type="text" id="registerUsernameField" bind:value={username} onkeydown={OnEnterJumpTo("#registerPasswordField")} autofocus />
         </div>
 
         <div class="field password">
           <label for="registerPasswordField">Password</label>
-          <input type="password" id="registerPasswordField" bind:value={password} />
+          <input type="password" id="registerPasswordField" bind:value={password} onkeydown={OnEnterJumpTo("#registerPasswordConfirmField")} />
         </div>
 
         <div class="field password">
           <label for="registerPasswordConfirmField">Confirm password</label>
-          <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} />
+          <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} {onkeydown}/>
         </div>
       </div>
       <div class="dialog-actions">

@@ -5,13 +5,13 @@ import type { FolderRead } from "../../types/folder";
 import type { ExistingEurekaNote } from "../../types/note";
 import type { UserPreferences } from "../../types/preferences";
 import type { ExistingEurekaUser } from "../../types/user";
-import { globalErrorHandler } from "../error";
-import { type Unsubscriber } from "../writable";
-import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
 import { ShowDialog } from "../dialog";
+import { globalErrorHandler } from "../error";
+import { GlobalOpenedState } from "../state/opened";
 import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
-import { GlobalOpenedState } from "../state/opened";
+import { type Unsubscriber } from "../writable";
+import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
 
 export let GlobalServerConnector: ServerConnector | undefined;
 
@@ -147,7 +147,7 @@ export class ServerConnector {
       ShowDialog({
         title: "Server error",
         message: "Failed to save your preferences to the server. Please refresh the page to try again.",
-        buttons: [{ caption: "Refresh", action: () => location.reload() }, { caption: "Okay" }],
+        buttons: [{ caption: "Refresh", action: () => location.reload() }, { caption: "Okay", autofocus: true }],
       });
       // todo: error handling
     }

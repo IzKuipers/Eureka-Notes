@@ -1,10 +1,10 @@
 import type { Component } from "svelte";
+import { GlobalServerConnector } from "../../ts/api";
+import { GlobalViewerState } from "../../ts/state/viewer";
+import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { ExistingEurekaNote } from "../../types/note";
 import DeleteNotes from "./DeleteNotes.svelte";
-import { Store } from "../../ts/writable";
-import { GlobalServerConnector } from "../../ts/api";
-import { GlobalViewerState } from "../../ts/state/viewer";
 
 export class DeleteNotesDialog extends ModularityDialogInstance {
   override component = DeleteNotes as Component;

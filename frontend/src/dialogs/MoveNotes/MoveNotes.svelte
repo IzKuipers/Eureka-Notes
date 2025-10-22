@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import FolderSelector from "../../lib/FolderSelector.svelte";
-  import { MoveNotesDialog } from "./MoveNotes";
   import ProgressBar from "../../lib/ProgressBar.svelte";
+  import { MoveNotesDialog } from "./MoveNotes";
 
   const { dialog }: { dialog: MoveNotesDialog } = $props();
   const { destinationFolder, status, done, folder } = dialog;

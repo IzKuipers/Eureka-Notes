@@ -13,6 +13,7 @@ export interface DialogButton {
   caption: string;
   action?: () => Promise<void> | void;
   className?: string;
+  autofocus?: boolean;
 }
 
 export class ModularityDialogInstance {

@@ -1,10 +1,10 @@
-import { GlobalViewerState } from "./viewer";
 import type { ExistingEurekaNote, PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
 import { ShowDialog } from "../dialog";
+import { Sleep } from "../sleep";
 import { Store } from "../writable";
 import { GlobalOpenedState } from "./opened";
-import { Sleep } from "../sleep";
+import { GlobalViewerState } from "./viewer";
 
 export class EditorState {
   partialNote: PartialEurekaNote;
@@ -87,6 +87,7 @@ export class EditorState {
             await this.writeData();
             GlobalOpenedState?.closeEditor(this);
           },
+          autofocus: true
         },
       ],
     });

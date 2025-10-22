@@ -1,6 +1,7 @@
 <script lang="ts">
   import { draggable } from "@neodrag/svelte";
   import dayjs from "dayjs";
+  import { onMount } from "svelte";
   import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
   import type { EditorState } from "../../ts/state/editor";
@@ -15,6 +16,7 @@
 
   let zIndex = $state<number>($maxZIndex + 1);
   let editor = $state<HTMLDivElement>();
+  let textarea = $state<HTMLTextAreaElement>();
   let timeout: number | undefined;
 
   $Preferences.zoomLevel ??= 100;
@@ -23,6 +25,19 @@
     zIndex = ++$maxZIndex;
     editor!.style.zIndex = zIndex.toString();
   }
+
+  onMount(() => {
+    updateZIndex();
+    editor?.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+
+      const start = textarea!.selectionStart;
+      const end = textarea!.selectionEnd;
+
+      textarea!.value = textarea!.value.substring(0, start) + "\t" + textarea!.value.substring(end);
+      textarea!.selectionStart = textarea!.selectionEnd = start + 1;
+    });
+  });
 
   function oninput() {
     if (timeout) clearTimeout(timeout);
@@ -44,6 +59,7 @@
     disabled: $collapsed,
     handle: ".dialog-title",
     defaultPosition: { x: 0, y: 0 },
+    bounds: { top: 0, left: -430, right: -430, bottom: -380 },
     cancel: ".title-actions",
   }}
   onmousedown={updateZIndex}
@@ -79,7 +95,9 @@
         bind:value={$fullNote.data}
         style="--font-size: {(12 / 100) * ($Preferences.zoomLevel ?? 100)}px;"
         {oninput}
-        disabled={$writing}
+        readonly={$writing}
+        spellcheck={false}
+        bind:this={textarea}
       ></textarea>
       {#if $loading}
         <CenterLoader />

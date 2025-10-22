@@ -1,10 +1,10 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onDestroy, onMount } from "svelte";
-  import { GlobalViewerState } from "../../ts/state/viewer";
-  import Segment from "../StatusBar/Segment.svelte";
-  import StatusBar from "../StatusBar.svelte";
   import { formatBytes } from "../../ts/bytes";
+  import { GlobalViewerState } from "../../ts/state/viewer";
+  import StatusBar from "../StatusBar.svelte";
+  import Segment from "../StatusBar/Segment.svelte";
 
   const { read, status, selection } = GlobalViewerState!;
 
@@ -38,7 +38,7 @@
         Selecting {$selection.length} notes
       {/if}
     </Segment>
-    <Segment className="mobile-only">
+    <Segment className="only-mobile">
       Read-only
     </Segment>
   {/snippet}

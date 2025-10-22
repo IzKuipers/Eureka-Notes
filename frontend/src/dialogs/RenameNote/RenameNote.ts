@@ -1,12 +1,12 @@
 import type { Component } from "svelte";
 import { GlobalServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
+import { GlobalOpenedState } from "../../ts/state/opened";
 import { GlobalViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { EurekaNote, PartialEurekaNote } from "../../types/note";
 import NewNote from "./RenameNote.svelte";
-import { GlobalOpenedState } from "../../ts/state/opened";
 
 export class RenameNoteDialog extends ModularityDialogInstance {
   override component = NewNote as Component;

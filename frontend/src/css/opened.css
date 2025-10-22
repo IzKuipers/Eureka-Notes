@@ -107,7 +107,7 @@ div.opened-editors > div.note-editor div.zoom-level span.level {
     min-height: 100%;
     top: 0 !important;
     left: 0 !important;
-    border:none !important;
+    border: none !important;
     translate: none !important;
     transform: none !important;
     min-width: unset !important;

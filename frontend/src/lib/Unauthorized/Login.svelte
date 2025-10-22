@@ -1,11 +1,11 @@
 <script lang="ts">
+  import Cookies from "js-cookie";
   import { onMount } from "svelte";
   import { GlobalServerConnector } from "../../ts/api";
+  import { BuildHash, EurekaVersion } from "../../ts/api/stores";
   import { BlockingOkay } from "../../ts/dialog";
-  import Cookies from "js-cookie";
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
-  import { BuildHash, EurekaVersion } from "../../ts/api/stores";
 
   let { registering = $bindable() }: { registering: boolean } = $props();
 
@@ -51,7 +51,8 @@
 
         <div class="field username">
           <label for="usernameField">Username</label>
-          <input type="text" id="usernameField" bind:value={username} disabled={loading} />
+          <!-- svelte-ignore a11y_autofocus -->
+          <input type="text" id="usernameField" bind:value={username} disabled={loading} onkeydown={onUsernameKeydown} autofocus />
         </div>
 
         <div class="field password">

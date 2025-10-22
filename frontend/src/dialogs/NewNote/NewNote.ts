@@ -1,11 +1,11 @@
 import type { Component } from "svelte";
 import { GlobalServerConnector } from "../../ts/api";
+import { BlockingOkay, ShowDialog } from "../../ts/dialog";
+import { GlobalOpenedState } from "../../ts/state/opened";
 import { GlobalViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import NewNote from "./NewNote.svelte";
-import { BlockingOkay, ShowDialog } from "../../ts/dialog";
-import { GlobalOpenedState } from "../../ts/state/opened";
 
 export class NewNoteDialog extends ModularityDialogInstance {
   override component = NewNote as Component;
@@ -45,6 +45,7 @@ export class NewNoteDialog extends ModularityDialogInstance {
           {
             caption: "Discard",
             action: () => this.close(),
+            autofocus: true
           },
         ],
       });

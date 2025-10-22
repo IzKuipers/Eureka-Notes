@@ -2,10 +2,10 @@ import { mount } from "svelte";
 import App from "./App.svelte";
 import "./css/main.css";
 import { ServerConnector } from "./ts/api";
-import { ViewerState } from "./ts/state/viewer";
-import { OpenedState } from "./ts/state/opened";
-import { ModularityState } from "./ts/state/modular";
 import { ContextMenuState } from "./ts/state/context";
+import { ModularityState } from "./ts/state/modular";
+import { OpenedState } from "./ts/state/opened";
+import { ViewerState } from "./ts/state/viewer";
 
 async function Main() {
   mount(App, {
