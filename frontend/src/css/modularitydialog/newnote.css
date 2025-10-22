@@ -19,6 +19,7 @@
   border: none;
   padding: 10px;
   resize: none;
+  font-size: var(--font-size, 12px);
 }
 
 .dialog.new-note div.zoom-level {

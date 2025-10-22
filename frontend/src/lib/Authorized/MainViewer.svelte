@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { AboutDialog } from "../../dialogs/About/About";
   import { FolderIcon } from "../../ts/images";
   import { contextMenu } from "../../ts/state/context";
   import { GlobalOpenedState } from "../../ts/state/opened";
@@ -44,6 +45,11 @@
       caption: "Move selection",
       action: () => GlobalViewerState?.moveSelection(),
     },
+    SEP_ITEM,
+    {
+      caption:"About Eureka",
+      action: () => AboutDialog.Invoke()
+    }
   ]}
 >
   <div class="listing">

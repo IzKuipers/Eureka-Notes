@@ -13,11 +13,14 @@ export class NewNoteDialog extends ModularityDialogInstance {
   override className = "new-note";
   saveName = Store<string>();
   saveContent = Store<string>();
+  loading = Store<boolean>(false);
 
   async save() {
     const saveName = this.saveName();
     const saveContent = this.saveContent();
     if (!saveName) return;
+
+    this.loading.set(true)
 
     const note = await GlobalServerConnector?.createNote(saveName, saveContent, GlobalViewerState?.read()?.folderId);
 
@@ -26,11 +29,13 @@ export class NewNoteDialog extends ModularityDialogInstance {
         "Failed to create note",
         "A note with that name might already exist in this folder. Please choose a different name."
       );
+      this.loading.set(false);
       return;
     }
 
     await GlobalOpenedState?.openNote(note);
     this.close();
+    this.loading.set(false);
   }
 
   async discard() {

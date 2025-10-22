@@ -28,7 +28,7 @@
 
   onMount(() => {
     updateZIndex();
-    editor?.addEventListener("keydown", (e) => {
+    textarea?.addEventListener("keydown", (e) => {
       if (e.key !== "Tab") return;
 
       const start = textarea!.selectionStart;

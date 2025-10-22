@@ -78,6 +78,8 @@ export class ViewerState {
     this.loading.set(false);
     this.path.set(path);
 
+    document.title = !path ? `EUREKA` : `${path} - EUREKA`;
+
     return true;
   }
 

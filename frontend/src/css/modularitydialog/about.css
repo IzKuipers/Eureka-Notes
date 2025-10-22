@@ -1,0 +1,37 @@
+.about-dialog {
+  --width: 300px;
+  --height: 300px;
+}
+.about-dialog div.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.about-dialog div.header h1 {
+  font-size: 26px !important;
+  margin-bottom: 0 !important;
+}
+.about-dialog div.header span.lucide.icon-brain {
+  display:block;
+  height: 48px;
+}
+
+.about-dialog div.header p {
+  opacity: 0.5;
+}
+
+
+.about-dialog table {
+  margin-top: 20px;
+}
+.about-dialog td {
+  padding: 2px 0;
+}
+.about-dialog td:first-child {
+  font-weight: bold;
+  padding-right: 20px;
+}
