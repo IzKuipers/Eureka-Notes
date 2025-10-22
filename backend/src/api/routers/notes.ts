@@ -4,6 +4,7 @@ import NotesDeleteRoute from "../routes/notes/delete";
 import NotesMoveRoute from "../routes/notes/move";
 import NotesReadRoute from "../routes/notes/read";
 import NotesRenameRoute from "../routes/notes/rename";
+import NotesSearchRoute from "../routes/notes/search";
 import NotesWriteRoute from "../routes/notes/write";
 import { DELETE, GET, PATCH, POST, PUT } from "./_generator";
 
@@ -14,6 +15,7 @@ const NotesRoutes: Record<string, RouteCallback> = {
   [PATCH("/rename/:id")]: NotesRenameRoute,
   [PATCH("/move/:id")]: NotesMoveRoute,
   [PUT("/write/:id")]: NotesWriteRoute,
+  [GET("/search/:query(*)")]: NotesSearchRoute,
 };
 
 export default NotesRoutes;
