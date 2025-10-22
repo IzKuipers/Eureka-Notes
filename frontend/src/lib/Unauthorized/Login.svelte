@@ -12,6 +12,7 @@
   let username = $state<string>();
   let password = $state<string>();
   let loading = $state<boolean>(false);
+  let passwordField = $state<HTMLInputElement>()
 
   onMount(() => {
     username = Cookies.get("eurekaUsername") || "";
@@ -30,6 +31,10 @@
     loading = false;
   }
 
+  function onUsernameKeydown(e: KeyboardEvent) {
+    if (e.key === "Enter") passwordField?.focus();
+  }
+
   function onkeydown(e: KeyboardEvent) {
     if (e.key === "Enter") Login();
   }
@@ -46,12 +51,12 @@
 
         <div class="field username">
           <label for="usernameField">Username</label>
-          <input type="text" id="usernameField" bind:value={username} />
+          <input type="text" id="usernameField" bind:value={username} disabled={loading} />
         </div>
 
         <div class="field password">
           <label for="passwordField">Password</label>
-          <input type="password" id="passwordField" bind:value={password} {onkeydown} />
+          <input type="password" id="passwordField" bind:this={passwordField} bind:value={password} {onkeydown} disabled={loading} />
         </div>
       </div>
       <div class="dialog-actions">
