@@ -61,4 +61,12 @@ export class MoveNotesDialog extends ModularityDialogInstance {
     await GlobalViewerState?.refresh();
     this.close();
   }
+
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Moving stuff")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

@@ -64,4 +64,12 @@ export class RenameNoteDialog extends ModularityDialogInstance {
       return os;
     });
   }
+  
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Renaming note")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

@@ -20,6 +20,7 @@ export const ViewerReady = Store<boolean>(false);
 export class ViewerState {
   private readonly START_PATH: string;
   private readonly DEFAULT_STATUS = "Ready.";
+  private temporaryStatusTimeout?: number;
   public path = Store<string>();
   public read = Store<FolderRead | undefined>();
   public loading = Store<boolean>(false);
@@ -98,8 +99,14 @@ export class ViewerState {
     await BlockingOkay("Folder not found", "The specified folder could not be found. Please check the path and try again.");
   }
 
-  setStatus(status: string) {
+  setTemporaryStatus(status: string) {
+    clearTimeout(this.temporaryStatusTimeout)
+    
     this.status.set(status);
+
+    this.temporaryStatusTimeout = setTimeout(() => {
+      this.resetStatus();
+    }, 1000);
   }
 
   resetStatus() {

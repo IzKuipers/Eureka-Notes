@@ -100,4 +100,12 @@ export class ImportNotesDialog extends ModularityDialogInstance {
       });
     });
   }
+
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Importing notes");
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus();
+  }
 }

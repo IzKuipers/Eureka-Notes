@@ -56,4 +56,12 @@ export class NewNoteDialog extends ModularityDialogInstance {
       });
     } else this.close();
   }
+
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Creating a new note")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

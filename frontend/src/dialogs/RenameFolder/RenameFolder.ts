@@ -48,4 +48,12 @@ export class RenameFolderDialog extends ModularityDialogInstance {
     await GlobalViewerState?.refresh();
     this.close();
   }
+  
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Renaming folder")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

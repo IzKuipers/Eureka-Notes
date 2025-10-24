@@ -33,4 +33,13 @@ export class MoveFolderDialog extends ModularityDialogInstance {
     await GlobalViewerState?.refresh();
     this.close();
   }
+
+  
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Moving folder")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

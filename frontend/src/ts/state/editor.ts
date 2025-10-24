@@ -23,7 +23,7 @@ export class EditorState {
 
     this.fullNote.subscribe(() => {
       this.modified.set(true);
-      GlobalViewerState?.status.set(`Editing ${this.partialNote?.name}`);
+      GlobalViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
     });
 
     this.currentFolder = GlobalViewerState?.path()!;

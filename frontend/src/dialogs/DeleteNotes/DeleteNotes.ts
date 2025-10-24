@@ -30,4 +30,12 @@ export class DeleteNotesDialog extends ModularityDialogInstance {
     this.close();
     GlobalViewerState?.refresh();
   }
+
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Deleting notes");
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus();
+  }
 }

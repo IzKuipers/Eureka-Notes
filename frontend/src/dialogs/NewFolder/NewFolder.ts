@@ -40,4 +40,12 @@ export class NewFolderDialog extends ModularityDialogInstance {
     this.close();
     GlobalViewerState?.resetStatus();
   }
+
+  onOpen(): void {
+    GlobalViewerState?.setTemporaryStatus("Creating a new folder")
+  }
+
+  onClose(): void {
+    GlobalViewerState?.resetStatus()
+  }
 }

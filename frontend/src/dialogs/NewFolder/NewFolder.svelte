@@ -5,8 +5,6 @@
   const { dialog }: { dialog: NewFolderDialog } = $props();
   const { saveName, loading } = dialog;
 
-  GlobalViewerState?.status.set("Creating a new folder");
-
   async function onkeydown(e: KeyboardEvent) {
     if (e.key === "Enter") {
       $loading = true;

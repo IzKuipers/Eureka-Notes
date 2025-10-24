@@ -29,11 +29,20 @@ export class ModularityDialogInstance {
     this.props = props;
   }
 
+  onClose() {
+    /** */
+  }
+
+  onOpen() {
+    /** */
+  }
+
   close() {
+    this.onClose();
     GlobalModularityState?.DisposeDialog(this.id);
   }
 
-  static Invoke(...args: any[]) {
-    GlobalModularityState?.ShowDialog(this, ...args);
+  static Invoke<T extends ModularityDialogInstance>(this: new (...args: any[]) => T, ...args: any[]): T {
+    return GlobalModularityState?.ShowDialog(this as any, ...args) as T;
   }
 }

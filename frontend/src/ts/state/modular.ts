@@ -6,7 +6,7 @@ export let GlobalModularityState: ModularityState | undefined;
 
 export class ModularityState {
   public store = Store<Map<string, ModularityDialogInstance>>(new Map([]));
-
+  
   constructor() {
     GlobalModularityState = this;
   }
@@ -19,6 +19,9 @@ export class ModularityState {
       v.set(uuid, instance);
       return v;
     });
+
+    instance.onOpen();
+    return instance;
   }
 
   public DisposeDialog(id: string) {

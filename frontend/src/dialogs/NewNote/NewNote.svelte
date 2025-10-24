@@ -14,8 +14,6 @@
 
   let textarea = $state<HTMLTextAreaElement>();
 
-  GlobalViewerState?.status.set("Creating a new note");
-
   onMount(() => {
     textarea?.addEventListener("keydown", (e) => {
       if (e.key !== "Tab") return;

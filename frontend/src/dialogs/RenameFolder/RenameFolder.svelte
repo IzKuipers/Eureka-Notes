@@ -4,8 +4,6 @@
 
   const { dialog }: { dialog: RenameFolderDialog } = $props();
   const { newName: saveName } = dialog;
-
-  GlobalViewerState?.status.set(`Renaming folder`);
 </script>
 
 <div class="dialog-body">

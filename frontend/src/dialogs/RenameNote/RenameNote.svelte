@@ -4,8 +4,6 @@
 
   const { dialog }: { dialog: RenameNoteDialog } = $props();
   const { newName: saveName } = dialog;
-
-  GlobalViewerState?.status.set(`Renaming note`);
 </script>
 
 <div class="dialog-body">
