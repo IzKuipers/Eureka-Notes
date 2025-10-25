@@ -45,4 +45,8 @@ export class ModularityDialogInstance {
   static Invoke<T extends ModularityDialogInstance>(this: new (...args: any[]) => T, ...args: any[]): T {
     return GlobalModularityState?.ShowDialog(this as any, ...args) as T;
   }
+
+  getDialog() {
+    return document.querySelector<HTMLDivElement>(`.dialog[id="${this.id}"]`);
+  }
 }

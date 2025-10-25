@@ -6,6 +6,7 @@ import { NewFolderDialog } from "../../dialogs/NewFolder/NewFolder";
 import { NewNoteDialog } from "../../dialogs/NewNote/NewNote";
 import { RenameFolderDialog } from "../../dialogs/RenameFolder/RenameFolder";
 import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
+import { SearchDialog } from "../../dialogs/SearchDialog/SearchDialog";
 import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
 import type { PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
@@ -52,6 +53,11 @@ export class ViewerState {
           case `true-true-n`:
             if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof NewFolderDialog)) break;
             NewFolderDialog.Invoke();
+            break;
+          case `true-true-s`:
+          case `true-false-s`:
+            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof SearchDialog)) break;
+            SearchDialog.Invoke(!!e.shiftKey);
             break;
         }
       }
@@ -100,8 +106,8 @@ export class ViewerState {
   }
 
   setTemporaryStatus(status: string) {
-    clearTimeout(this.temporaryStatusTimeout)
-    
+    clearTimeout(this.temporaryStatusTimeout);
+
     this.status.set(status);
 
     this.temporaryStatusTimeout = setTimeout(() => {

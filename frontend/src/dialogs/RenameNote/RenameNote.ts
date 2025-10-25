@@ -6,10 +6,10 @@ import { GlobalViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { EurekaNote, PartialEurekaNote } from "../../types/note";
-import NewNote from "./RenameNote.svelte";
+import RenameNote from "./RenameNote.svelte";
 
 export class RenameNoteDialog extends ModularityDialogInstance {
-  override component = NewNote as Component;
+  override component = RenameNote as Component;
   override buttons: DialogButton[] = [
     {
       caption: "Cancel",
@@ -64,12 +64,12 @@ export class RenameNoteDialog extends ModularityDialogInstance {
       return os;
     });
   }
-  
+
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Renaming note")
+    GlobalViewerState?.setTemporaryStatus("Renaming note");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus()
+    GlobalViewerState?.resetStatus();
   }
 }

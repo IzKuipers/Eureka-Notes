@@ -15,7 +15,7 @@ const NotesRoutes: Record<string, RouteCallback> = {
   [PATCH("/rename/:id")]: NotesRenameRoute,
   [PATCH("/move/:id")]: NotesMoveRoute,
   [PUT("/write/:id")]: NotesWriteRoute,
-  [GET("/search/:query(*)")]: NotesSearchRoute,
+  [POST("/search")]: NotesSearchRoute,
 };
 
 export default NotesRoutes;

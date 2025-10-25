@@ -2,7 +2,7 @@ import type { AxiosInstance } from "axios";
 import axios, { toFormData } from "axios";
 import Cookies from "js-cookie";
 import type { FolderRead } from "../../types/folder";
-import type { ExistingEurekaNote } from "../../types/note";
+import type { ExistingEurekaNote, NoteSearchResults } from "../../types/note";
 import type { UserPreferences } from "../../types/preferences";
 import type { ExistingEurekaUser } from "../../types/user";
 import { ShowDialog } from "../dialog";
@@ -42,8 +42,8 @@ export class ServerConnector {
 
       if (response.data?.ping !== "Pong!") throw "";
 
-      BuildHash.set(response.data.build)
-      EurekaVersion.set(response.data.version)
+      BuildHash.set(response.data.build);
+      EurekaVersion.set(response.data.version);
     } catch (e) {
       Connected.set(false);
       globalErrorHandler(e);
@@ -147,7 +147,10 @@ export class ServerConnector {
       ShowDialog({
         title: "Server error",
         message: "Failed to save your preferences to the server. Please refresh the page to try again.",
-        buttons: [{ caption: "Refresh", action: () => location.reload() }, { caption: "Okay", autofocus: true }],
+        buttons: [
+          { caption: "Refresh", action: () => location.reload() },
+          { caption: "Okay", autofocus: true },
+        ],
       });
       // todo: error handling
     }
@@ -275,6 +278,22 @@ export class ServerConnector {
     } catch (e) {
       globalErrorHandler(e);
       return undefined;
+    }
+  }
+
+  async searchNotes(query: string, folderId?: string): Promise<NoteSearchResults> {
+    try {
+      const response = await this.axios!.post(`/notes/search`, toFormData({ query, folderId }), {
+        headers: { Authorization: `Bearer ${this.token}` },
+      });
+
+      response.data.length = 20;
+
+      return response.data.filter(Boolean) as NoteSearchResults;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return [];
     }
   }
 
