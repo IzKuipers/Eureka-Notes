@@ -17,6 +17,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
   override buttons: DialogButton[] = [
     {
       caption: "Cancel",
+      action: () => this.close(),
     },
     {
       caption: "Begin import",
