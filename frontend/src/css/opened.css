@@ -37,7 +37,7 @@ div.opened-editors > div.note-editor.collapsed {
   max-height: 30px;
   max-width: 270px;
   min-height: 30px;
-  translate: none !important;
+  translate: none !important; /** bruh */
   transform: none !important;
   min-width: unset !important;
   resize: none !important;
