@@ -22,7 +22,6 @@ export class EditorState {
     this.partialNote = partial;
 
     this.fullNote.subscribe(() => {
-      this.modified.set(true);
       GlobalViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
     });
 
@@ -87,7 +86,7 @@ export class EditorState {
             await this.writeData();
             GlobalOpenedState?.closeEditor(this);
           },
-          autofocus: true
+          autofocus: true,
         },
       ],
     });

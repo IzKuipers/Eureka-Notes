@@ -29,13 +29,19 @@
   onMount(() => {
     updateZIndex();
     textarea?.addEventListener("keydown", (e) => {
+      $modified = true;
+
+      oninput();
+
       if (e.key !== "Tab") return;
 
       const start = textarea!.selectionStart;
       const end = textarea!.selectionEnd;
 
-      textarea!.value = textarea!.value.substring(0, start) + "\t" + textarea!.value.substring(end);
-      textarea!.selectionStart = textarea!.selectionEnd = start + 1;
+      $fullNote.data = textarea!.value.substring(0, start) + "\t" + textarea!.value.substring(end);
+      setTimeout(() => {
+        textarea!.selectionStart = textarea!.selectionEnd = start + 1;
+      });
     });
   });
 
@@ -95,6 +101,7 @@
         bind:value={$fullNote.data}
         style="--font-size: {(12 / 100) * ($Preferences.zoomLevel ?? 100)}px;"
         {oninput}
+        onclick={oninput}
         readonly={$writing}
         spellcheck={false}
         bind:this={textarea}
