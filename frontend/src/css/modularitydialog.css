@@ -18,6 +18,10 @@
   height: var(--height, 128px);
 }
 
+.modularity-dialog div.dialog-body {
+  overflow: hidden;
+}
+
 .modularity-dialog div.dialog-body h1 {
   white-space: nowrap;
   overflow: hidden;

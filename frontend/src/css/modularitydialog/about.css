@@ -16,7 +16,7 @@
   margin-bottom: 0 !important;
 }
 .about-dialog div.header span.lucide.icon-brain {
-  display:block;
+  display: block;
   height: 48px;
 }
 
@@ -24,14 +24,31 @@
   opacity: 0.5;
 }
 
-
 .about-dialog table {
   margin-top: 20px;
+  width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-collapse: collapse;
+}
+
+.about-dialog table * {
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .about-dialog td {
   padding: 2px 0;
 }
+
 .about-dialog td:first-child {
   font-weight: bold;
   padding-right: 20px;
+}
+
+.about-dialog td:last-child {
+  word-break: break-all;
+  white-space: wrap;
 }

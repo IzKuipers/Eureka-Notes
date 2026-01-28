@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { AboutDialog } from "../../dialogs/About/About";
+  import { AboutDialog } from "../../dialogs/About/About";
   import { FolderIcon } from "../../ts/images";
   import { contextMenu } from "../../ts/state/context";
   import { GlobalOpenedState } from "../../ts/state/opened";
@@ -47,14 +47,14 @@
     },
     SEP_ITEM,
     {
-      caption:"About Eureka",
-      action: () => AboutDialog.Invoke()
-    }
+      caption: "About Eureka",
+      action: () => AboutDialog.Invoke(),
+    },
   ]}
 >
   <div class="listing">
     {#if $path && $path !== "/"}
-      <button class="viewer-item parent" ondblclick={() => GlobalViewerState?.navigate(GetParentDirectory($path))}>
+      <button class="viewer-item parent" onclick={() => GlobalViewerState?.navigate(GetParentDirectory($path))}>
         <img src={FolderIcon} alt="" />
         <span>..</span>
         <span class="lucide icon-corner-left-up"></span>
