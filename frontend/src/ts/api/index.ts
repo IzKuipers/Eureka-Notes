@@ -35,6 +35,7 @@ export class ServerConnector {
     Connecting.set(true);
     this.axios = axios?.create({
       baseURL: this.url,
+      headers: { Authorization: `Bearer ${this.token}` },
     });
 
     try {
@@ -105,9 +106,10 @@ export class ServerConnector {
       return false;
     }
 
+    this.token = token;
+    this.axios!.defaults.headers.Authorization = `Bearer ${this.token}`;
     this.saveToken(token, userInfo.username);
     this.userInfo = userInfo;
-    this.token = token;
     Preferences.set(userInfo.preferences);
     UserInfo.set(userInfo);
     LoggedIn.set(true);
@@ -141,7 +143,7 @@ export class ServerConnector {
   async commitPreferences(v: UserPreferences) {
     try {
       await this.axios?.put("/auth/user/preferences", JSON.stringify(v), {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${this.token}` },
+        headers: { "Content-Type": "application/json" },
       });
     } catch {
       ShowDialog({
@@ -161,7 +163,9 @@ export class ServerConnector {
 
   async login(username: string, password: string) {
     try {
-      const response = await this.axios!.post("/auth/login", toFormData({ username, password }));
+      const response = await this.axios!.post("/auth/login", toFormData({ username, password }), {
+        headers: { Authorization: `` },
+      });
       const token = response.data?.token;
 
       if (!token) return undefined;
@@ -177,7 +181,7 @@ export class ServerConnector {
 
   async logout() {
     try {
-      await this.axios!.post(`/auth/logout`, {}, { headers: { Authorization: `Bearer ${this.token}` } });
+      await this.axios!.post(`/auth/logout`, {});
 
       this.resetCookies();
       this.resetEnvironment();
@@ -205,7 +209,7 @@ export class ServerConnector {
 
   async readNote(id: string): Promise<ExistingEurekaNote | undefined> {
     try {
-      const response = await this.axios!.get(`/notes/read/${id}`, { headers: { Authorization: `Bearer ${this.token}` } });
+      const response = await this.axios!.get(`/notes/read/${id}`);
 
       return response.data as ExistingEurekaNote;
     } catch (e) {
@@ -216,9 +220,7 @@ export class ServerConnector {
 
   async writeNote(id: string, data: string): Promise<boolean> {
     try {
-      const response = await this.axios!.put(`/notes/write/${id}`, toFormData({ data }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.put(`/notes/write/${id}`, toFormData({ data }));
 
       return response.status === 200;
     } catch (e) {
@@ -229,9 +231,7 @@ export class ServerConnector {
 
   async deleteNote(id: string): Promise<boolean> {
     try {
-      const response = await this.axios!.delete(`/notes/delete/${id}`, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.delete(`/notes/delete/${id}`);
 
       return response.status === 200;
     } catch (e) {
@@ -242,9 +242,7 @@ export class ServerConnector {
 
   async moveNote(id: string, newFolderId: string) {
     try {
-      const response = await this.axios!.patch(`/notes/move/${id}`, toFormData({ newFolderId }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.patch(`/notes/move/${id}`, toFormData({ newFolderId }));
 
       return response.status === 200;
     } catch (e) {
@@ -255,9 +253,7 @@ export class ServerConnector {
 
   async renameNote(id: string, newName: string) {
     try {
-      const response = await this.axios!.patch(`/notes/rename/${id}`, toFormData({ newName }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.patch(`/notes/rename/${id}`, toFormData({ newName }));
 
       return response.status === 200;
     } catch (e) {
@@ -268,9 +264,7 @@ export class ServerConnector {
 
   async createNote(name: string, data: string, folderId?: string, refresh = true) {
     try {
-      const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }));
 
       if (refresh) await GlobalViewerState?.refresh();
 
@@ -283,9 +277,7 @@ export class ServerConnector {
 
   async searchNotes(query: string, folderId?: string): Promise<NoteSearchResults> {
     try {
-      const response = await this.axios!.post(`/notes/search`, toFormData({ query, folderId }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.post(`/notes/search`, toFormData({ query, folderId }));
 
       response.data.length = 20;
 
@@ -302,9 +294,7 @@ export class ServerConnector {
 
   async readFolderByPath(path = "") {
     try {
-      const response = await this.axios!.get(path ? `/folders/read/path/${path}`.replaceAll("//", "/") : `/folders/read/path`, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.get(path ? `/folders/read/path/${path}`.replaceAll("//", "/") : `/folders/read/path`);
 
       const data = response.data as FolderRead;
 
@@ -322,7 +312,7 @@ export class ServerConnector {
     if (!id) return await this.readFolderByPath("");
 
     try {
-      const response = await this.axios!.get(`/folders/read/id/${id}`, { headers: { Authorization: `Bearer ${this.token}` } });
+      const response = await this.axios!.get(`/folders/read/id/${id}`);
 
       const data = response.data as FolderRead;
 
@@ -338,9 +328,7 @@ export class ServerConnector {
 
   async deleteFolder(id: string) {
     try {
-      const response = await this.axios!.delete(`/folders/delete/${id}`, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.delete(`/folders/delete/${id}`);
 
       return response.status === 200;
     } catch (e) {
@@ -357,9 +345,6 @@ export class ServerConnector {
           id: folderId,
           destinationId,
         }),
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        }
       );
 
       return response.status === 200;
@@ -371,9 +356,7 @@ export class ServerConnector {
 
   async renameFolder(folderId: string, newName: string) {
     try {
-      const response = await this.axios!.post(`/folders/rename/${folderId}`, toFormData({ newName }), {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      const response = await this.axios!.post(`/folders/rename/${folderId}`, toFormData({ newName }));
 
       return response.status === 200;
     } catch (e) {
@@ -384,13 +367,7 @@ export class ServerConnector {
 
   async createFolder(path: string) {
     try {
-      const response = await this.axios!.post(
-        `/folders/create/${path}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        }
-      );
+      const response = await this.axios!.post(`/folders/create/${path}`, {});
 
       return response.status === 200;
     } catch (e) {
