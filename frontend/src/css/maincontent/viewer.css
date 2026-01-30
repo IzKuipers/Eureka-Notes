@@ -11,6 +11,11 @@ div.main-viewer > div.listing {
   align-items: start;
   gap: 5px;
 }
+
+div.main-viewer > div.listing:not(.view-list) span.timestamp {
+  display: none;
+}
+
 div.main-viewer button.viewer-item {
   display: flex;
   align-items: center;
@@ -38,6 +43,49 @@ div.main-viewer button.viewer-item span.lucide {
 div.main-viewer button.viewer-item:active,
 div.main-viewer button.viewer-item.selected {
   background-color: var(--button-hover);
+}
+
+div.main-viewer > div.listing.view-list {
+  gap: 2;
+}
+
+div.main-viewer > div.listing.view-list button.viewer-item {
+  width: 100%;
+  height: 22px;
+}
+
+div.main-viewer > div.listing.view-list button.viewer-item:not(:hover):not(.selected) {
+  background-color: transparent;
+}
+
+div.main-viewer > div.listing.view-list button.viewer-item img {
+  height: 16px;
+}
+
+div.main-viewer > div.listing.view-list span.timestamp {
+  width: 130px;
+  flex-grow: 0;
+  opacity: 0.5;
+  text-align: right;
+}
+
+div.main-viewer > div.listing.view-large-grid button.viewer-item {
+  flex-direction: column;
+  height: 70px;
+  width: 80px;
+  gap: 5px;
+  padding: 8px;
+}
+
+div.main-viewer > div.listing.view-large-grid button.viewer-item img {
+  width: 32px;
+  height: 32px;
+}
+
+div.main-viewer > div.listing.view-large-grid button.viewer-item span {
+  flex-grow: 0;
+  width: 100%;
+  text-align: center;
 }
 
 @media screen and (max-width: 700px) {

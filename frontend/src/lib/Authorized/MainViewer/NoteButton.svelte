@@ -1,4 +1,5 @@
 <script lang="ts">
+    import dayjs from "dayjs";
   import { MoveNotesDialog } from "../../../dialogs/MoveNotes/MoveNotes";
   import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
   import { NoteIcon } from "../../../ts/images";
@@ -92,4 +93,6 @@
 >
   <img src={NoteIcon} alt="" />
   <span>{note.name}</span>
+  <span class="timestamp">{dayjs(note.updatedAt).format("DD/MM/YYYY H:mm")}</span>
+  <span class="timestamp">{dayjs(note.createdAt).format("DD/MM/YYYY H:mm")}</span>
 </button>

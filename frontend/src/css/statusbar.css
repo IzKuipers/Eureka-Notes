@@ -32,6 +32,11 @@ div.status-bar div.segment.unimportant span {
   opacity: 0.5;
 }
 
+div.status-bar div.segment.flex span {
+  display: flex;
+  align-items: center;
+}
+
 div.status-bar div.right {
   display: flex;
   align-items: center;
@@ -41,4 +46,24 @@ div.status-bar div.right {
 div.status-bar div.right div.segment {
   border-left: var(--border-color) 1px solid;
   border-right: unset;
+}
+
+div.status-bar div.segment button.lucide {
+  width: 26px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.status-bar div.segment button.lucide.selected {
+  color: var(--red);
+}
+
+div.status-bar div.segment > span > button.lucide:not(:first-child) {
+  border-left: var(--border-color) 1px solid;
+}
+
+div.status-bar div div.segment.flex {
+  padding: 0;
 }

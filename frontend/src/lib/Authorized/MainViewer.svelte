@@ -1,5 +1,6 @@
 <script lang="ts">
   import { AboutDialog } from "../../dialogs/About/About";
+  import { Preferences } from "../../ts/api/stores";
   import { FolderIcon } from "../../ts/images";
   import { contextMenu } from "../../ts/state/context";
   import { GlobalOpenedState } from "../../ts/state/opened";
@@ -52,7 +53,7 @@
     },
   ]}
 >
-  <div class="listing">
+  <div class="listing view-{$Preferences.viewMode}">
     {#if $path && $path !== "/"}
       <button class="viewer-item parent" onclick={() => GlobalViewerState?.navigate(GetParentDirectory($path))}>
         <img src={FolderIcon} alt="" />

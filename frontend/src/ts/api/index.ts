@@ -17,7 +17,6 @@ export let GlobalServerConnector: ServerConnector | undefined;
 
 export class ServerConnector {
   private token?: string;
-  private userInfo?: ExistingEurekaUser;
   private url: string;
   private axios?: AxiosInstance;
   private preferencesUnsubscribe?: Unsubscriber;
@@ -109,7 +108,6 @@ export class ServerConnector {
     this.token = token;
     this.axios!.defaults.headers.Authorization = `Bearer ${this.token}`;
     this.saveToken(token, userInfo.username);
-    this.userInfo = userInfo;
     Preferences.set(userInfo.preferences);
     UserInfo.set(userInfo);
     LoggedIn.set(true);
@@ -126,7 +124,6 @@ export class ServerConnector {
     UserInfo.set(undefined);
     GlobalOpenedState?.reset();
     this.token = undefined;
-    this.userInfo = undefined;
   }
 
   //#endregion
@@ -136,6 +133,7 @@ export class ServerConnector {
     if (this.preferencesUnsubscribe) return;
 
     this.preferencesUnsubscribe = Preferences.subscribe((v) => {
+      if (!v.viewMode) v.viewMode = "grid";
       this.commitPreferences(v);
     });
   }

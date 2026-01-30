@@ -1,13 +1,14 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onDestroy, onMount } from "svelte";
+  import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
   import { GlobalViewerState } from "../../ts/state/viewer";
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
 
   const { read, status, selection } = GlobalViewerState!;
-
+  Preferences;
   let currentTime = $state<string>();
   let interval: number;
 
@@ -38,8 +39,25 @@
         Selecting {$selection.length} notes
       {/if}
     </Segment>
-    <Segment className="only-mobile">
-      Read-only
+    <Segment flex>
+      <button
+        class="lucide icon-table"
+        onclick={() => ($Preferences.viewMode = "grid")}
+        class:selected={$Preferences.viewMode === "grid"}
+        title="Small grid"
+      ></button>
+      <button
+        class="lucide icon-layout-grid"
+        onclick={() => ($Preferences.viewMode = "large-grid")}
+        class:selected={$Preferences.viewMode === "large-grid"}
+        title="Large grid"
+      ></button>
+      <button
+        class="lucide icon-list"
+        onclick={() => ($Preferences.viewMode = "list")}
+        class:selected={$Preferences.viewMode === "list"}
+        title="List"
+      ></button>
     </Segment>
   {/snippet}
 </StatusBar>
