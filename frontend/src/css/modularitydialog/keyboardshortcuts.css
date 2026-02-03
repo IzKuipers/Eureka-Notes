@@ -1,0 +1,20 @@
+.dialog.keyboard-shortcuts {
+  --height: 400px;
+}
+
+.dialog.keyboard-shortcuts div.dialog-body {
+  overflow-y: auto;
+}
+
+.dialog.keyboard-shortcuts div.accelerator {
+  margin-bottom: 20px;
+}
+
+.dialog.keyboard-shortcuts div.accelerator div.key {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.dialog.keyboard-shortcuts div.accelerator div.description {
+  opacity: 0.5;
+}

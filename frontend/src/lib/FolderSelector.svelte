@@ -17,7 +17,6 @@
   async function navigate(folderId?: string) {
     loading = true;
     currentFolder = await GlobalServerConnector?.readFolderById(folderId || "");
-    console.log(currentFolder);
     outFolderId = currentFolder?.folderId || "";
     loading = false;
   }

@@ -37,7 +37,7 @@
       {#if everywhere}
         Searched everywhere
       {:else}
-        Searched in {$read?.folderName || "/"}
+        Searched in just {$read?.folderName || "/"}
       {/if}
     </p>
     <!-- svelte-ignore a11y_autofocus -->
@@ -50,7 +50,7 @@
     <!-- svelte-ignore a11y_autofocus -->
     <input
       type="text"
-      placeholder={everywhere ? "Search everywhere" : `Search in ${$read?.folderName || "/"}`}
+      placeholder={everywhere ? "Search everywhere" : `Search the notes in just ${$read?.folderName || "/"}`}
       bind:value={query}
       {onkeydown}
       autofocus

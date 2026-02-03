@@ -3,6 +3,7 @@ import App from "./App.svelte";
 import "./css/main.css";
 import { ServerConnector } from "./ts/api";
 import { ContextMenuState } from "./ts/state/context";
+import { KeyboardState } from "./ts/state/keyboard";
 import { ModularityState } from "./ts/state/modular";
 import { OpenedState } from "./ts/state/opened";
 import { ViewerState } from "./ts/state/viewer";
@@ -14,6 +15,7 @@ async function Main() {
 
   document.title = "Loading...";
 
+  new KeyboardState().initialize();
   await new ServerConnector().Connect();
   new ContextMenuState();
   new ModularityState();

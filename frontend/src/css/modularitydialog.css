@@ -7,6 +7,7 @@
 @import url("./modularitydialog/movenotes.css");
 @import url("./modularitydialog/about.css");
 @import url("./modularitydialog/search.css");
+@import url("./modularitydialog/keyboardshortcuts.css");
 
 .modularity-dialog-wrapper {
   background-color: var(--background-transparent);

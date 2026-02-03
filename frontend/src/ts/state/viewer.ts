@@ -1,5 +1,6 @@
 import { DeleteNotesDialog } from "../../dialogs/DeleteNotes/DeleteNotes";
 import { ImportNotesDialog } from "../../dialogs/ImportNotes/ImportNotes";
+import { KeyboardShortcutsDialog } from "../../dialogs/KeyboardShortcuts/KeyboardShortcuts";
 import { MoveFolderDialog } from "../../dialogs/MoveFolder/MoveFolder";
 import { MoveNotesDialog } from "../../dialogs/MoveNotes/MoveNotes";
 import { NewFolderDialog } from "../../dialogs/NewFolder/NewFolder";
@@ -13,6 +14,7 @@ import { GlobalServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
+import { GlobalKeyboardState } from "./keyboard";
 import { GlobalModularityState } from "./modular";
 
 export let GlobalViewerState: ViewerState | undefined;
@@ -39,28 +41,33 @@ export class ViewerState {
     Connecting.set(false);
     if (!Connected() || !LoggedIn()) return;
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Tab") {
-        console.log("TAB KEY!");
-        e.preventDefault();
-        return false;
-      } else if (e.altKey || e.shiftKey) {
-        switch (`${e.altKey}-${e.shiftKey}-${e.key.toLowerCase()}`) {
-          case `true-false-n`:
-            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof NewNoteDialog)) break;
-            NewNoteDialog.Invoke();
-            break;
-          case `true-true-n`:
-            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof NewFolderDialog)) break;
-            NewFolderDialog.Invoke();
-            break;
-          case `true-true-s`:
-          case `true-false-s`:
-            if ([...GlobalModularityState!.store()].find(([k, v]) => v instanceof SearchDialog)) break;
-            SearchDialog.Invoke(!!e.shiftKey);
-            break;
-        }
-      }
+    GlobalKeyboardState?.loadAccelerator("Alt-N", "Create a new note", () => {
+      if (GlobalModularityState?.IsOpen(NewNoteDialog)) return;
+      NewNoteDialog.Invoke();
+    });
+
+    GlobalKeyboardState?.loadAccelerator("Alt-Shift-N", "Create a new folder", () => {
+      if (GlobalModularityState?.IsOpen(NewFolderDialog)) return;
+      NewFolderDialog.Invoke();
+    });
+
+    GlobalKeyboardState?.loadAccelerator("Alt-Shift-S", "Search the notes in just this folder", () => {
+      if (GlobalModularityState?.IsOpen(SearchDialog)) return;
+      SearchDialog.Invoke(false);
+    });
+
+    GlobalKeyboardState?.loadAccelerator("Alt-S", "Search all of your notes", () => {
+      if (GlobalModularityState?.IsOpen(SearchDialog)) return;
+      SearchDialog.Invoke(true);
+    });
+
+    GlobalKeyboardState?.loadAccelerator("Alt-R", "Refresh the folder listing", () => {
+      GlobalViewerState?.refresh();
+    });
+
+    GlobalKeyboardState?.loadAccelerator("Ctrl-/", "Show keyboard shortcuts", () => {
+      if (GlobalModularityState?.IsOpen(KeyboardShortcutsDialog)) return;
+      KeyboardShortcutsDialog.Invoke();
     });
 
     this.reset();

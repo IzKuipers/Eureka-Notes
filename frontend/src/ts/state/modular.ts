@@ -6,7 +6,7 @@ export let GlobalModularityState: ModularityState | undefined;
 
 export class ModularityState {
   public store = Store<Map<string, ModularityDialogInstance>>(new Map([]));
-  
+
   constructor() {
     GlobalModularityState = this;
   }
@@ -29,5 +29,9 @@ export class ModularityState {
       v.delete(id);
       return v;
     });
+  }
+
+  IsOpen(dialog: typeof ModularityDialogInstance) {
+    return !![...this.store()].find(([_, v]) => v instanceof dialog);
   }
 }

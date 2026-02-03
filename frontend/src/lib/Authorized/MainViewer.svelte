@@ -48,6 +48,11 @@
     },
     SEP_ITEM,
     {
+      caption: "Refresh",
+      action: () => GlobalViewerState?.refresh(),
+    },
+    SEP_ITEM,
+    {
       caption: "About Eureka",
       action: () => AboutDialog.Invoke(),
     },

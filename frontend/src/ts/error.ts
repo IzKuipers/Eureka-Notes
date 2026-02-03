@@ -4,8 +4,6 @@ import { ShowDialog } from "./dialog";
 export function globalErrorHandler(e: any) {
   const axiosError = e instanceof AxiosError && (e as AxiosError);
 
-  console.log(axiosError);
-
   if (axiosError) {
     switch (axiosError.status) {
       case 401:
@@ -25,6 +23,4 @@ export function globalErrorHandler(e: any) {
         break;
     }
   }
-
-  console.warn(e);
 }
