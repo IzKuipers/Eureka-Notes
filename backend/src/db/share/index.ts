@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
-import { EurekaShare, ShareReadResponse, Shares } from "../../types/model/share";
+import { EurekaShare, ShareListItem, ShareReadResponse, Shares } from "../../types/model/share";
 import { GetFolderById } from "../folder";
-import { GetFullNote } from "../note";
+import { GetAllNotesOfUser, GetFullNote } from "../note";
 import { GetUserById } from "../user";
 
 export async function CreateShareNode(userId: string, noteId: string, password?: string, expiresIn?: number) {
@@ -40,7 +40,7 @@ export async function GetNoteByShareValue(value: string): Promise<ShareReadRespo
     username: user?.username ?? "Stranger",
     folderName: folder?.name || "/",
     shareExpiresAt: existing.expiresAt!,
-    updatedAt: note.modifiedAt,
+    updatedAt: note.updatedAt,
   };
 }
 
@@ -52,10 +52,28 @@ export async function DeleteShareNode(shareId: string) {
   return await Shares.deleteOne({ _id: shareId });
 }
 
-export async function GetNoteShareNodes(userId: string, noteId: string) {
-  return await Shares.find({ userId, noteId });
+export async function GetNoteShareNodes(userId: string, noteId: string): Promise<ShareListItem[]> {
+  const shares = await Shares.find({ userId, noteId });
+  const note = await GetFullNote(userId, noteId);
+
+  return shares.map((s) => ({
+    noteName: note?.name ?? "Unknown note",
+    timesUsed: s.timesUsed ?? 0,
+    _id: s._id.toString(),
+    expiresAt: s.expiresAt || -1,
+    value: s.value,
+  }));
 }
 
 export async function GetUserShareNodes(userId: string) {
-  return await Shares.find({ userId });
+  const shares = await Shares.find({ userId });
+  const notes = await GetAllNotesOfUser(userId);
+
+  return shares.map((s) => ({
+    noteName: notes.find((n) => n._id.toString() === s.noteId)?.name ?? "Unknown note",
+    timesUsed: s.timesUsed ?? 0,
+    _id: s._id.toString(),
+    expiresAt: s.expiresAt || -1,
+    value: s.value,
+  }));
 }

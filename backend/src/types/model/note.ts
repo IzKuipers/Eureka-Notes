@@ -9,7 +9,7 @@ export interface EurekaNote {
 
 export interface ExistingEurekaNote extends EurekaNote {
   _id: string;
-  modifiedAt: string;
+  updatedAt: string;
   createdAt: string;
 }
 

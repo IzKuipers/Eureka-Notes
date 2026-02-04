@@ -11,13 +11,21 @@ export interface EurekaShare {
 }
 
 export interface ShareReadResponse {
-    username: string;
-    noteName: string;
-    folderName: string;
-    updatedAt: string;
-    data: string;
-    //
-    shareExpiresAt: number;
+  username: string;
+  noteName: string;
+  folderName: string;
+  updatedAt: string;
+  data: string;
+  //
+  shareExpiresAt: number;
+}
+
+export interface ShareListItem {
+  noteName: string;
+  timesUsed: number;
+  _id: string;
+  expiresAt: number;
+  value: string;
 }
 
 const schema = new Schema<EurekaShare>({

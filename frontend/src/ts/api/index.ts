@@ -12,6 +12,7 @@ import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
 import { type Unsubscriber } from "../writable";
 import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
+import type { ShareListItem, ShareReadResponse } from "../../types/share";
 
 export let GlobalServerConnector: ServerConnector | undefined;
 
@@ -371,6 +372,71 @@ export class ServerConnector {
     } catch (e) {
       globalErrorHandler(e);
       return false;
+    }
+  }
+
+  //#endregion
+  //#region SHARES
+
+  async getAllShareNodes(): Promise<ShareListItem[]> {
+    try {
+      const response = await this.axios!.get(`/shares/list/user`);
+
+      return response.data as ShareListItem[];
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return [];
+    }
+  }
+
+  async getNodeShares(noteId: string): Promise<ShareListItem[]> {
+    try {
+      const response = await this.axios!.get(`/shares/list/note/${noteId}`);
+
+      return response.data as ShareListItem[];
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return [];
+    }
+  }
+
+  async createShareNode(noteId: string, password?: string, expiresIn?: number) {
+    try {
+      const response = await this.axios!.post(`/share/create`, toFormData({ noteId, password, expiresIn }));
+
+      return response.status === 200;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return false;
+    }
+  }
+
+  async deleteShareById(shareId: string): Promise<boolean> {
+    try {
+      const response = await this.axios!.delete(`/share/delete/${shareId}`);
+
+      return response.status === 200;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return false;
+    }
+  }
+
+  async readNoteByShareValue(value: string, password?: string): Promise<ShareReadResponse | undefined> {
+    try {
+      const response = await this.axios!.get(`/share/read/${value}?pass=${password ?? ""}`, {
+        headers: { Authorization: undefined },
+      });
+
+      return response.data as ShareReadResponse;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return undefined;
     }
   }
 
