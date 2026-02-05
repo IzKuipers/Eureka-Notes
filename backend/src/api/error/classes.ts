@@ -13,3 +13,7 @@ export class ConflictError extends Error {
     this.name = "ConflictError";
   }
 }
+
+export interface BaseError {
+  new (message: string): Error;
+}

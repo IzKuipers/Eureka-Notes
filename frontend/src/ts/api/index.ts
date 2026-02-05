@@ -1,18 +1,19 @@
-import type { AxiosInstance } from "axios";
+import type { AxiosError, AxiosInstance } from "axios";
 import axios, { toFormData } from "axios";
 import Cookies from "js-cookie";
 import type { FolderRead } from "../../types/folder";
 import type { ExistingEurekaNote, NoteSearchResults } from "../../types/note";
 import type { UserPreferences } from "../../types/preferences";
+import type { ShareListItem, ShareReadResponse } from "../../types/share";
 import type { ExistingEurekaUser } from "../../types/user";
 import { ShowDialog } from "../dialog";
 import { globalErrorHandler } from "../error";
+import { CommandResult } from "../result";
 import { GlobalOpenedState } from "../state/opened";
 import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
 import { type Unsubscriber } from "../writable";
 import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
-import type { ShareListItem, ShareReadResponse } from "../../types/share";
 
 export let GlobalServerConnector: ServerConnector | undefined;
 
@@ -426,17 +427,20 @@ export class ServerConnector {
     }
   }
 
-  async readNoteByShareValue(value: string, password?: string): Promise<ShareReadResponse | undefined> {
+  async readNoteByShareValue(value: string, password?: string): Promise<CommandResult<ShareReadResponse>> {
     try {
-      const response = await this.axios!.get(`/shares/read/${value}?pass=${password ?? ""}`, {
+      const response = await this.axios!.get(`/shares/read/${value}?password=${password ?? ""}`, {
         headers: { Authorization: undefined },
       });
 
-      return response.data as ShareReadResponse;
+      return CommandResult.Ok<ShareReadResponse>(response.data);
     } catch (e) {
-      globalErrorHandler(e);
+      const error = e as AxiosError;
+      const data = error.response?.data as { error?: string } | undefined;
 
-      return undefined;
+        console.log(data?.error)
+
+      return CommandResult.Error(data?.error ?? "Unknown error");
     }
   }
 

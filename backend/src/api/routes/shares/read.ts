@@ -7,11 +7,13 @@ import { RequireDefinedParam } from "../../params";
 const ShareReadRoute = (async (req, res) => {
   AssumeNoAuthorization(req);
   const [value] = RequireDefinedParam<[string]>(req, "value");
-  const note = await GetNoteByShareValue(value);
+  const noteResult = await GetNoteByShareValue(value, `${req.query.password ?? ""}`);
 
-  if (!note) throw new NotFoundError("Share node not found or expired.");
+  console.log(noteResult);
 
-  res.json(note);
+  if (!noteResult.success) throw noteResult.error ?? new NotFoundError("Share node not found or expired.");
+
+  res.json(noteResult.result!);
 }) satisfies RouteCallback;
 
 export default ShareReadRoute;
