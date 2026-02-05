@@ -11,9 +11,12 @@ export class ModularityState {
     GlobalModularityState = this;
   }
 
-  public ShowDialog(dialog: typeof ModularityDialogInstance, ...props: any[]) {
+  public async ShowDialog(dialog: typeof ModularityDialogInstance, ...props: any[]) {
     const uuid = UUID();
     const instance = new dialog(uuid, ...props);
+    const allowOpen = await instance.openCondition(...props);
+
+    if (!allowOpen) return;
 
     this.store.update((v) => {
       v.set(uuid, instance);

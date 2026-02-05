@@ -5,7 +5,8 @@
 
 .message-dialog {
   width: 400px;
-  height: 130px;
+  min-height: 130px;
+  height: fit-content;
 }
 
 .message-dialog div.dialog-body {

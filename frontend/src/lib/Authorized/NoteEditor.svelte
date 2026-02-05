@@ -2,6 +2,7 @@
   import { draggable } from "@neodrag/svelte";
   import dayjs from "dayjs";
   import { onMount } from "svelte";
+  import { ExistingNoteShareDialog } from "../../dialogs/ExistingNoteShare/ExistingNoteShare";
   import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
   import type { EditorState } from "../../ts/state/editor";
@@ -81,6 +82,12 @@
     <div class="title-actions">
       {#if !$collapsed}
         <button class="save lucide icon-save" aria-label="Save note" disabled={$writing} onclick={() => State.writeData()}
+        ></button>
+        <button
+          class="share lucide icon-share"
+          aria-label="Share note"
+          disabled={$writing}
+          onclick={() => ExistingNoteShareDialog.Invoke($fullNote._id)}
         ></button>
       {/if}
       <button

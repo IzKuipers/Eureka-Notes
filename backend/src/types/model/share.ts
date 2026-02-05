@@ -26,6 +26,7 @@ export interface ShareListItem {
   _id: string;
   expiresAt: number;
   value: string;
+  password?: string;
 }
 
 const schema = new Schema<EurekaShare>({

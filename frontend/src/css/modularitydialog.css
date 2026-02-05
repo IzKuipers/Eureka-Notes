@@ -8,6 +8,8 @@
 @import url("./modularitydialog/about.css");
 @import url("./modularitydialog/search.css");
 @import url("./modularitydialog/keyboardshortcuts.css");
+@import url("./modularitydialog/existingnoteshare.css");
+@import url("./modularitydialog/newnoteshare.css");
 
 .modularity-dialog-wrapper {
   background-color: var(--background-transparent);

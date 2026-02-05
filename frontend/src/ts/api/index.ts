@@ -390,7 +390,7 @@ export class ServerConnector {
     }
   }
 
-  async getNodeShares(noteId: string): Promise<ShareListItem[]> {
+  async getNoteShares(noteId: string): Promise<ShareListItem[]> {
     try {
       const response = await this.axios!.get(`/shares/list/note/${noteId}`);
 
@@ -404,7 +404,7 @@ export class ServerConnector {
 
   async createShareNode(noteId: string, password?: string, expiresIn?: number) {
     try {
-      const response = await this.axios!.post(`/share/create`, toFormData({ noteId, password, expiresIn }));
+      const response = await this.axios!.post(`/shares/create`, toFormData({ noteId, password, expiresIn }));
 
       return response.status === 200;
     } catch (e) {
@@ -416,7 +416,7 @@ export class ServerConnector {
 
   async deleteShareById(shareId: string): Promise<boolean> {
     try {
-      const response = await this.axios!.delete(`/share/delete/${shareId}`);
+      const response = await this.axios!.delete(`/shares/delete/${shareId}`);
 
       return response.status === 200;
     } catch (e) {
@@ -428,7 +428,7 @@ export class ServerConnector {
 
   async readNoteByShareValue(value: string, password?: string): Promise<ShareReadResponse | undefined> {
     try {
-      const response = await this.axios!.get(`/share/read/${value}?pass=${password ?? ""}`, {
+      const response = await this.axios!.get(`/shares/read/${value}?pass=${password ?? ""}`, {
         headers: { Authorization: undefined },
       });
 

@@ -1,0 +1,37 @@
+.dialog.new-note-share {
+  --width: 350px;
+  --height: fit-content;
+}
+
+.dialog.new-note-share div.dialog-body > p {
+  margin-bottom: 15px;
+}
+.dialog.new-note-share div.expiry-selector {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding-right: 10px;
+  border: var(--border-color) 1px solid;
+  margin-bottom: 15px;
+}
+
+.dialog.new-note-share div.expiry-selector span.lucide {
+  font-size: 16px;
+  color: var(--fg);
+  width: 16px;
+  height: 16px;
+}
+.dialog.new-note-share div.expiry-selector select {
+  appearance: none;
+  background-color: var(--background);
+  color: var(--fg);
+  border: none;
+  flex-grow: 1;
+  padding: 0 10px;
+  height: 100%;
+}
+
+.dialog.new-note-share input {
+  width: 100%;
+}

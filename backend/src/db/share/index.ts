@@ -62,10 +62,11 @@ export async function GetNoteShareNodes(userId: string, noteId: string): Promise
     _id: s._id.toString(),
     expiresAt: s.expiresAt || -1,
     value: s.value,
+    password: s.password,
   }));
 }
 
-export async function GetUserShareNodes(userId: string) {
+export async function GetUserShareNodes(userId: string): Promise<ShareListItem[]> {
   const shares = await Shares.find({ userId });
   const notes = await GetAllNotesOfUser(userId);
 
@@ -75,5 +76,6 @@ export async function GetUserShareNodes(userId: string) {
     _id: s._id.toString(),
     expiresAt: s.expiresAt || -1,
     value: s.value,
+    password: s.password,
   }));
 }

@@ -1,4 +1,3 @@
-
 export interface EurekaShare {
   _id: string;
   userId: string; // -> EurekaUser._id
@@ -10,13 +9,13 @@ export interface EurekaShare {
 }
 
 export interface ShareReadResponse {
-    username: string;
-    noteName: string;
-    folderName: string;
-    updatedAt: string;
-    data: string;
-    //
-    shareExpiresAt: number;
+  username: string;
+  noteName: string;
+  folderName: string;
+  updatedAt: string;
+  data: string;
+  //
+  shareExpiresAt: number;
 }
 
 export interface ShareListItem {
@@ -25,4 +24,5 @@ export interface ShareListItem {
   _id: string;
   expiresAt: number;
   value: string;
+  password?: string;
 }

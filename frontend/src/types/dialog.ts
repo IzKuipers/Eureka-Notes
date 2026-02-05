@@ -22,11 +22,17 @@ export class ModularityDialogInstance {
   public className?: string;
   public buttons: DialogButton[] = [];
   public loading = Store<boolean>(false);
+  public disabledButtons = Store<number[]>();
   protected props;
 
   constructor(id: string, ...props: any[]) {
     this.id = id;
     this.props = props;
+  }
+
+  async openCondition(...props: any[]): Promise<boolean> {
+    /** */
+    return true;
   }
 
   onClose() {
@@ -42,11 +48,34 @@ export class ModularityDialogInstance {
     GlobalModularityState?.DisposeDialog(this.id);
   }
 
-  static Invoke<T extends ModularityDialogInstance>(this: new (...args: any[]) => T, ...args: any[]): T {
-    return GlobalModularityState?.ShowDialog(this as any, ...args) as T;
+  static async Invoke<T extends ModularityDialogInstance>(
+    this: new (...args: any[]) => T,
+    ...args: any[]
+  ): Promise<T | undefined> {
+    return (await GlobalModularityState?.ShowDialog(this as any, ...args)) as T | undefined;
   }
 
   getDialog() {
     return document.querySelector<HTMLDivElement>(`.dialog[id="${this.id}"]`);
+  }
+
+  disableButton(idx: number) {
+    this.disabledButtons.update((v) => {
+      if (v.includes(idx)) return v;
+
+      v.push(idx);
+
+      return v;
+    });
+  }
+
+  enableButton(idx: number) {
+    this.disabledButtons.update((v) => {
+      if (!v.includes(idx)) return v;
+
+      v.splice(v.indexOf(idx), 1);
+
+      return v;
+    });
   }
 }
