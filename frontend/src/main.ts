@@ -23,13 +23,14 @@ async function Main() {
     new ShareState(shareValue);
     await new ViewerState().initialize();
     new ModularityState();
+    document.title = "EUREKA Shared";
   }
 
   mount(shareValue ? AppShared : App, {
     target: document.getElementById("app")!,
   });
 
-  GlobalShareState?.initialize()
+  GlobalShareState?.initialize();
 
   if (!shareValue) {
     new KeyboardState().initialize();
@@ -37,9 +38,8 @@ async function Main() {
     new ModularityState();
     new OpenedState();
     await new ViewerState().initialize();
+    document.title = "EUREKA";
   }
-
-  document.title = "EUREKA";
 }
 
 Main();

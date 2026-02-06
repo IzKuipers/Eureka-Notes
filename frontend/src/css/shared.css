@@ -12,3 +12,65 @@ div.shared-note div.content {
   white-space: pre;
   padding: 10px;
 }
+
+div.shared-note div.shared-topbar {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  border-bottom: var(--border-color) 1px solid;
+  background-color: var(--background-secondary);
+  font-size: 14px;
+}
+
+div.shared-note div.shared-topbar div.note-info {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: var(--border-color) 1px solid;
+  padding: 0 20px;
+  font-size: 14px;
+  gap: 10px;
+}
+
+div.shared-note div.shared-topbar div.note-info div.name {
+  font-weight: bold;
+}
+
+div.shared-note div.shared-topbar div.note-info div.author {
+  opacity: 0.5;
+}
+
+div.shared-note div.shared-topbar div.branding {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  padding: 0 10px;
+  gap: 5px;
+}
+
+div.shared-note div.shared-topbar div.branding span.name {
+  font-weight: 800;
+}
+
+div.shared-note div.shared-topbar div.branding span.shared {
+  opacity: 0.5;
+}
+
+div.shared-note div.shared-topbar div.branding span.lucide {
+  display: block;
+  height: 24px;
+  color: var(--red);
+  font-size: 24px;
+  margin-right: 5px;
+}
+div.shared-note div.shared-topbar span.version {
+  margin: 0 20px;
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+div.shared-note div.shared-topbar button {
+  height: 100%;
+  border-left: var(--border-color) 1px solid;
+  padding: 0 20px;
+}

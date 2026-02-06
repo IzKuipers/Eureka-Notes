@@ -7,6 +7,7 @@
   import ModularityRenderer from "./lib/ModularityRenderer.svelte";
   import StatusBar from "./lib/StatusBar.svelte";
   import Segment from "./lib/StatusBar/Segment.svelte";
+  import { EurekaVersion } from "./ts/api/stores";
   import { contextMenu } from "./ts/state/context";
   import { GlobalShareState } from "./ts/state/share";
   import { SEP_ITEM } from "./types/context";
@@ -32,6 +33,21 @@
     },
   ]}
 >
+  <div class="shared-topbar">
+    <div class="branding">
+      <span class="lucide icon-brain"></span>
+      <span class="name">EUREKA</span>
+      <span class="shared">Shared</span>
+    </div>
+    {#if $shareInfo}
+      <div class="note-info">
+        <div class="name">{$shareInfo.noteName}</div>
+        <div class="author">By {$shareInfo.username}</div>
+      </div>
+    {/if}
+    <span class="version">v{$EurekaVersion}</span>
+    <button onclick={() => (location.href = `./`)}>Open Eureka</button>
+  </div>
   {#if $loading}
     <CenterLoader />
   {:else if $shareInfo}
@@ -43,7 +59,6 @@
       <Segment unimportant>In {$shareInfo.folderName}</Segment>
       {#snippet rightContent()}
         <Segment unimportant>Last updated: {dayjs($shareInfo.updatedAt).format("DD/MM/YYYY HH:mm")}</Segment>
-        <Segment>By {$shareInfo.username}</Segment>
       {/snippet}
     </StatusBar>
   {/if}

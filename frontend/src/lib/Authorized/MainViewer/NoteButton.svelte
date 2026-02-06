@@ -1,5 +1,5 @@
 <script lang="ts">
-    import dayjs from "dayjs";
+  import dayjs from "dayjs";
   import { MoveNotesDialog } from "../../../dialogs/MoveNotes/MoveNotes";
   import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
   import { NoteIcon } from "../../../ts/images";
@@ -8,6 +8,7 @@
   import { GlobalViewerState } from "../../../ts/state/viewer";
   import { SEP_ITEM } from "../../../types/context";
   import type { PartialEurekaNote } from "../../../types/note";
+  import { ExistingNoteShareDialog } from "../../../dialogs/ExistingNoteShare/ExistingNoteShare";
 
   const { note, i }: { note: PartialEurekaNote; i: number } = $props();
   const { selection, read } = GlobalViewerState!;
@@ -88,6 +89,10 @@
       action: () => {
         MoveNotesDialog.Invoke(note);
       },
+    },
+    {
+      caption: "Share this note",
+      action: () => ExistingNoteShareDialog.Invoke(note._id),
     },
   ]}
 >
