@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { GlobalServerConnector } from "./api";
+import { LoggedIn } from "./api/stores";
 import { ShowDialog } from "./dialog";
 
 export function globalErrorHandler(e: any) {
@@ -9,7 +10,7 @@ export function globalErrorHandler(e: any) {
     const data = axiosError.response?.data as { error?: string } | undefined;
 
     // If the token has expired
-    if (data?.error?.startsWith("AuthorizationError") && data?.error?.includes("Invalid token")) {
+    if (data?.error?.startsWith("AuthorizationError") && data?.error?.includes("Invalid token") && LoggedIn()) {
       setTimeout(() => {
         ShowDialog({
           title: "Login expired",
