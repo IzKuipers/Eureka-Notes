@@ -23,7 +23,7 @@
     },
     {
       caption: "Copy link",
-      action: () => navigator.clipboard.writeText(`${location.origin}/?value=${GlobalShareState?.shareValue!}`),
+      action: () => navigator.clipboard.writeText(`${location.origin}/?share=${GlobalShareState?.shareValue!}`),
     },
     SEP_ITEM,
     {
