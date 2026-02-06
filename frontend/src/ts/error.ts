@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
-import { ShowDialog } from "./dialog";
 import { GlobalServerConnector } from "./api";
+import { ShowDialog } from "./dialog";
 
 export function globalErrorHandler(e: any) {
   const axiosError: AxiosError | false = e instanceof AxiosError && (e as AxiosError);
@@ -10,21 +10,21 @@ export function globalErrorHandler(e: any) {
 
     // If the token has expired
     if (data?.error?.startsWith("AuthorizationError") && data?.error?.includes("Invalid token")) {
-      ShowDialog({
-        title: "Login expired",
-        message: "Your token has expired because you didn't use eureka for too long. Please log in again.",
-        buttons: [
-          {
-            caption: "Reload",
-            action: () => {
-              GlobalServerConnector?.resetCookies()
-              location.reload();
+      setTimeout(() => {
+        ShowDialog({
+          title: "Login expired",
+          message: "Your token has expired because you didn't use eureka for too long. Please log in again.",
+          buttons: [
+            {
+              caption: "Reload",
+              action: () => {
+                GlobalServerConnector?.resetCookies();
+                location.reload();
+              },
             },
-          },
-        ],
-      });
-
-      throw "";
+          ],
+        });
+      }, 100);
     }
 
     switch (axiosError.status) {
