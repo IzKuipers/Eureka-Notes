@@ -1,0 +1,14 @@
+div.shared-note {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+div.shared-note div.content {
+  height: 0;
+  flex-grow: 1;
+  overflow-y: scroll;
+  white-space: pre;
+  padding: 10px;
+}

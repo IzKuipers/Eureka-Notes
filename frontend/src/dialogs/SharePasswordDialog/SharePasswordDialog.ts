@@ -12,7 +12,7 @@ export class SharePasswordDialog extends ModularityDialogInstance {
       caption: "Cancel",
       action: () => {
         this.close();
-        location.href = location.origin;
+        location.href = `./`;
       },
     },
     {

@@ -10,6 +10,7 @@
 @import url("./modularitydialog/keyboardshortcuts.css");
 @import url("./modularitydialog/existingnoteshare.css");
 @import url("./modularitydialog/newnoteshare.css");
+@import url("./modularitydialog/sharepassword.css");
 
 .modularity-dialog-wrapper {
   background-color: var(--background-transparent);
