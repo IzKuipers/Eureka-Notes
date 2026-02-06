@@ -23,8 +23,6 @@ export class ShareState {
     this.loading.set(true);
     const contentResult = await GlobalServerConnector!.readNoteByShareValue(this.shareValue, password);
 
-    console.log(contentResult);
-
     if (!contentResult?.success) {
       this.handleUnsuccessfulRead(contentResult);
       this.loading.set(false);

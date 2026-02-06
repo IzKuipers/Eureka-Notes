@@ -438,8 +438,6 @@ export class ServerConnector {
       const error = e as AxiosError;
       const data = error.response?.data as { error?: string } | undefined;
 
-        console.log(data?.error)
-
       return CommandResult.Error(data?.error ?? "Unknown error");
     }
   }

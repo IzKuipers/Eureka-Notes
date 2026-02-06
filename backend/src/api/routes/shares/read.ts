@@ -9,8 +9,6 @@ const ShareReadRoute = (async (req, res) => {
   const [value] = RequireDefinedParam<[string]>(req, "value");
   const noteResult = await GetNoteByShareValue(value, `${req.query.password ?? ""}`);
 
-  console.log(noteResult);
-
   if (!noteResult.success) throw noteResult.error ?? new NotFoundError("Share node not found or expired.");
 
   res.json(noteResult.result!);
