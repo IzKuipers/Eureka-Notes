@@ -51,7 +51,7 @@
 
     timeout = setTimeout(() => {
       State.writeData();
-    }, 2000);
+    }, 1000 * 60); // auto-save: 1min
   }
 </script>
 
