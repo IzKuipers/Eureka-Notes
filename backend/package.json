@@ -1,6 +1,6 @@
 {
   "name": "eureka-backend",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "The backend of Eureka Notes",
   "main": "./lib/index.js",
   "repository": {

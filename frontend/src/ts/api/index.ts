@@ -103,6 +103,7 @@ export class ServerConnector {
     const userInfo = await this.GetUserInfo(token);
 
     if (!userInfo) {
+      this.resetCookies();
       this.resetEnvironment();
       return false;
     }
@@ -195,7 +196,9 @@ export class ServerConnector {
 
   async register(username: string, password: string) {
     try {
-      const response = await this.axios!.post("/auth/register", toFormData({ username, password }));
+      const response = await this.axios!.post("/auth/register", toFormData({ username, password }), {
+        headers: { Authorization: `` },
+      });
 
       return response.status === 200;
     } catch (e) {
