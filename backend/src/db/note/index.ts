@@ -74,6 +74,14 @@ export async function GetPartialNote(userId: string, noteId: string) {
       data: false,
       userId: false,
       folderId: false,
-    }
+    },
   );
+}
+
+export async function SetNotePinned(userId: string, noteId: string, pinned: boolean) {
+  return await Notes.updateOne<PartialEurekaNote>({ userId, _id: noteId }, { pinned });
+}
+
+export async function SetNoteConceiled(userId: string, noteId: string, conceiled: boolean) {
+  return await Notes.updateOne<PartialEurekaNote>({ userId, _id: noteId }, { conceiled });
 }

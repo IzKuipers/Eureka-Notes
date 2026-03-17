@@ -5,6 +5,8 @@ export interface EurekaNote {
   userId: string;
   name: string;
   data: string;
+  conceiled: boolean;
+  pinned: boolean;
 }
 
 export interface ExistingEurekaNote extends EurekaNote {
@@ -35,8 +37,16 @@ const schema = new Schema<EurekaNote>(
       type: String,
       default: "",
     },
+    conceiled: {
+      type: Boolean,
+      default: false,
+    },
+    pinned: {
+      type: Boolean,
+      default: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Notes = model<EurekaNote>("notes", schema);

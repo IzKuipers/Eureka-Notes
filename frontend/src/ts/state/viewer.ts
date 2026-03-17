@@ -8,8 +8,8 @@ import { NewNoteDialog } from "../../dialogs/NewNote/NewNote";
 import { RenameFolderDialog } from "../../dialogs/RenameFolder/RenameFolder";
 import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
 import { SearchDialog } from "../../dialogs/SearchDialog/SearchDialog";
-import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
-import type { PartialEurekaNote } from "../../types/note";
+import type { EurekaFolder, ExistingEurekaFolder, FolderRead } from "../../types/folder";
+import type { EurekaNote, PartialEurekaNote } from "../../types/note";
 import { GlobalServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
@@ -202,5 +202,44 @@ export class ViewerState {
 
   importNotes() {
     ImportNotesDialog.Invoke();
+  }
+
+  async toggleConceiled(note: PartialEurekaNote) {
+    const result = await GlobalServerConnector?.setNoteConceiled(note._id, !note.conceiled);
+
+    if (result)
+      this.read.update((v) => {
+        const idx = v?.notes.findIndex((n) => n._id == note._id);
+        if (!idx || idx < 0) return v;
+
+        v!.notes[idx].conceiled = !note.conceiled;
+        return v;
+      });
+  }
+
+  async togglePinned(note: PartialEurekaNote) {
+    const result = await GlobalServerConnector?.setNotePinned(note._id, !note.pinned);
+
+    if (result)
+      this.read.update((v) => {
+        const idx = v?.notes.findIndex((n) => n._id == note._id);
+        if (!idx || idx < 0) return v;
+
+        v!.notes[idx].pinned = !note.pinned;
+        return v;
+      });
+  }
+  
+  async toggleConceiledFolder(folder: ExistingEurekaFolder) {
+    const result = await GlobalServerConnector?.setFolderConceiled(folder._id, !folder.conceiled);
+
+    if (result)
+      this.read.update((v) => {
+        const idx = v?.folders.findIndex((n) => n._id == folder._id);
+        if (!idx || idx < 0) return v;
+
+        v!.folders[idx].conceiled = !folder.conceiled;
+        return v;
+      });
   }
 }

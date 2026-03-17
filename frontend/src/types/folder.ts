@@ -4,6 +4,7 @@ export interface EurekaFolder {
   userId: string;
   parentId?: string;
   name: string;
+  conceiled: boolean;
 }
 
 export interface ExistingEurekaFolder extends EurekaFolder {

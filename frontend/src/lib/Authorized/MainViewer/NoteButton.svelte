@@ -94,7 +94,19 @@
       caption: "Share this note",
       action: () => ExistingNoteShareDialog.Invoke(note._id),
     },
+    SEP_ITEM,
+    {
+      caption: "Conceil just this note",
+      active: () => note.conceiled,
+      action: () => GlobalViewerState?.toggleConceiled(note),
+    },
+    {
+      caption: "Pin just this note",
+      active: () => note.pinned,
+      action: () => GlobalViewerState?.togglePinned(note),
+    },
   ]}
+  class:conceiled={note.conceiled}
 >
   <img src={NoteIcon} alt="" />
   <span>{note.name}</span>

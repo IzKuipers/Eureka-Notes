@@ -5,6 +5,7 @@ export interface EurekaFolder {
   userId: string;
   parentId?: string;
   name: string;
+  conceiled: boolean;
 }
 
 export interface ExistingEurekaFolder extends EurekaFolder {
@@ -35,6 +36,10 @@ const schema = new Schema<EurekaFolder>({
     type: String,
     required: true,
   },
+  conceiled: {
+    type: Boolean,
+    default: false
+  }
 });
 
 export const Folders = model("folders", schema);

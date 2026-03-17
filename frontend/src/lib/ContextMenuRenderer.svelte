@@ -17,7 +17,12 @@
           GlobalContextMenuState?.hideMenu();
         }}
       >
-        {item.caption}
+        <span>
+          {item.caption}
+        </span>
+        {#if item.active?.()}
+          <span class="lucide icon-check"></span>
+        {/if}
       </button>
     {/if}
   {/each}

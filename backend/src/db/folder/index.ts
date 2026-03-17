@@ -17,6 +17,7 @@ export async function GetFolderById(userId: string, folderId: string) {
       createdAt: Date.now().toLocaleString(),
       modifiedAt: Date.now().toLocaleString(),
       userId,
+      parentId: undefined,
     };
 
   Logger.verbose(`GetFolderById: ${userId}, ${folderId}`);
@@ -46,6 +47,7 @@ export async function GetFolderFromPath(userId: string, path?: string): Promise<
       createdAt: Date.now().toLocaleString(),
       modifiedAt: Date.now().toLocaleString(),
       userId,
+      conceiled: false,
     };
 
   const pathParts = path.split("/");
@@ -136,7 +138,7 @@ export async function ReadFolder(userId: string, path: string = "/"): Promise<Fo
 
   const childFolders = await GetAllFoldersOf(userId, topLevel._id);
   const childNotes = (await GetAllNotesOfUserWithData(userId, topLevel._id)).filter((n) =>
-    !path || path === "/" ? !n.folderId : true
+    !path || path === "/" ? !n.folderId : true,
   );
   const totalSize = childNotes.map((n) => n.data.length).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
@@ -170,4 +172,7 @@ export async function RenameFolder(userId: string, folderId: string, newName: st
   Logger.verbose(`RenameFolder: ${userId}, ${folderId}, ${newName}`);
 
   return await Folders.updateOne({ userId, _id: folderId }, { name: newName });
+}
+export async function SetFolderConceiled(userId: string, folderId: string, conceiled: boolean) {
+  return await Folders.updateOne<ExistingEurekaFolder>({ userId, _id: folderId }, { conceiled });
 }

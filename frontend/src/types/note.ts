@@ -3,6 +3,8 @@ export interface EurekaNote {
   userId: string;
   name: string;
   data: string;
+  pinned: boolean;
+  conceiled: boolean;
 }
 
 export interface ExistingEurekaNote extends EurekaNote {

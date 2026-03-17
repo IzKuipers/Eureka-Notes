@@ -14,6 +14,7 @@
 
 <button
   class="viewer-item"
+  class:conceiled={folder.conceiled}
   ondblclick={navigate}
   use:contextMenu={[
     {
@@ -33,6 +34,11 @@
     {
       caption: "Delete...",
       action: () => GlobalViewerState?.deleteFolder(folder),
+    },
+    {
+      caption: "Conceil just this folder",
+      action: () => GlobalViewerState?.toggleConceiledFolder(folder),
+      active: () => folder.conceiled,
     },
   ]}
 >

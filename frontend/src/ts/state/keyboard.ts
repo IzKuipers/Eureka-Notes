@@ -22,7 +22,10 @@ export class KeyboardState {
         const ctrl = accelerator.ctrl ? !!e.ctrlKey : true;
         const key = accelerator.key ? e.key.toLowerCase() === accelerator.key : true;
 
-        if (alt && shift && ctrl && key) accelerator.action(e);
+        if (alt && shift && ctrl && key) {
+          accelerator.action(e);
+          return;
+        }
       }
     });
   }

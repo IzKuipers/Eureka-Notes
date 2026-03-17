@@ -1,10 +1,11 @@
 import { RouteCallback } from "../../types/routes";
+import FoldersConceiledRoute from "../routes/folders/conceiled";
 import FoldersCreateRoute from "../routes/folders/create";
 import FoldersDeleteRoute from "../routes/folders/delete";
 import FoldersMoveRoute from "../routes/folders/move";
 import { FoldersReadIdRoute, FoldersReadPathRoute, FoldersReadRootRoute } from "../routes/folders/read";
 import FoldersRenameRoute from "../routes/folders/rename";
-import { DELETE, GET, POST } from "./_generator";
+import { DELETE, GET, PATCH, POST } from "./_generator";
 
 export const FolderRoutes: Record<string, RouteCallback> = {
   [GET("/read/path")]: FoldersReadRootRoute,
@@ -14,4 +15,5 @@ export const FolderRoutes: Record<string, RouteCallback> = {
   [POST("/move")]: FoldersMoveRoute,
   [POST("/rename/:id")]: FoldersRenameRoute,
   [POST("/create/:path(*)")]: FoldersCreateRoute,
+  [PATCH("/conceiled/:id")]: FoldersConceiledRoute,
 };

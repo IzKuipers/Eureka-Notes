@@ -16,6 +16,12 @@ div.main-viewer > div.listing:not(.view-list) span.timestamp {
   display: none;
 }
 
+div.main-viewer hr {
+  width: 100%;
+  border:var(--button-hover) 1px solid;
+  margin: 5px 0;
+}
+
 div.main-viewer button.viewer-item {
   display: flex;
   align-items: center;
@@ -24,6 +30,11 @@ div.main-viewer button.viewer-item {
   gap: 10px;
   padding: 3px 5px;
   border-radius: 2px;
+}
+
+div.main-viewer button.viewer-item.conceiled:not(:hover) span:not(.lucide) {
+    font-family: "Flow Circular";
+    opacity: 0.5;
 }
 
 div.main-viewer button.viewer-item span:not(.lucide) {

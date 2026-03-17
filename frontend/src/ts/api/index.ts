@@ -292,6 +292,30 @@ export class ServerConnector {
     }
   }
 
+  async setNotePinned(noteId: string, pinned: boolean) {
+    try {
+      const response = await this.axios!.patch(`/notes/pinned/${noteId}`, toFormData({ pinned }));
+
+      return response.status === 200;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return false;
+    }
+  }
+
+  async setNoteConceiled(noteId: string, conceiled: boolean) {
+    try {
+      const response = await this.axios!.patch(`/notes/conceiled/${noteId}`, toFormData({ conceiled }));
+
+      return response.status === 200;
+    } catch (e) {
+      globalErrorHandler(e);
+
+      return false;
+    }
+  }
+
   //#endregion
   //#region FOLDERS
 
@@ -375,6 +399,18 @@ export class ServerConnector {
       return response.status === 200;
     } catch (e) {
       globalErrorHandler(e);
+      return false;
+    }
+  } 
+  
+  async setFolderConceiled(folderId: string, conceiled: boolean) {
+    try {
+      const response = await this.axios!.patch(`/folders/conceiled/${folderId}`, toFormData({ conceiled }));
+
+      return response.status === 200;
+    } catch (e) {
+      globalErrorHandler(e);
+
       return false;
     }
   }
