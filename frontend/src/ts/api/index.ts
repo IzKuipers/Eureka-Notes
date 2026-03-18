@@ -304,9 +304,9 @@ export class ServerConnector {
     }
   }
 
-  async setNoteConceiled(noteId: string, conceiled: boolean) {
+  async setNoteConcealed(noteId: string, concealed: boolean) {
     try {
-      const response = await this.axios!.patch(`/notes/conceiled/${noteId}`, toFormData({ conceiled }));
+      const response = await this.axios!.patch(`/notes/conceiled/${noteId}`, toFormData({ conceiled: concealed }));
 
       return response.status === 200;
     } catch (e) {
@@ -403,9 +403,9 @@ export class ServerConnector {
     }
   } 
   
-  async setFolderConceiled(folderId: string, conceiled: boolean) {
+  async setFolderConcealed(folderId: string, concealed: boolean) {
     try {
-      const response = await this.axios!.patch(`/folders/conceiled/${folderId}`, toFormData({ conceiled }));
+      const response = await this.axios!.patch(`/folders/conceiled/${folderId}`, toFormData({ conceiled: concealed }));
 
       return response.status === 200;
     } catch (e) {

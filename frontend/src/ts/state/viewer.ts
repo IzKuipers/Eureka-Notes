@@ -204,8 +204,8 @@ export class ViewerState {
     ImportNotesDialog.Invoke();
   }
 
-  async toggleConceiled(note: PartialEurekaNote) {
-    const result = await GlobalServerConnector?.setNoteConceiled(note._id, !note.conceiled);
+  async toggleConcealed(note: PartialEurekaNote) {
+    const result = await GlobalServerConnector?.setNoteConcealed(note._id, !note.conceiled);
 
     if (result)
       this.read.update((v) => {
@@ -230,8 +230,8 @@ export class ViewerState {
       });
   }
   
-  async toggleConceiledFolder(folder: ExistingEurekaFolder) {
-    const result = await GlobalServerConnector?.setFolderConceiled(folder._id, !folder.conceiled);
+  async toggleConcealedFolder(folder: ExistingEurekaFolder) {
+    const result = await GlobalServerConnector?.setFolderConcealed(folder._id, !folder.conceiled);
 
     if (result)
       this.read.update((v) => {

@@ -32,7 +32,7 @@ div.main-viewer button.viewer-item {
   border-radius: 2px;
 }
 
-div.main-viewer button.viewer-item.conceiled:not(:hover) span:not(.lucide) {
+div.main-viewer button.viewer-item.concealed:not(:hover) span:not(.lucide) {
     font-family: "Flow Circular";
     opacity: 0.5;
 }

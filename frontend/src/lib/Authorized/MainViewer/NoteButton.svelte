@@ -96,9 +96,9 @@
     },
     SEP_ITEM,
     {
-      caption: "Conceil just this note",
+      caption: "Conceal just this note",
       active: () => note.conceiled,
-      action: () => GlobalViewerState?.toggleConceiled(note),
+      action: () => GlobalViewerState?.toggleConcealed(note),
     },
     {
       caption: "Pin just this note",
@@ -106,7 +106,7 @@
       action: () => GlobalViewerState?.togglePinned(note),
     },
   ]}
-  class:conceiled={note.conceiled}
+  class:concealed={note.conceiled}
 >
   <img src={NoteIcon} alt="" />
   <span>{note.name}</span>
