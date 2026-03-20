@@ -210,7 +210,7 @@ export class ViewerState {
     if (result)
       this.read.update((v) => {
         const idx = v?.notes.findIndex((n) => n._id == note._id);
-        if (!idx || idx < 0) return v;
+        if (idx == undefined || idx < 0) return v;
 
         v!.notes[idx].conceiled = !note.conceiled;
         return v;
@@ -223,7 +223,7 @@ export class ViewerState {
     if (result)
       this.read.update((v) => {
         const idx = v?.notes.findIndex((n) => n._id == note._id);
-        if (!idx || idx < 0) return v;
+        if (idx == undefined || idx < 0) return v;
 
         v!.notes[idx].pinned = !note.pinned;
         return v;
@@ -236,7 +236,7 @@ export class ViewerState {
     if (result)
       this.read.update((v) => {
         const idx = v?.folders.findIndex((n) => n._id == folder._id);
-        if (!idx || idx < 0) return v;
+        if (idx == undefined || idx < 0) return v;
 
         v!.folders[idx].conceiled = !folder.conceiled;
         return v;

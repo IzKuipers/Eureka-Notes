@@ -23,14 +23,15 @@
         $selection.push(note);
       }
     } else if (e.shiftKey) {
+        const store = $read?.notes.filter((n) => n.pinned === note.pinned)
       const lastSelection = $selection[$selection.length - 1];
-      const lastIndex = $read?.notes.findIndex((n) => n._id === lastSelection._id);
+      const lastIndex = store?.findIndex((n) => n._id === lastSelection._id);
 
       if (lastIndex === undefined || lastIndex < 0) return;
 
       if (lastIndex < i) {
         for (let j = lastIndex; j <= i; j++) {
-          const item = $read?.notes[j];
+          const item = store?.[j];
 
           if (item && !$selection.find((n) => item._id === n._id)) {
             $selection.push(item);
@@ -38,7 +39,7 @@
         }
       } else if (lastIndex > i) {
         for (let j = i; j <= lastIndex; j++) {
-          const item = $read?.notes[j];
+          const item = store?.[j];
 
           if (item && !$selection.find((n) => item._id === n._id)) {
             $selection.push(item);
