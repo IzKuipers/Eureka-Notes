@@ -14,6 +14,7 @@ export class EditorState {
   loading = Store<boolean>(false);
   writing = Store<boolean>(false);
   collapsed = Store<boolean>(false);
+  maximized = Store<boolean>(false);
   modified = Store<boolean>(false);
   path = Store<string>();
   currentFolder: string;

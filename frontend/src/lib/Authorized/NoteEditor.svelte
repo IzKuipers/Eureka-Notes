@@ -12,7 +12,7 @@
   import Segment from "../StatusBar/Segment.svelte";
 
   const { state: State }: { state: EditorState } = $props();
-  const { fullNote, writing, collapsed, modified, path, loading } = State;
+  const { fullNote, writing, collapsed, maximized, modified, path, loading } = State;
   const { maxZIndex } = GlobalViewerState!;
 
   let zIndex = $state<number>($maxZIndex + 1);
@@ -60,6 +60,7 @@
 <div
   class="dialog note-editor"
   class:collapsed={$collapsed}
+  class:maximized={!$collapsed && $maximized}
   bind:this={editor}
   onclick={updateZIndex}
   use:draggable={{
@@ -97,6 +98,15 @@
         aria-label="Collapse"
         onclick={() => ($collapsed = !$collapsed)}
       ></button>
+      {#if !$collapsed}
+        <button
+          class="maximizer lucide no-mobile"
+          class:icon-maximize={!$maximized}
+          class:icon-minimize={$maximized}
+          aria-label="Maximize"
+          onclick={() => ($maximized = !$maximized)}
+        ></button>
+      {/if}
       <button class="close lucide icon-x" aria-label="Close" onclick={() => State.close()} disabled={$writing}></button>
     </div>
   </div>
