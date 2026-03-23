@@ -29,7 +29,7 @@ export class SearchDialog extends ModularityDialogInstance {
     this.searching.set(true);
     this.loading.set(true);
 
-    const searchId = this.everywhere ? undefined : GlobalViewerState?.read()?.folderId;
+    const searchId = this.everywhere ? "everywhere" : GlobalViewerState?.read()?.folderId;
 
     // good god this is a fucking mess, STOP LOOKING AT IT ;-;
     const results = await GlobalServerConnector!.searchNotes(query, searchId || "root");
