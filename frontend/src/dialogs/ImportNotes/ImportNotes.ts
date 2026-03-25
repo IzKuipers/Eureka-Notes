@@ -1,7 +1,7 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import ImportNotes from "./ImportNotes.svelte";
@@ -30,7 +30,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
   async begin() {
     return new Promise<void>((resolve) => {
       const input = document.createElement("input");
-      const folderId = GlobalViewerState?.read()?.folderId;
+      const folderId = ViewerState.read()?.folderId;
       input.type = "file";
       input.accept = "text/plain";
       input.multiple = true;
@@ -70,7 +70,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
             continue;
           }
 
-          const created = await GlobalServerConnector?.createNote(file.name.replace(".txt", ""), text, folderId, false);
+          const created = await ServerConnector?.createNote(file.name.replace(".txt", ""), text, folderId, false);
 
           if (!created) this.Errors.set(this.Errors() + 1);
 
@@ -80,20 +80,20 @@ export class ImportNotesDialog extends ModularityDialogInstance {
         if (this.Skipped() > 0) {
           await BlockingOkay(
             "Import incomplete",
-            `Eureka didn't import ${this.Skipped()} of ${this.Total()} note(s). They might not be plain text documents, or they're above 10mb in size.`
+            `Eureka didn't import ${this.Skipped()} of ${this.Total()} note(s). They might not be plain text documents, or they're above 10mb in size.`,
           );
         }
 
         if (this.Errors() > 0) {
           await BlockingOkay(
             "Import incomplete",
-            `Eureka failed to import ${this.Errors()} note(s). Notes with matching names might already exist in this folder.`
+            `Eureka failed to import ${this.Errors()} note(s). Notes with matching names might already exist in this folder.`,
           );
         }
 
         this.Status.set("Finishing up...");
 
-        await GlobalViewerState?.refresh();
+        await ViewerState?.refresh();
 
         resolve();
         this.close();
@@ -103,10 +103,10 @@ export class ImportNotesDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Importing notes");
+    ViewerState?.setTemporaryStatus("Importing notes");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus();
+    ViewerState?.resetStatus();
   }
 }

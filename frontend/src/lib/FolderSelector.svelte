@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { GlobalServerConnector } from "../ts/api";
+  import { ServerConnector } from "../ts/api";
   import { FolderIcon } from "../ts/images";
   import type { FolderRead } from "../types/folder";
   import CenterLoader from "./CenterLoader.svelte";
@@ -16,7 +16,7 @@
 
   async function navigate(folderId?: string) {
     loading = true;
-    currentFolder = await GlobalServerConnector?.readFolderById(folderId || "");
+    currentFolder = await ServerConnector?.readFolderById(folderId || "");
     outFolderId = currentFolder?.folderId || "";
     loading = false;
   }

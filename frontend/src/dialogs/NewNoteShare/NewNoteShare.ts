@@ -2,7 +2,7 @@ import type { Component } from "svelte";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import NewNoteShare from "./NewNoteShare.svelte";
 import { Store } from "../../ts/writable";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay, ShowDialog } from "../../ts/dialog";
 import { ExistingNoteShareDialog } from "../ExistingNoteShare/ExistingNoteShare";
 
@@ -29,7 +29,7 @@ export class NewNoteShareDialog extends ModularityDialogInstance {
   }
 
   async create() {
-    const created = await GlobalServerConnector?.createShareNode(this.noteId, this.password() || undefined, this.expiresIn());
+    const created = await ServerConnector?.createShareNode(this.noteId, this.password() || undefined, this.expiresIn());
 
     this.close();
 

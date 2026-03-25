@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { GlobalOpenedState } from "../../ts/state/opened";
+  import { OpenedState } from "../../ts/state/opened";
   import NoteEditor from "./NoteEditor.svelte";
 
-  const { editors } = GlobalOpenedState!;
+  const { editors } = OpenedState;
 </script>
 
 <div class="opened-editors">

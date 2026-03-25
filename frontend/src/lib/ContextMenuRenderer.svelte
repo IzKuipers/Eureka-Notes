@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { GlobalContextMenuState } from "../ts/state/context";
+  import { ContextMenuState } from "../ts/state/context";
   import { UUID } from "../ts/uuid";
 
-  const { current } = GlobalContextMenuState!;
+  const { current } = ContextMenuState!;
 </script>
 
 <div class="context-menu" class:show={$current.show} style="--x: {$current.x}px; --y: {$current.y}px;">
@@ -14,7 +14,7 @@
         class="item"
         onclick={() => {
           item.action?.();
-          GlobalContextMenuState?.hideMenu();
+          ContextMenuState?.hideMenu();
         }}
       >
         <span>

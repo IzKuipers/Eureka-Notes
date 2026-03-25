@@ -1,14 +1,14 @@
 <script lang="ts">
   import { FolderIcon } from "../../../ts/images";
   import { contextMenu } from "../../../ts/state/context";
-  import { GlobalViewerState } from "../../../ts/state/viewer";
+    import { ViewerState } from "../../../ts/state/viewer";
   import { SEP_ITEM } from "../../../types/context";
   import type { ExistingEurekaFolder } from "../../../types/folder";
 
   const { folder }: { folder: ExistingEurekaFolder } = $props();
 
   async function navigate() {
-    await GlobalViewerState?.navigate(`${GlobalViewerState.path()}/${folder.name}`);
+    await ViewerState.navigate(`${ViewerState.path()}/${folder.name}`);
   }
 </script>
 
@@ -24,20 +24,20 @@
     SEP_ITEM,
     {
       caption: "Rename...",
-      action: () => GlobalViewerState?.renameFolder(folder),
+      action: () => ViewerState?.renameFolder(folder),
     },
     {
       caption: "Move...",
-      action: () => GlobalViewerState?.moveFolder(folder),
+      action: () => ViewerState.moveFolder(folder),
     },
     SEP_ITEM,
     {
       caption: "Delete...",
-      action: () => GlobalViewerState?.deleteFolder(folder),
+      action: () => ViewerState.deleteFolder(folder),
     },
     {
       caption: "Conceal just this folder",
-      action: () => GlobalViewerState?.toggleConcealedFolder(folder),
+      action: () => ViewerState.toggleConcealedFolder(folder),
       active: () => folder.conceiled,
     },
   ]}

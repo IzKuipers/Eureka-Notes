@@ -4,13 +4,13 @@
   import Segment from "../../lib/StatusBar/Segment.svelte";
   import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
-  import { GlobalViewerState } from "../../ts/state/viewer";
+  import { ViewerState } from "../../ts/state/viewer";
   import type { NewNoteDialog } from "./NewNote";
   import CenterLoader from "../../lib/CenterLoader.svelte";
 
   const { dialog }: { dialog: NewNoteDialog } = $props();
   const { saveName, saveContent, loading } = dialog;
-  const { path } = GlobalViewerState!;
+  const { path } = ViewerState!;
 
   let textarea = $state<HTMLTextAreaElement>();
 

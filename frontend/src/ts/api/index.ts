@@ -9,30 +9,27 @@ import type { ExistingEurekaUser } from "../../types/user";
 import { ShowDialog } from "../dialog";
 import { globalErrorHandler } from "../error";
 import { CommandResult } from "../result";
-import { GlobalOpenedState } from "../state/opened";
-import { GlobalViewerState } from "../state/viewer";
 import { sortByKey } from "../util";
 import { type Unsubscriber } from "../writable";
 import { BuildHash, Connected, Connecting, EurekaVersion, LoggedIn, Preferences, UserInfo } from "./stores";
-
-export let GlobalServerConnector: ServerConnector | undefined;
+import { ViewerState } from "../state/viewer";
+import { OpenedState } from "../state/opened";
 
 export class ServerConnector {
-  private token?: string;
-  private url: string;
-  private axios?: AxiosInstance;
-  private preferencesUnsubscribe?: Unsubscriber;
+  private static token?: string;
+  private static url: string;
+  private static axios?: AxiosInstance;
+  private static preferencesUnsubscribe?: Unsubscriber;
 
-  constructor(url: string = import.meta.env.EUREKA_SERVER_URL) {
+  static initialize(url: string = import.meta.env.EUREKA_SERVER_URL) {
     this.url = url;
 
-    GlobalServerConnector = this;
     if (import.meta.env.DEV) (window as any).ServerConnector = this;
   }
 
   //#region CONNECTION
 
-  async Connect() {
+  static async Connect() {
     Connecting.set(true);
     this.axios = axios?.create({
       baseURL: this.url,
@@ -64,14 +61,14 @@ export class ServerConnector {
   //#endregion
   //#region TOKEN
 
-  async loadToken() {
+  static async loadToken() {
     const token = Cookies.get("eurekaToken");
     if (!token) return;
 
     await this.continueWithToken(token);
   }
 
-  saveToken(token: string, username: string) {
+  static saveToken(token: string, username: string) {
     Cookies.set("eurekaToken", token, {
       expires: 365, // backend kicks us out after 1 day of inactivity, so this property doesn't matter.
       domain: location.hostname,
@@ -83,11 +80,11 @@ export class ServerConnector {
     });
   }
 
-  resetCookies() {
+  static resetCookies() {
     Cookies.remove("eurekaToken");
   }
 
-  public async GetUserInfo(token = this.token): Promise<ExistingEurekaUser | undefined> {
+  public static async GetUserInfo(token = this.token): Promise<ExistingEurekaUser | undefined> {
     try {
       const response = await this.axios!.get(`/auth/user/info`, { headers: { Authorization: `Bearer ${token}` } });
       if (response.status !== 200) throw "Token invalid";
@@ -99,7 +96,7 @@ export class ServerConnector {
     }
   }
 
-  async continueWithToken(token: string) {
+  static async continueWithToken(token: string) {
     const userInfo = await this.GetUserInfo(token);
 
     if (!userInfo) {
@@ -114,25 +111,25 @@ export class ServerConnector {
     Preferences.set(userInfo.preferences);
     UserInfo.set(userInfo);
     LoggedIn.set(true);
-    await GlobalViewerState?.initialize();
+    await ViewerState?.initialize();
 
     return true;
   }
 
-  resetEnvironment() {
+  static resetEnvironment() {
     this.preferencesUnsubscribe?.();
     this.preferencesUnsubscribe = undefined;
     Preferences.set({});
     LoggedIn.set(false);
     UserInfo.set(undefined);
-    GlobalOpenedState?.reset();
+    OpenedState?.reset();
     this.token = undefined;
   }
 
   //#endregion
   //#region PREFERENCES
 
-  startPreferencesSubscriber() {
+  static startPreferencesSubscriber() {
     if (this.preferencesUnsubscribe) return;
 
     this.preferencesUnsubscribe = Preferences.subscribe((v) => {
@@ -141,7 +138,7 @@ export class ServerConnector {
     });
   }
 
-  async commitPreferences(v: UserPreferences) {
+  static async commitPreferences(v: UserPreferences) {
     try {
       await this.axios?.put("/auth/user/preferences", JSON.stringify(v), {
         headers: { "Content-Type": "application/json" },
@@ -162,7 +159,7 @@ export class ServerConnector {
   //#endregion
   //#region AUTHORIZATION
 
-  async login(username: string, password: string) {
+  static async login(username: string, password: string) {
     try {
       const response = await this.axios!.post("/auth/login", toFormData({ username, password }), {
         headers: { Authorization: `` },
@@ -180,7 +177,7 @@ export class ServerConnector {
     }
   }
 
-  async logout() {
+  static async logout() {
     try {
       await this.axios!.post(`/auth/logout`, {});
 
@@ -194,7 +191,7 @@ export class ServerConnector {
     }
   }
 
-  async register(username: string, password: string) {
+  static async register(username: string, password: string) {
     try {
       const response = await this.axios!.post("/auth/register", toFormData({ username, password }), {
         headers: { Authorization: `` },
@@ -210,7 +207,7 @@ export class ServerConnector {
   //#endregion
   //#region NOTES
 
-  async readNote(id: string): Promise<ExistingEurekaNote | undefined> {
+  static async readNote(id: string): Promise<ExistingEurekaNote | undefined> {
     try {
       const response = await this.axios!.get(`/notes/read/${id}`);
 
@@ -221,7 +218,7 @@ export class ServerConnector {
     }
   }
 
-  async writeNote(id: string, data: string): Promise<boolean> {
+  static async writeNote(id: string, data: string): Promise<boolean> {
     try {
       const response = await this.axios!.put(`/notes/write/${id}`, toFormData({ data }));
 
@@ -232,7 +229,7 @@ export class ServerConnector {
     }
   }
 
-  async deleteNote(id: string): Promise<boolean> {
+  static async deleteNote(id: string): Promise<boolean> {
     try {
       const response = await this.axios!.delete(`/notes/delete/${id}`);
 
@@ -243,7 +240,7 @@ export class ServerConnector {
     }
   }
 
-  async moveNote(id: string, newFolderId: string) {
+  static async moveNote(id: string, newFolderId: string) {
     try {
       const response = await this.axios!.patch(`/notes/move/${id}`, toFormData({ newFolderId }));
 
@@ -254,7 +251,7 @@ export class ServerConnector {
     }
   }
 
-  async renameNote(id: string, newName: string) {
+  static async renameNote(id: string, newName: string) {
     try {
       const response = await this.axios!.patch(`/notes/rename/${id}`, toFormData({ newName }));
 
@@ -265,11 +262,11 @@ export class ServerConnector {
     }
   }
 
-  async createNote(name: string, data: string, folderId?: string, refresh = true) {
+  static async createNote(name: string, data: string, folderId?: string, refresh = true) {
     try {
       const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }));
 
-      if (refresh) await GlobalViewerState?.refresh();
+      if (refresh) await ViewerState?.refresh();
 
       return response.data as ExistingEurekaNote;
     } catch (e) {
@@ -278,7 +275,7 @@ export class ServerConnector {
     }
   }
 
-  async searchNotes(query: string, folderId?: string): Promise<NoteSearchResults> {
+  static async searchNotes(query: string, folderId?: string): Promise<NoteSearchResults> {
     try {
       const response = await this.axios!.post(`/notes/search`, toFormData({ query, folderId }));
 
@@ -292,7 +289,7 @@ export class ServerConnector {
     }
   }
 
-  async setNotePinned(noteId: string, pinned: boolean) {
+  static async setNotePinned(noteId: string, pinned: boolean) {
     try {
       const response = await this.axios!.patch(`/notes/pinned/${noteId}`, toFormData({ pinned }));
 
@@ -304,7 +301,7 @@ export class ServerConnector {
     }
   }
 
-  async setNoteConcealed(noteId: string, concealed: boolean) {
+  static async setNoteConcealed(noteId: string, concealed: boolean) {
     try {
       const response = await this.axios!.patch(`/notes/conceiled/${noteId}`, toFormData({ conceiled: concealed }));
 
@@ -319,7 +316,7 @@ export class ServerConnector {
   //#endregion
   //#region FOLDERS
 
-  async readFolderByPath(path = "") {
+  static async readFolderByPath(path = "") {
     try {
       const response = await this.axios!.get(path ? `/folders/read/path/${path}`.replaceAll("//", "/") : `/folders/read/path`);
 
@@ -335,7 +332,7 @@ export class ServerConnector {
     }
   }
 
-  async readFolderById(id: string) {
+  static async readFolderById(id: string) {
     if (!id) return await this.readFolderByPath("");
 
     try {
@@ -353,7 +350,7 @@ export class ServerConnector {
     }
   }
 
-  async deleteFolder(id: string) {
+  static async deleteFolder(id: string) {
     try {
       const response = await this.axios!.delete(`/folders/delete/${id}`);
 
@@ -364,7 +361,7 @@ export class ServerConnector {
     }
   }
 
-  async moveFolder(folderId: string, destinationId?: string) {
+  static async moveFolder(folderId: string, destinationId?: string) {
     try {
       const response = await this.axios!.post(
         `/folders/move`,
@@ -381,7 +378,7 @@ export class ServerConnector {
     }
   }
 
-  async renameFolder(folderId: string, newName: string) {
+  static async renameFolder(folderId: string, newName: string) {
     try {
       const response = await this.axios!.post(`/folders/rename/${folderId}`, toFormData({ newName }));
 
@@ -392,7 +389,7 @@ export class ServerConnector {
     }
   }
 
-  async createFolder(path: string) {
+  static async createFolder(path: string) {
     try {
       const response = await this.axios!.post(`/folders/create/${path}`, {});
 
@@ -401,9 +398,9 @@ export class ServerConnector {
       globalErrorHandler(e);
       return false;
     }
-  } 
-  
-  async setFolderConcealed(folderId: string, concealed: boolean) {
+  }
+
+  static async setFolderConcealed(folderId: string, concealed: boolean) {
     try {
       const response = await this.axios!.patch(`/folders/conceiled/${folderId}`, toFormData({ conceiled: concealed }));
 
@@ -418,7 +415,7 @@ export class ServerConnector {
   //#endregion
   //#region SHARES
 
-  async getAllShareNodes(): Promise<ShareListItem[]> {
+  static async getAllShareNodes(): Promise<ShareListItem[]> {
     try {
       const response = await this.axios!.get(`/shares/list/user`);
 
@@ -430,7 +427,7 @@ export class ServerConnector {
     }
   }
 
-  async getNoteShares(noteId: string): Promise<ShareListItem[]> {
+  static async getNoteShares(noteId: string): Promise<ShareListItem[]> {
     try {
       const response = await this.axios!.get(`/shares/list/note/${noteId}`);
 
@@ -442,7 +439,7 @@ export class ServerConnector {
     }
   }
 
-  async createShareNode(noteId: string, password?: string, expiresIn?: number) {
+  static async createShareNode(noteId: string, password?: string, expiresIn?: number) {
     try {
       const response = await this.axios!.post(`/shares/create`, toFormData({ noteId, password, expiresIn }));
 
@@ -454,7 +451,7 @@ export class ServerConnector {
     }
   }
 
-  async deleteShareById(shareId: string): Promise<boolean> {
+  static async deleteShareById(shareId: string): Promise<boolean> {
     try {
       const response = await this.axios!.delete(`/shares/delete/${shareId}`);
 
@@ -466,7 +463,7 @@ export class ServerConnector {
     }
   }
 
-  async readNoteByShareValue(value: string, password?: string): Promise<CommandResult<ShareReadResponse>> {
+  static async readNoteByShareValue(value: string, password?: string): Promise<CommandResult<ShareReadResponse>> {
     try {
       const response = await this.axios!.get(`/shares/read/${value}?password=${password ?? ""}`, {
         headers: { Authorization: undefined },

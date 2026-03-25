@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { GlobalViewerState } from "../../ts/state/viewer";
   import type { RenameNoteDialog } from "./RenameNote";
 
   const { dialog }: { dialog: RenameNoteDialog } = $props();

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { GlobalViewerState } from "../../ts/state/viewer";
+  import { ViewerState } from "../../ts/state/viewer";
   import type { ModularityDialogInstance } from "../../types/dialog";
   import DialogButton from "./ModularityDialog/DialogButton.svelte";
 
   const { key, dialog }: { key: string; dialog: ModularityDialogInstance } = $props();
-  const { maxZIndex } = GlobalViewerState!;
+  const { maxZIndex } = ViewerState!;
   const Component = dialog.component!;
 </script>
 

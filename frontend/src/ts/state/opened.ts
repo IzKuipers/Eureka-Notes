@@ -5,17 +5,11 @@ import { UserInfo } from "../api/stores";
 import { Store } from "../writable";
 import { EditorState } from "./editor";
 
-export let GlobalOpenedState: OpenedState | undefined;
-
 export class OpenedState {
-  editors = Store<Map<string, EditorState>>(new Map([]));
-  hasCollapsed = Store<boolean>(false);
+  static editors = Store<Map<string, EditorState>>(new Map([]));
+  static hasCollapsed = Store<boolean>(false);
 
-  constructor() {
-    GlobalOpenedState = this;
-  }
-
-  async openNote(partial: PartialEurekaNote) {
+  static async openNote(partial: PartialEurekaNote) {
     if (this.editors().has(partial._id)) return false;
 
     const editor = new EditorState(partial);
@@ -30,15 +24,15 @@ export class OpenedState {
     return true;
   }
 
-  newNote() {
+  static newNote() {
     NewNoteDialog.Invoke();
   }
 
-  newFolder() {
+  static newFolder() {
     NewFolderDialog.Invoke();
   }
 
-  closeEditor(editor: EditorState) {
+  static closeEditor(editor: EditorState) {
     this.editors.update((v) => {
       v.delete(editor.partialNote!._id);
 
@@ -47,11 +41,11 @@ export class OpenedState {
     this.updateHasCollapsed();
   }
 
-  reset() {
+  static reset() {
     this.editors.set(new Map([]));
   }
 
-  updateHasCollapsed() {
+  static updateHasCollapsed() {
     this.hasCollapsed.set(!![...(this.editors() || [])]?.filter(([_, v]) => v.collapsed())?.length);
   }
 }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { GlobalViewerState } from "../../ts/state/viewer";
   import type { NewFolderDialog } from "./NewFolder";
 
   const { dialog }: { dialog: NewFolderDialog } = $props();

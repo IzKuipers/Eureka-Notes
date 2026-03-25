@@ -1,20 +1,16 @@
 import type { ContextMenuPopulation, CurrentContextMenu } from "../../types/context";
 import { Store } from "../writable";
 
-export let GlobalContextMenuState: ContextMenuState | undefined;
-
 export class ContextMenuState {
-  private readonly DEFAULT_CURRENT: CurrentContextMenu = {
+  private static readonly DEFAULT_CURRENT: CurrentContextMenu = {
     x: -100,
     y: -100,
     items: [],
     show: false,
   };
-  current = Store<CurrentContextMenu>(this.DEFAULT_CURRENT);
+  static current = Store<CurrentContextMenu>(this.DEFAULT_CURRENT);
 
-  constructor() {
-    GlobalContextMenuState = this;
-
+  static Initialize() {
     document.addEventListener("click", (e) => {
       const menu = document.querySelector(".context-menu");
       const composed = e.composedPath();
@@ -29,7 +25,7 @@ export class ContextMenuState {
     });
   }
 
-  showMenu(x: number, y: number, items: ContextMenuPopulation) {
+  static showMenu(x: number, y: number, items: ContextMenuPopulation) {
     this.current.set({
       x,
       y,
@@ -38,7 +34,7 @@ export class ContextMenuState {
     });
   }
 
-  hideMenu() {
+  static hideMenu() {
     this.current.set(this.DEFAULT_CURRENT);
   }
 }
@@ -49,6 +45,6 @@ export function contextMenu(node: HTMLElement, items: ContextMenuPopulation) {
     e.stopPropagation();
     e.stopImmediatePropagation();
     const { clientX, clientY } = e;
-    GlobalContextMenuState?.showMenu(clientX, clientY, items);
+    ContextMenuState?.showMenu(clientX, clientY, items);
   });
 }

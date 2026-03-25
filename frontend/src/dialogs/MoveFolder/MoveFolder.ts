@@ -1,6 +1,6 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { ServerConnector } from "../../ts/api";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { ExistingEurekaFolder } from "../../types/folder";
@@ -29,17 +29,16 @@ export class MoveFolderDialog extends ModularityDialogInstance {
   }
 
   async doMove() {
-    await GlobalServerConnector?.moveFolder(this.folder._id, this.destinationFolder());
-    await GlobalViewerState?.refresh();
+    await ServerConnector?.moveFolder(this.folder._id, this.destinationFolder());
+    await ViewerState?.refresh();
     this.close();
   }
 
-  
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Moving folder")
+    ViewerState?.setTemporaryStatus("Moving folder");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus()
+    ViewerState?.resetStatus();
   }
 }

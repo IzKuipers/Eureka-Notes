@@ -1,7 +1,7 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { FolderRead } from "../../types/folder";
@@ -34,7 +34,7 @@ export class MoveNotesDialog extends ModularityDialogInstance {
 
     this.notes = props;
     this.total = this.notes.length;
-    this.folder = GlobalViewerState?.read();
+    this.folder = ViewerState?.read();
   }
 
   async doMove() {
@@ -43,7 +43,7 @@ export class MoveNotesDialog extends ModularityDialogInstance {
     for (const note of this.notes) {
       this.status.set(`Moving ${note.name}...`);
 
-      const moved = await GlobalServerConnector?.moveNote(note._id, this.destinationFolder());
+      const moved = await ServerConnector?.moveNote(note._id, this.destinationFolder());
       if (!moved) this.errors.set(this.errors() + 1);
 
       this.done.set(this.done() + 1);
@@ -52,21 +52,21 @@ export class MoveNotesDialog extends ModularityDialogInstance {
     if (this.errors()) {
       await BlockingOkay(
         "Move incomplete",
-        "Some notes could not be moved to the target folder. There might already be notes with those names in the folder."
+        "Some notes could not be moved to the target folder. There might already be notes with those names in the folder.",
       );
     }
 
     this.status.set("Finishing up...");
 
-    await GlobalViewerState?.refresh();
+    await ViewerState?.refresh();
     this.close();
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Moving stuff")
+    ViewerState?.setTemporaryStatus("Moving stuff");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus()
+    ViewerState?.resetStatus();
   }
 }

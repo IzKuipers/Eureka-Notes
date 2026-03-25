@@ -9,10 +9,10 @@
   import Segment from "./lib/StatusBar/Segment.svelte";
   import { EurekaVersion } from "./ts/api/stores";
   import { contextMenu } from "./ts/state/context";
-  import { GlobalShareState } from "./ts/state/share";
+  import { ShareState } from "./ts/state/share";
   import { SEP_ITEM } from "./types/context";
 
-  const { shareInfo, loading } = GlobalShareState!;
+  const { shareInfo, loading } = ShareState!;
 </script>
 
 <div
@@ -20,11 +20,11 @@
   use:contextMenu={[
     {
       caption: "Refresh",
-      action: () => GlobalShareState!.initialize(GlobalShareState!.password),
+      action: () => ShareState!.initialize(ShareState.shareValue!, ShareState.password),
     },
     {
       caption: "Copy link",
-      action: () => navigator.clipboard.writeText(`${location.origin}/?share=${GlobalShareState?.shareValue!}`),
+      action: () => navigator.clipboard.writeText(`${location.origin}/?share=${ShareState.shareValue}`),
     },
     SEP_ITEM,
     {

@@ -3,11 +3,9 @@ import App from "./App.svelte";
 import AppShared from "./AppShared.svelte";
 import "./css/main.css";
 import { ServerConnector } from "./ts/api";
-import { ContextMenuState } from "./ts/state/context";
 import { KeyboardState } from "./ts/state/keyboard";
 import { ModularityState } from "./ts/state/modular";
-import { OpenedState } from "./ts/state/opened";
-import { GlobalShareState, ShareState } from "./ts/state/share";
+import { ShareState } from "./ts/state/share";
 import { ViewerState } from "./ts/state/viewer";
 
 async function Main() {
@@ -16,28 +14,23 @@ async function Main() {
 
   document.title = "Loading...";
 
-  await new ServerConnector().Connect();
+  ServerConnector.initialize();
 
-  if (shareValue) {
-    new ContextMenuState();
-    new ShareState(shareValue);
-    await new ViewerState().initialize();
-    new ModularityState();
-    document.title = "EUREKA Shared";
-  }
+  await ServerConnector.Connect();
 
   mount(shareValue ? AppShared : App, {
     target: document.getElementById("app")!,
   });
 
-  GlobalShareState?.initialize();
+  if (shareValue) {
+    document.title = "EUREKA Shared";
+    await ShareState?.initialize(shareValue);
+  } else {
+    await ViewerState.initialize();
+  }
 
   if (!shareValue) {
-    new KeyboardState().initialize();
-    new ContextMenuState();
-    new ModularityState();
-    new OpenedState();
-    await new ViewerState().initialize();
+    KeyboardState.initialize();
     document.title = "EUREKA";
   }
 }

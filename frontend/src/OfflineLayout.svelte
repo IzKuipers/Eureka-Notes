@@ -4,9 +4,10 @@
 
   onMount(async () => {
     ShowDialog({
-      title: "Eureka offline",
-      message: "The server could not be reached",
+      title: "Eureka isn't available right now",
+      message: "The Eureka server could not be reached. Grab a cup of coffee, and come back to try again.",
       buttons: [{ caption: "Retry", action: () => location.reload(), autofocus: true }],
+      icon:"coffee"
     });
   });
 </script>

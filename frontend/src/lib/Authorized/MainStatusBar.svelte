@@ -3,11 +3,11 @@
   import { onDestroy, onMount } from "svelte";
   import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
-  import { GlobalViewerState } from "../../ts/state/viewer";
+  import { ViewerState } from "../../ts/state/viewer";
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
 
-  const { read, status, selection } = GlobalViewerState!;
+  const { read, status, selection } = ViewerState!;
   Preferences;
   let currentTime = $state<string>();
   let interval: number;

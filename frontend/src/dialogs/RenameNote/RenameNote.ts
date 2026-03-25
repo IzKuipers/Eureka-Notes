@@ -1,8 +1,8 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
-import { GlobalOpenedState } from "../../ts/state/opened";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { OpenedState } from "../../ts/state/opened";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { EurekaNote, PartialEurekaNote } from "../../types/note";
@@ -35,7 +35,7 @@ export class RenameNoteDialog extends ModularityDialogInstance {
 
     if (!newName || !note) return;
 
-    const result = await GlobalServerConnector?.renameNote(note._id, newName);
+    const result = await ServerConnector?.renameNote(note._id, newName);
 
     if (!result) {
       await BlockingOkay(
@@ -45,11 +45,11 @@ export class RenameNoteDialog extends ModularityDialogInstance {
       return;
     }
 
-    await GlobalViewerState?.refresh();
+    await ViewerState?.refresh();
     this.close();
 
     // Below updater changes the note name in the opened editor to the name of the note.
-    GlobalOpenedState?.editors.update((os) => {
+    OpenedState?.editors.update((os) => {
       const editor = os.get(note._id);
 
       if (!editor) return os;
@@ -66,10 +66,10 @@ export class RenameNoteDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Renaming note");
+    ViewerState?.setTemporaryStatus("Renaming note");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus();
+    ViewerState?.resetStatus();
   }
 }

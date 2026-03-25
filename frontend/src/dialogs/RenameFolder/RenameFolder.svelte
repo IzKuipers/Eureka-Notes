@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { GlobalViewerState } from "../../ts/state/viewer";
   import type { RenameFolderDialog } from "./RenameFolder";
 
   const { dialog }: { dialog: RenameFolderDialog } = $props();

@@ -1,12 +1,12 @@
 <script lang="ts">
   import CenterLoader from "../../lib/CenterLoader.svelte";
   import { NoteIcon } from "../../ts/images";
-  import { GlobalViewerState } from "../../ts/state/viewer";
+  import { ViewerState } from "../../ts/state/viewer";
   import type { SearchDialog } from "./SearchDialog";
 
   const { dialog }: { dialog: SearchDialog } = $props();
   const { searching, loading, results, everywhere } = dialog;
-  const { read } = GlobalViewerState!;
+  const { read } = ViewerState!;
 
   let query = $state<string>("");
 

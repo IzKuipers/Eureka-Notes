@@ -8,65 +8,60 @@ import { NewNoteDialog } from "../../dialogs/NewNote/NewNote";
 import { RenameFolderDialog } from "../../dialogs/RenameFolder/RenameFolder";
 import { RenameNoteDialog } from "../../dialogs/RenameNote/RenameNote";
 import { SearchDialog } from "../../dialogs/SearchDialog/SearchDialog";
-import type { EurekaFolder, ExistingEurekaFolder, FolderRead } from "../../types/folder";
-import type { EurekaNote, PartialEurekaNote } from "../../types/note";
-import { GlobalServerConnector } from "../api";
+import type { ExistingEurekaFolder, FolderRead } from "../../types/folder";
+import type { PartialEurekaNote } from "../../types/note";
+import { ServerConnector } from "../api";
 import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
-import { GlobalKeyboardState } from "./keyboard";
-import { GlobalModularityState } from "./modular";
+import { KeyboardState } from "./keyboard";
+import { ModularityState } from "./modular";
 
-export let GlobalViewerState: ViewerState | undefined;
 export const ViewerReady = Store<boolean>(false);
 
 export class ViewerState {
-  private readonly START_PATH: string;
-  private readonly DEFAULT_STATUS = "Ready.";
-  private temporaryStatusTimeout?: number;
-  public path = Store<string>();
-  public read = Store<FolderRead | undefined>();
-  public loading = Store<boolean>(false);
-  public status = Store<string>();
-  public selection = Store<PartialEurekaNote[]>([]);
-  public maxZIndex = Store<number>(100000000);
+  private static readonly START_PATH: string;
+  private static readonly DEFAULT_STATUS = "Ready.";
+  private static temporaryStatusTimeout?: number;
+  public static path = Store<string>("");
+  public static read = Store<FolderRead | undefined>();
+  public static loading = Store<boolean>(false);
+  public static status = Store<string>();
+  public static selection = Store<PartialEurekaNote[]>([]);
+  public static maxZIndex = Store<number>(100000000);
 
-  constructor(startPath = "") {
-    this.path.set(startPath);
-    GlobalViewerState = this;
-    this.START_PATH = startPath;
-  }
+  static async initialize() {
+    if (import.meta.env.DEV) (window as any).ViewerState = ViewerState;
 
-  async initialize() {
     Connecting.set(false);
     if (!Connected() || !LoggedIn()) return;
 
-    GlobalKeyboardState?.loadAccelerator("Alt-N", "Create a new note", () => {
-      if (GlobalModularityState?.IsOpen(NewNoteDialog)) return;
+    KeyboardState?.loadAccelerator("Alt-N", "Create a new note", () => {
+      if (ModularityState?.IsOpen(NewNoteDialog)) return;
       NewNoteDialog.Invoke();
     });
 
-    GlobalKeyboardState?.loadAccelerator("Alt-Shift-N", "Create a new folder", () => {
-      if (GlobalModularityState?.IsOpen(NewFolderDialog)) return;
+    KeyboardState?.loadAccelerator("Alt-Shift-N", "Create a new folder", () => {
+      if (ModularityState?.IsOpen(NewFolderDialog)) return;
       NewFolderDialog.Invoke();
     });
 
-    GlobalKeyboardState?.loadAccelerator("Alt-Shift-S", "Search the notes in just this folder", () => {
-      if (GlobalModularityState?.IsOpen(SearchDialog)) return;
+    KeyboardState?.loadAccelerator("Alt-Shift-S", "Search the notes in just this folder", () => {
+      if (ModularityState?.IsOpen(SearchDialog)) return;
       SearchDialog.Invoke(false);
     });
 
-    GlobalKeyboardState?.loadAccelerator("Alt-S", "Search all of your notes", () => {
-      if (GlobalModularityState?.IsOpen(SearchDialog)) return;
+    KeyboardState?.loadAccelerator("Alt-S", "Search all of your notes", () => {
+      if (ModularityState?.IsOpen(SearchDialog)) return;
       SearchDialog.Invoke(true);
     });
 
-    GlobalKeyboardState?.loadAccelerator("Alt-R", "Refresh the folder listing", () => {
-      GlobalViewerState?.refresh();
+    KeyboardState?.loadAccelerator("Alt-R", "Refresh the folder listing", () => {
+      ViewerState?.refresh();
     });
 
-    GlobalKeyboardState?.loadAccelerator("Ctrl-/", "Show keyboard shortcuts", () => {
-      if (GlobalModularityState?.IsOpen(KeyboardShortcutsDialog)) return;
+    KeyboardState?.loadAccelerator("Ctrl-/", "Show keyboard shortcuts", () => {
+      if (ModularityState?.IsOpen(KeyboardShortcutsDialog)) return;
       KeyboardShortcutsDialog.Invoke();
     });
 
@@ -75,11 +70,11 @@ export class ViewerState {
     ViewerReady.set(true);
   }
 
-  async navigate(path: string, force = false): Promise<boolean> {
+  static async navigate(path: string, force = false): Promise<boolean> {
     if (this.path() === path && !force) return false;
 
     this.loading.set(true);
-    const newContent = await GlobalServerConnector?.readFolderByPath(path);
+    const newContent = await ServerConnector?.readFolderByPath(path);
 
     if (!newContent) {
       await this.FolderNotFound();
@@ -97,22 +92,22 @@ export class ViewerState {
     return true;
   }
 
-  async refresh() {
+  static async refresh() {
     return await this.navigate(this.path(), true);
   }
 
-  reset() {
+  static reset() {
     this.read.set(undefined);
-    this.path.set(this.START_PATH);
+    this.path.set("")
     this.loading.set(false);
     this.resetStatus();
   }
 
-  async FolderNotFound() {
+  static async FolderNotFound() {
     await BlockingOkay("Folder not found", "The specified folder could not be found. Please check the path and try again.");
   }
 
-  setTemporaryStatus(status: string) {
+  static setTemporaryStatus(status: string) {
     clearTimeout(this.temporaryStatusTimeout);
 
     this.status.set(status);
@@ -122,11 +117,11 @@ export class ViewerState {
     }, 1000);
   }
 
-  resetStatus() {
+  static resetStatus() {
     this.status.set(this.DEFAULT_STATUS);
   }
 
-  deleteSelection(notes = this.selection()) {
+  static deleteSelection(notes = this.selection()) {
     if (!notes.length) return;
 
     ShowDialog({
@@ -143,7 +138,7 @@ export class ViewerState {
           caption: "Delete",
           action: async () => {
             if (notes.length === 1) {
-              await GlobalServerConnector?.deleteNote(notes[0]._id);
+              await ServerConnector?.deleteNote(notes[0]._id);
               await this.refresh();
             } else {
               DeleteNotesDialog.Invoke(...notes);
@@ -155,7 +150,7 @@ export class ViewerState {
     });
   }
 
-  renameSelection() {
+  static renameSelection() {
     if (this.selection().length !== 1) return;
 
     const note = this.selection()[0];
@@ -165,11 +160,11 @@ export class ViewerState {
     RenameNoteDialog.Invoke(note);
   }
 
-  renameFolder(folder: ExistingEurekaFolder) {
+  static renameFolder(folder: ExistingEurekaFolder) {
     RenameFolderDialog.Invoke(folder);
   }
 
-  deleteFolder(folder: ExistingEurekaFolder) {
+  static deleteFolder(folder: ExistingEurekaFolder) {
     ShowDialog({
       title: "Delete folder?",
       message: "Are you sure you want to delete this folder? Anything inside of it will also be deleted.",
@@ -181,8 +176,8 @@ export class ViewerState {
           caption: "Delete",
           className: "red",
           action: async () => {
-            await GlobalServerConnector?.deleteFolder(folder._id);
-            await GlobalViewerState?.refresh();
+            await ServerConnector?.deleteFolder(folder._id);
+            await ViewerState?.refresh();
           },
           autofocus: true,
         },
@@ -190,22 +185,22 @@ export class ViewerState {
     });
   }
 
-  moveFolder(folder: ExistingEurekaFolder) {
+  static moveFolder(folder: ExistingEurekaFolder) {
     MoveFolderDialog.Invoke(folder);
   }
 
-  moveSelection() {
+  static moveSelection() {
     if (!this.selection().length) return;
 
     MoveNotesDialog.Invoke(...this.selection());
   }
 
-  importNotes() {
+  static importNotes() {
     ImportNotesDialog.Invoke();
   }
 
-  async toggleConcealed(note: PartialEurekaNote) {
-    const result = await GlobalServerConnector?.setNoteConcealed(note._id, !note.conceiled);
+  static async toggleConcealed(note: PartialEurekaNote) {
+    const result = await ServerConnector?.setNoteConcealed(note._id, !note.conceiled);
 
     if (result)
       this.read.update((v) => {
@@ -217,8 +212,8 @@ export class ViewerState {
       });
   }
 
-  async togglePinned(note: PartialEurekaNote) {
-    const result = await GlobalServerConnector?.setNotePinned(note._id, !note.pinned);
+  static async togglePinned(note: PartialEurekaNote) {
+    const result = await ServerConnector?.setNotePinned(note._id, !note.pinned);
 
     if (result)
       this.read.update((v) => {
@@ -229,9 +224,9 @@ export class ViewerState {
         return v;
       });
   }
-  
-  async toggleConcealedFolder(folder: ExistingEurekaFolder) {
-    const result = await GlobalServerConnector?.setFolderConcealed(folder._id, !folder.conceiled);
+
+  static async toggleConcealedFolder(folder: ExistingEurekaFolder) {
+    const result = await ServerConnector?.setFolderConcealed(folder._id, !folder.conceiled);
 
     if (result)
       this.read.update((v) => {

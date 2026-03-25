@@ -1,6 +1,6 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { ServerConnector } from "../../ts/api";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import type { ExistingEurekaNote } from "../../types/note";
@@ -20,7 +20,7 @@ export class DeleteNotesDialog extends ModularityDialogInstance {
     for (const note of notes) {
       this.status.set(`Deleting ${note.name}`);
 
-      await GlobalServerConnector?.deleteNote(note._id);
+      await ServerConnector?.deleteNote(note._id);
 
       this.done.set(this.done() + 1);
     }
@@ -28,14 +28,14 @@ export class DeleteNotesDialog extends ModularityDialogInstance {
     this.status.set("Finishing up...");
 
     this.close();
-    GlobalViewerState?.refresh();
+    ViewerState?.refresh();
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Deleting notes");
+    ViewerState?.setTemporaryStatus("Deleting notes");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus();
+    ViewerState?.resetStatus();
   }
 }

@@ -1,15 +1,9 @@
 import type { KeyboardAccelerator } from "../../types/keyboard";
 
-export let GlobalKeyboardState: KeyboardState | undefined;
-
 export class KeyboardState {
-  accelerators: KeyboardAccelerator[] = [];
+  static accelerators: KeyboardAccelerator[] = [];
 
-  constructor() {
-    GlobalKeyboardState = this;
-  }
-
-  initialize() {
+  static initialize() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Tab") {
         e.preventDefault();
@@ -30,7 +24,7 @@ export class KeyboardState {
     });
   }
 
-  loadAccelerator(accelerator: string, description: string, action: (e: KeyboardEvent) => void) {
+  static loadAccelerator(accelerator: string, description: string, action: (e: KeyboardEvent) => void) {
     const result: KeyboardAccelerator = {
       action,
       description,

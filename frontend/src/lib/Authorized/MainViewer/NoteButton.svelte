@@ -4,14 +4,14 @@
   import { RenameNoteDialog } from "../../../dialogs/RenameNote/RenameNote";
   import { NoteIcon } from "../../../ts/images";
   import { contextMenu } from "../../../ts/state/context";
-  import { GlobalOpenedState } from "../../../ts/state/opened";
-  import { GlobalViewerState } from "../../../ts/state/viewer";
   import { SEP_ITEM } from "../../../types/context";
   import type { PartialEurekaNote } from "../../../types/note";
   import { ExistingNoteShareDialog } from "../../../dialogs/ExistingNoteShare/ExistingNoteShare";
+  import { ViewerState } from "../../../ts/state/viewer";
+  import { OpenedState } from "../../../ts/state/opened";
 
   const { note, i }: { note: PartialEurekaNote; i: number } = $props();
-  const { selection, read } = GlobalViewerState!;
+  const { selection, read } = ViewerState!;
 
   function onclick(e: MouseEvent) {
     if (e.ctrlKey) {
@@ -23,7 +23,7 @@
         $selection.push(note);
       }
     } else if (e.shiftKey) {
-        const store = $read?.notes.filter((n) => n.pinned === note.pinned)
+      const store = $read?.notes.filter((n) => n.pinned === note.pinned);
       const lastSelection = $selection[$selection.length - 1];
       const lastIndex = store?.findIndex((n) => n._id === lastSelection._id);
 
@@ -58,12 +58,12 @@
   class="viewer-item"
   class:selected={$selection.find((n) => n._id === note._id)}
   {onclick}
-  ondblclick={() => GlobalOpenedState?.openNote(note)}
+  ondblclick={() => OpenedState?.openNote(note)}
   title={note.name}
   use:contextMenu={[
     {
       caption: "Open note",
-      action: () => GlobalOpenedState?.openNote(note),
+      action: () => OpenedState?.openNote(note),
     },
     SEP_ITEM,
     {
@@ -72,7 +72,7 @@
     },
     {
       caption: "Delete...",
-      action: () => GlobalViewerState?.deleteSelection(),
+      action: () => ViewerState?.deleteSelection(),
     },
     {
       caption: "Move...",
@@ -83,7 +83,7 @@
     SEP_ITEM,
     {
       caption: "Delete just this note",
-      action: () => GlobalViewerState?.deleteSelection([note]),
+      action: () => ViewerState?.deleteSelection([note]),
     },
     {
       caption: "Move just this note",
@@ -99,12 +99,12 @@
     {
       caption: "Conceal just this note",
       active: () => note.conceiled,
-      action: () => GlobalViewerState?.toggleConcealed(note),
+      action: () => ViewerState?.toggleConcealed(note),
     },
     {
       caption: "Pin just this note",
       active: () => note.pinned,
-      action: () => GlobalViewerState?.togglePinned(note),
+      action: () => ViewerState?.togglePinned(note),
     },
   ]}
   class:concealed={note.conceiled}

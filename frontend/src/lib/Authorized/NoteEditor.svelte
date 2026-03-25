@@ -6,14 +6,14 @@
   import { Preferences } from "../../ts/api/stores";
   import { formatBytes } from "../../ts/bytes";
   import type { EditorState } from "../../ts/state/editor";
-  import { GlobalViewerState } from "../../ts/state/viewer";
   import CenterLoader from "../CenterLoader.svelte";
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
+    import { ViewerState } from "../../ts/state/viewer";
 
   const { state: State }: { state: EditorState } = $props();
   const { fullNote, writing, collapsed, maximized, modified, path, loading } = State;
-  const { maxZIndex } = GlobalViewerState!;
+  const { maxZIndex } = ViewerState!;
 
   let zIndex = $state<number>($maxZIndex + 1);
   let editor = $state<HTMLDivElement>();

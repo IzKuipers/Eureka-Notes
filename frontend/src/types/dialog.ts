@@ -1,5 +1,5 @@
 import type { Component } from "svelte";
-import { GlobalModularityState } from "../ts/state/modular";
+import { ModularityState } from "../ts/state/modular";
 import { Store } from "../ts/writable";
 
 export interface DialogOptions {
@@ -45,14 +45,14 @@ export class ModularityDialogInstance {
 
   close() {
     this.onClose();
-    GlobalModularityState?.DisposeDialog(this.id);
+    ModularityState?.DisposeDialog(this.id);
   }
 
   static async Invoke<T extends ModularityDialogInstance>(
     this: new (...args: any[]) => T,
     ...args: any[]
   ): Promise<T | undefined> {
-    return (await GlobalModularityState?.ShowDialog(this as any, ...args)) as T | undefined;
+    return (await ModularityState?.ShowDialog(this as any, ...args)) as T | undefined;
   }
 
   getDialog() {

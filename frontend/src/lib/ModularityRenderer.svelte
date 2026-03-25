@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { GlobalModularityState } from "../ts/state/modular";
+  import { ModularityState } from "../ts/state/modular";
   import ModularityDialog from "./ModularityRenderer/ModularityDialog.svelte";
 
-  const { store } = GlobalModularityState!;
+  const { store } = ModularityState!;
 </script>
 
 <div class="modularity-dialog-renderer">

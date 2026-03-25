@@ -4,17 +4,17 @@
   import { Preferences } from "../../ts/api/stores";
   import { FolderIcon } from "../../ts/images";
   import { contextMenu } from "../../ts/state/context";
-  import { GlobalOpenedState } from "../../ts/state/opened";
-  import { GlobalViewerState } from "../../ts/state/viewer";
   import { GetParentDirectory } from "../../ts/util";
   import { SEP_ITEM } from "../../types/context";
   import type { PartialEurekaNote } from "../../types/note";
   import CenterLoader from "../CenterLoader.svelte";
   import FolderButton from "./MainViewer/FolderButton.svelte";
   import NoteButton from "./MainViewer/NoteButton.svelte";
+    import { ViewerState } from "../../ts/state/viewer";
+    import { OpenedState } from "../../ts/state/opened";
 
-  const { loading, read, path } = GlobalViewerState!;
-  const { hasCollapsed } = GlobalOpenedState!;
+  const { loading, read, path } = ViewerState!;
+  const { hasCollapsed } = OpenedState!;
 
   let pinned = $state<PartialEurekaNote[]>([]);
 
@@ -31,38 +31,38 @@
   use:contextMenu={[
     {
       caption: "New note",
-      action: () => GlobalOpenedState?.newNote(),
+      action: () => OpenedState?.newNote(),
     },
     {
       caption: "New folder",
-      action: () => GlobalOpenedState?.newFolder(),
+      action: () => OpenedState?.newFolder(),
     },
     SEP_ITEM,
     {
       caption: "Select all",
-      action: () => GlobalViewerState?.selection.set($read?.notes || []),
+      action: () => ViewerState?.selection.set($read?.notes || []),
     },
     {
       caption: "Import...",
-      action: () => GlobalViewerState?.importNotes(),
+      action: () => ViewerState?.importNotes(),
     },
     SEP_ITEM,
     {
       caption: "Rename selection",
-      action: () => GlobalViewerState?.renameSelection(),
+      action: () => ViewerState?.renameSelection(),
     },
     {
       caption: "Delete selection",
-      action: () => GlobalViewerState?.deleteSelection(),
+      action: () => ViewerState?.deleteSelection(),
     },
     {
       caption: "Move selection",
-      action: () => GlobalViewerState?.moveSelection(),
+      action: () => ViewerState?.moveSelection(),
     },
     SEP_ITEM,
     {
       caption: "Refresh",
-      action: () => GlobalViewerState?.refresh(),
+      action: () => ViewerState?.refresh(),
     },
     SEP_ITEM,
     {
@@ -79,7 +79,7 @@
       <hr />
     {/if}
     {#if $path && $path !== "/"}
-      <button class="viewer-item parent" onclick={() => GlobalViewerState?.navigate(GetParentDirectory($path))}>
+      <button class="viewer-item parent" onclick={() => ViewerState?.navigate(GetParentDirectory($path))}>
         <img src={FolderIcon} alt="" />
         <span>..</span>
         <span class="lucide icon-corner-left-up"></span>

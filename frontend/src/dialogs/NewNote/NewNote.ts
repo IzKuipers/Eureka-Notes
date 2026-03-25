@@ -1,8 +1,8 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay, ShowDialog } from "../../ts/dialog";
-import { GlobalOpenedState } from "../../ts/state/opened";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { OpenedState } from "../../ts/state/opened";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import NewNote from "./NewNote.svelte";
@@ -22,7 +22,7 @@ export class NewNoteDialog extends ModularityDialogInstance {
 
     this.loading.set(true)
 
-    const note = await GlobalServerConnector?.createNote(saveName, saveContent, GlobalViewerState?.read()?.folderId);
+    const note = await ServerConnector?.createNote(saveName, saveContent, ViewerState?.read()?.folderId);
 
     if (!note) {
       await BlockingOkay(
@@ -33,7 +33,7 @@ export class NewNoteDialog extends ModularityDialogInstance {
       return;
     }
 
-    await GlobalOpenedState?.openNote(note);
+    await OpenedState?.openNote(note);
     this.close();
     this.loading.set(false);
   }
@@ -58,10 +58,10 @@ export class NewNoteDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Creating a new note")
+    ViewerState?.setTemporaryStatus("Creating a new note")
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus()
+    ViewerState?.resetStatus()
   }
 }

@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { GlobalServerConnector } from "./api";
+import { ServerConnector } from "./api";
 import { LoggedIn } from "./api/stores";
 import { Dialogs, ShowDialog } from "./dialog";
 
@@ -21,7 +21,7 @@ export function globalErrorHandler(e: any) {
             {
               caption: "Reload",
               action: () => {
-                GlobalServerConnector?.resetCookies();
+                ServerConnector?.resetCookies();
                 location.reload();
               },
             },

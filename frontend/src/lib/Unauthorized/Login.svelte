@@ -1,7 +1,7 @@
 <script lang="ts">
   import Cookies from "js-cookie";
   import { onMount } from "svelte";
-  import { GlobalServerConnector } from "../../ts/api";
+  import { ServerConnector } from "../../ts/api";
   import { BuildHash, EurekaVersion } from "../../ts/api/stores";
   import { BlockingOkay } from "../../ts/dialog";
   import StatusBar from "../StatusBar.svelte";
@@ -12,7 +12,7 @@
   let username = $state<string>();
   let password = $state<string>();
   let loading = $state<boolean>(false);
-  let passwordField = $state<HTMLInputElement>()
+  let passwordField = $state<HTMLInputElement>();
 
   onMount(() => {
     username = Cookies.get("eurekaUsername") || "";
@@ -22,7 +22,7 @@
     if (!username || !password) return;
 
     loading = true;
-    const token = await GlobalServerConnector?.login(username, password);
+    const token = await ServerConnector?.login(username, password);
 
     if (!token) {
       await BlockingOkay("Login failed", "The credentials you entered are invalid. Please try again.");
@@ -52,12 +52,26 @@
         <div class="field username">
           <label for="usernameField">Username</label>
           <!-- svelte-ignore a11y_autofocus -->
-          <input type="text" id="usernameField" bind:value={username} disabled={loading} onkeydown={onUsernameKeydown} autofocus />
+          <input
+            type="text"
+            id="usernameField"
+            bind:value={username}
+            disabled={loading}
+            onkeydown={onUsernameKeydown}
+            autofocus
+          />
         </div>
 
         <div class="field password">
           <label for="passwordField">Password</label>
-          <input type="password" id="passwordField" bind:this={passwordField} bind:value={password} {onkeydown} disabled={loading} />
+          <input
+            type="password"
+            id="passwordField"
+            bind:this={passwordField}
+            bind:value={password}
+            {onkeydown}
+            disabled={loading}
+          />
         </div>
       </div>
       <div class="dialog-actions">

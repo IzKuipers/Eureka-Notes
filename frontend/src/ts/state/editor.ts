@@ -1,10 +1,10 @@
 import type { ExistingEurekaNote, PartialEurekaNote } from "../../types/note";
-import { GlobalServerConnector } from "../api";
+import { ServerConnector } from "../api";
 import { ShowDialog } from "../dialog";
 import { Sleep } from "../sleep";
 import { Store } from "../writable";
-import { GlobalOpenedState } from "./opened";
-import { GlobalViewerState } from "./viewer";
+import { OpenedState } from "./opened";
+import { ViewerState } from "./viewer";
 
 export class EditorState {
   partialNote: PartialEurekaNote;
@@ -23,20 +23,20 @@ export class EditorState {
     this.partialNote = partial;
 
     this.fullNote.subscribe(() => {
-      GlobalViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
+      ViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
     });
 
     this.collapsed.subscribe((v) => {
-      GlobalOpenedState?.updateHasCollapsed();
+      OpenedState?.updateHasCollapsed();
     });
 
-    this.currentFolder = GlobalViewerState?.path()!;
+    this.currentFolder = ViewerState.path()!;
   }
 
   async read() {
     this.noteId = this.partialNote._id;
     this.loading.set(true);
-    const noteData = await GlobalServerConnector!.readNote(this.partialNote._id);
+    const noteData = await ServerConnector.readNote(this.partialNote._id);
     this.loading.set(false);
 
     if (!noteData) {
@@ -52,7 +52,7 @@ export class EditorState {
   async writeData() {
     this.writing.set(true);
 
-    await GlobalServerConnector?.writeNote(this.partialNote!._id, this.fullNote().data);
+    await ServerConnector?.writeNote(this.partialNote!._id, this.fullNote().data);
 
     this.fullNote.update((v) => {
       v.updatedAt = new Date().toISOString();
@@ -70,7 +70,7 @@ export class EditorState {
     const isModified = this.modified();
 
     if (!isModified) {
-      GlobalOpenedState?.closeEditor(this);
+      OpenedState?.closeEditor(this);
       return;
     }
 
@@ -82,14 +82,14 @@ export class EditorState {
         {
           caption: "Discard",
           action: () => {
-            GlobalOpenedState?.closeEditor(this);
+            OpenedState?.closeEditor(this);
           },
         },
         {
           caption: "Save",
           action: async () => {
             await this.writeData();
-            GlobalOpenedState?.closeEditor(this);
+            OpenedState?.closeEditor(this);
           },
           autofocus: true,
         },

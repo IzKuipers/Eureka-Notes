@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlobalServerConnector } from "../../ts/api";
+  import { ServerConnector } from "../../ts/api";
   import { BuildHash, EurekaVersion } from "../../ts/api/stores";
   import { BlockingOkay } from "../../ts/dialog";
   import { OnEnterJumpTo } from "../../ts/util";
@@ -22,7 +22,7 @@
     }
 
     loading = true;
-    const result = await GlobalServerConnector?.register(username, password);
+    const result = await ServerConnector?.register(username, password);
     loading = false;
 
     if (!result) {
@@ -54,17 +54,28 @@
         <div class="field username">
           <label for="registerUsernameField">Username</label>
           <!-- svelte-ignore a11y_autofocus -->
-          <input type="text" id="registerUsernameField" bind:value={username} onkeydown={OnEnterJumpTo("#registerPasswordField")} autofocus />
+          <input
+            type="text"
+            id="registerUsernameField"
+            bind:value={username}
+            onkeydown={OnEnterJumpTo("#registerPasswordField")}
+            autofocus
+          />
         </div>
 
         <div class="field password">
           <label for="registerPasswordField">Password</label>
-          <input type="password" id="registerPasswordField" bind:value={password} onkeydown={OnEnterJumpTo("#registerPasswordConfirmField")} />
+          <input
+            type="password"
+            id="registerPasswordField"
+            bind:value={password}
+            onkeydown={OnEnterJumpTo("#registerPasswordConfirmField")}
+          />
         </div>
 
         <div class="field password">
           <label for="registerPasswordConfirmField">Confirm password</label>
-          <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} {onkeydown}/>
+          <input type="password" id="registerPasswordConfirmField" bind:value={confirmPassword} {onkeydown} />
         </div>
       </div>
       <div class="dialog-actions">

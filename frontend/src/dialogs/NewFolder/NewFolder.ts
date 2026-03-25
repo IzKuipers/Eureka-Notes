@@ -1,7 +1,7 @@
 import type { Component } from "svelte";
-import { GlobalServerConnector } from "../../ts/api";
+import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
-import { GlobalViewerState } from "../../ts/state/viewer";
+import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
 import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
 import NewFolder from "./NewFolder.svelte";
@@ -26,26 +26,26 @@ export class NewFolderDialog extends ModularityDialogInstance {
 
     if (!saveName) return;
 
-    const note = await GlobalServerConnector?.createFolder(`${GlobalViewerState?.path()}/${saveName}`);
+    const note = await ServerConnector?.createFolder(`${ViewerState?.path()}/${saveName}`);
 
     if (!note) {
       await BlockingOkay(
         "Failed to create folder",
-        "A folder with that name might already exist in this folder. Please choose a different name."
+        "A folder with that name might already exist in this folder. Please choose a different name.",
       );
       return;
     }
 
-    await GlobalViewerState?.refresh();
+    await ViewerState?.refresh();
     this.close();
-    GlobalViewerState?.resetStatus();
+    ViewerState?.resetStatus();
   }
 
   onOpen(): void {
-    GlobalViewerState?.setTemporaryStatus("Creating a new folder")
+    ViewerState?.setTemporaryStatus("Creating a new folder");
   }
 
   onClose(): void {
-    GlobalViewerState?.resetStatus()
+    ViewerState?.resetStatus();
   }
 }
