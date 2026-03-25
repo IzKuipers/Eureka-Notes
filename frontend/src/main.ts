@@ -7,6 +7,7 @@ import { KeyboardState } from "./ts/state/keyboard";
 import { ModularityState } from "./ts/state/modular";
 import { ShareState } from "./ts/state/share";
 import { ViewerState } from "./ts/state/viewer";
+import { ContextMenuState } from "./ts/state/context";
 
 async function Main() {
   const searchParams = new URLSearchParams(location.search);
@@ -15,6 +16,7 @@ async function Main() {
   document.title = "Loading...";
 
   ServerConnector.initialize();
+  ContextMenuState.Initialize();
 
   await ServerConnector.Connect();
 
