@@ -26,7 +26,7 @@ export class OpenedState {
     });
 
     await editor.read();
-
+    
     return true;
   }
 
@@ -44,6 +44,7 @@ export class OpenedState {
 
       return v;
     });
+    this.updateHasCollapsed();
   }
 
   reset() {
