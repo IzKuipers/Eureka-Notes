@@ -26,6 +26,10 @@ export class EditorState {
       GlobalViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
     });
 
+    this.collapsed.subscribe((v) => {
+      GlobalOpenedState?.updateHasCollapsed();
+    });
+
     this.currentFolder = GlobalViewerState?.path()!;
   }
 

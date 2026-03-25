@@ -1,6 +1,7 @@
 <script lang="ts">
   import CenterLoader from "./lib/CenterLoader.svelte";
   import DialogRenderer from "./lib/DialogRenderer.svelte";
+  import MobileBlock from "./lib/MobileBlock.svelte";
   import OfflineLayout from "./OfflineLayout.svelte";
   import OnlineLayout from "./OnlineLayout.svelte";
   import { Connected, Connecting } from "./ts/api/stores";
@@ -17,3 +18,4 @@
 {/if}
 
 <DialogRenderer />
+<MobileBlock />

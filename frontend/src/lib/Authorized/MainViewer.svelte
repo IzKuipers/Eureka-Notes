@@ -12,7 +12,9 @@
   import CenterLoader from "../CenterLoader.svelte";
   import FolderButton from "./MainViewer/FolderButton.svelte";
   import NoteButton from "./MainViewer/NoteButton.svelte";
+
   const { loading, read, path } = GlobalViewerState!;
+  const { hasCollapsed } = GlobalOpenedState!;
 
   let pinned = $state<PartialEurekaNote[]>([]);
 
@@ -25,6 +27,7 @@
 
 <div
   class="main-viewer"
+  class:has-collapsed={$hasCollapsed}
   use:contextMenu={[
     {
       caption: "New note",

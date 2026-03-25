@@ -9,6 +9,7 @@ export let GlobalOpenedState: OpenedState | undefined;
 
 export class OpenedState {
   editors = Store<Map<string, EditorState>>(new Map([]));
+  hasCollapsed = Store<boolean>(false);
 
   constructor() {
     GlobalOpenedState = this;
@@ -47,5 +48,9 @@ export class OpenedState {
 
   reset() {
     this.editors.set(new Map([]));
+  }
+
+  updateHasCollapsed() {
+    this.hasCollapsed.set(!![...(this.editors() || [])]?.filter(([_, v]) => v.collapsed())?.length);
   }
 }

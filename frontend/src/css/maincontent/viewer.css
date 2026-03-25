@@ -2,6 +2,9 @@ div.main-viewer {
   padding: 10px;
   height: 100%;
   overflow-y: auto;
+}
+
+div.main-viewer.has-collapsed {
   padding-right: calc(15px + 270px + 15px); /* content padding + collapsed view + collapsed view padding */
 }
 
@@ -18,7 +21,7 @@ div.main-viewer > div.listing:not(.view-list) span.timestamp {
 
 div.main-viewer hr {
   width: 100%;
-  border:var(--button-hover) 1px solid;
+  border: var(--button-hover) 1px solid;
   margin: 5px 0;
 }
 
@@ -33,8 +36,8 @@ div.main-viewer button.viewer-item {
 }
 
 div.main-viewer button.viewer-item.concealed:not(:hover) span:not(.lucide) {
-    font-family: "Flow Circular";
-    opacity: 0.5;
+  font-family: "Flow Circular";
+  opacity: 0.5;
 }
 
 div.main-viewer button.viewer-item span:not(.lucide) {
@@ -97,10 +100,4 @@ div.main-viewer > div.listing.view-large-grid button.viewer-item span {
   flex-grow: 0;
   width: 100%;
   text-align: center;
-}
-
-@media screen and (max-width: 700px) {
-  div.main-viewer {
-    padding-right: 10px;
-  }
 }

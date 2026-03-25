@@ -5,6 +5,13 @@ div.login-screen {
 
 div.login-screen div.login-wrapper {
   flex-grow: 1;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--background),
+    var(--background) 10px,
+    var(--background-secondary) 10px,
+    var(--background-secondary) 20px
+  );
 }
 
 div.login-screen div.dialog {
