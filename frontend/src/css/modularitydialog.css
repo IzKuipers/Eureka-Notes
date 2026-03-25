@@ -15,11 +15,23 @@
 .modularity-dialog-wrapper {
   background-color: var(--background-transparent);
   z-index: 100000000000000;
+  opacity: 0;
+  transition: opacity var(--animation-duration);
+}
+
+.modularity-dialog-wrapper.visible {
+  opacity: 1;
 }
 
 .modularity-dialog {
   width: var(--width, 400px);
   height: var(--height, 128px);
+  scale: 0.95;
+  transition: scale var(--animation-duration);
+}
+
+.modularity-dialog-wrapper.visible .modularity-dialog {
+  scale: 1;
 }
 
 .modularity-dialog div.dialog-body {

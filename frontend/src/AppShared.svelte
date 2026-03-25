@@ -57,7 +57,16 @@
     <StatusBar>
       <Segment>{$shareInfo.noteName}</Segment>
       <Segment unimportant>In {$shareInfo.folderName}</Segment>
+
       {#snippet rightContent()}
+        <Segment flex>
+          <button
+            class="lucide icon-copy"
+            onclick={() => navigator.clipboard.writeText($shareInfo!.data)}
+            aria-label="Copy"
+            title="Copy note content"
+          ></button>
+        </Segment>
         <Segment unimportant>Last updated: {dayjs($shareInfo.updatedAt).format("DD/MM/YYYY HH:mm")}</Segment>
       {/snippet}
     </StatusBar>

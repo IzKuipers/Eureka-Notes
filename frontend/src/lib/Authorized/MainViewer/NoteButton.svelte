@@ -71,14 +71,16 @@
       action: () => RenameNoteDialog.Invoke(note),
     },
     {
-      caption: "Delete...",
+      caption: "Delete selection...",
       action: () => ViewerState?.deleteSelection(),
+      disabled: () => !selection().length,
     },
     {
-      caption: "Move...",
+      caption: "Move selection...",
       action: () => {
         MoveNotesDialog.Invoke(...$selection);
       },
+      disabled: () => !selection().length,
     },
     SEP_ITEM,
     {

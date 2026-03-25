@@ -22,6 +22,7 @@ export class ModularityDialogInstance {
   public className?: string;
   public buttons: DialogButton[] = [];
   public loading = Store<boolean>(false);
+  public visible = Store<boolean>(false);
   public disabledButtons = Store<number[]>();
   protected props;
 

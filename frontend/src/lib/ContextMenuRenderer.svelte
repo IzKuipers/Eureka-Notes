@@ -12,6 +12,7 @@
     {:else}
       <button
         class="item"
+        disabled={item.disabled?.()}
         onclick={() => {
           item.action?.();
           ContextMenuState?.hideMenu();

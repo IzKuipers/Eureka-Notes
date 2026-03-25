@@ -11,6 +11,7 @@ div.shared-note div.content {
   overflow-y: scroll;
   white-space: pre;
   padding: 10px;
+  user-select: text;
 }
 
 div.shared-note div.shared-topbar {

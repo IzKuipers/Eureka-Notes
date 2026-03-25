@@ -18,25 +18,25 @@
   ondblclick={navigate}
   use:contextMenu={[
     {
-      caption: "Open",
+      caption: "Open folder",
       action: () => navigate(),
     },
     SEP_ITEM,
     {
-      caption: "Rename...",
+      caption: "Rename this folder...",
       action: () => ViewerState?.renameFolder(folder),
     },
     {
-      caption: "Move...",
+      caption: "Move this folder...",
       action: () => ViewerState.moveFolder(folder),
     },
     SEP_ITEM,
     {
-      caption: "Delete...",
+      caption: "Delete folder...",
       action: () => ViewerState.deleteFolder(folder),
     },
     {
-      caption: "Conceal just this folder",
+      caption: "Conceal folder",
       action: () => ViewerState.toggleConcealedFolder(folder),
       active: () => folder.conceiled,
     },

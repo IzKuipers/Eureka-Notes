@@ -1,5 +1,11 @@
 .loader.fill-absolute {
   background-color: var(--background-transparent);
+  opacity: 0;
+  transition: opacity var(--animation-duration);
+}
+
+.loader.fill-absolute.visible {
+  opacity: 1;
 }
 
 .loader::after {

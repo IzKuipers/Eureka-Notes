@@ -1,12 +1,24 @@
 .message-dialog-wrapper {
   background-color: var(--background-transparent);
   z-index: 10000000000;
+  opacity: 0;
+  transition: opacity var(--animation-duration);
+}
+
+.message-dialog-wrapper.visible {
+  opacity: 1;
 }
 
 .message-dialog {
   width: 400px;
   min-height: 130px;
   height: fit-content;
+  scale: 0.95;
+  transition: scale var(--animation-duration);
+}
+
+.message-dialog-wrapper.visible div.message-dialog {
+  scale: 1;
 }
 
 .message-dialog div.dialog-body {

@@ -9,10 +9,10 @@
   import CenterLoader from "../CenterLoader.svelte";
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
-    import { ViewerState } from "../../ts/state/viewer";
+  import { ViewerState } from "../../ts/state/viewer";
 
   const { state: State }: { state: EditorState } = $props();
-  const { fullNote, writing, collapsed, maximized, modified, path, loading } = State;
+  const { fullNote, writing, collapsed, maximized, modified, path, loading, visible } = State;
   const { maxZIndex } = ViewerState!;
 
   let zIndex = $state<number>($maxZIndex + 1);
@@ -44,6 +44,8 @@
         textarea!.selectionStart = textarea!.selectionEnd = start + 1;
       });
     });
+
+    setTimeout(() => ($visible = true));
   });
 
   function oninput() {
@@ -61,6 +63,7 @@
   class="dialog note-editor"
   class:collapsed={$collapsed}
   class:maximized={!$collapsed && $maximized}
+  class:visible={$visible}
   bind:this={editor}
   onclick={updateZIndex}
   use:draggable={{

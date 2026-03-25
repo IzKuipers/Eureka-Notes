@@ -9,6 +9,7 @@
   --foreground-transparent: #24242480;
   --red: #f36b6b;
   --box-shadow: 4px 4px 12px 3px #00000040;
+  --animation-duration: 0.15s;
 }
 
 @media screen and (prefers-color-scheme: dark) {

@@ -16,6 +16,7 @@ export class EditorState {
   collapsed = Store<boolean>(false);
   maximized = Store<boolean>(false);
   modified = Store<boolean>(false);
+  visible = Store<boolean>(false);
   path = Store<string>();
   currentFolder: string;
 
@@ -70,6 +71,9 @@ export class EditorState {
     const isModified = this.modified();
 
     if (!isModified) {
+      this.visible.set(false);
+      await Sleep(150);
+
       OpenedState?.closeEditor(this);
       return;
     }

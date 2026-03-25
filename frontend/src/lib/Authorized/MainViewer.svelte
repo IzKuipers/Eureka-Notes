@@ -10,10 +10,10 @@
   import CenterLoader from "../CenterLoader.svelte";
   import FolderButton from "./MainViewer/FolderButton.svelte";
   import NoteButton from "./MainViewer/NoteButton.svelte";
-    import { ViewerState } from "../../ts/state/viewer";
-    import { OpenedState } from "../../ts/state/opened";
+  import { ViewerState } from "../../ts/state/viewer";
+  import { OpenedState } from "../../ts/state/opened";
 
-  const { loading, read, path } = ViewerState!;
+  const { loading, read, path, selection } = ViewerState!;
   const { hasCollapsed } = OpenedState!;
 
   let pinned = $state<PartialEurekaNote[]>([]);
@@ -31,38 +31,41 @@
   use:contextMenu={[
     {
       caption: "New note",
-      action: () => OpenedState?.newNote(),
+      action: () => OpenedState.newNote(),
     },
     {
       caption: "New folder",
-      action: () => OpenedState?.newFolder(),
+      action: () => OpenedState.newFolder(),
     },
     SEP_ITEM,
     {
       caption: "Select all",
-      action: () => ViewerState?.selection.set($read?.notes || []),
+      action: () => ViewerState.selection.set($read?.notes || []),
     },
     {
       caption: "Import...",
-      action: () => ViewerState?.importNotes(),
+      action: () => ViewerState.importNotes(),
     },
     SEP_ITEM,
     {
       caption: "Rename selection",
-      action: () => ViewerState?.renameSelection(),
+      action: () => ViewerState.renameSelection(),
+      disabled: () => selection().length !== 1,
     },
     {
       caption: "Delete selection",
-      action: () => ViewerState?.deleteSelection(),
+      action: () => ViewerState.deleteSelection(),
+      disabled: () => !selection().length,
     },
     {
       caption: "Move selection",
-      action: () => ViewerState?.moveSelection(),
+      action: () => ViewerState.moveSelection(),
+      disabled: () => !selection().length,
     },
     SEP_ITEM,
     {
       caption: "Refresh",
-      action: () => ViewerState?.refresh(),
+      action: () => ViewerState.refresh(),
     },
     SEP_ITEM,
     {

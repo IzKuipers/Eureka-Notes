@@ -1,4 +1,5 @@
 import type { ModularityDialogInstance } from "../../types/dialog";
+import { Sleep } from "../sleep";
 import { UUID } from "../uuid";
 import { Store } from "../writable";
 
@@ -17,15 +18,24 @@ export class ModularityState {
       return v;
     });
 
+    await Sleep(10);
+    instance.visible.set(true);
+
     instance.onOpen();
     return instance;
   }
 
   public static DisposeDialog(id: string) {
-    this.store.update((v) => {
-      v.delete(id);
-      return v;
-    });
+    const dialog = this.store().get(id);
+    if (!dialog) return;
+
+    dialog.visible.set(false);
+    setTimeout(() => {
+      this.store.update((v) => {
+        v.delete(id);
+        return v;
+      });
+    }, 100);
   }
 
   static IsOpen(dialog: typeof ModularityDialogInstance) {

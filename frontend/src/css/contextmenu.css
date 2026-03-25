@@ -4,7 +4,9 @@ div.context-menu {
   left: var(--x, -100px);
   width: 220px;
   height: fit-content;
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--animation-duration);
   flex-direction: column;
   box-shadow: var(--box-shadow);
   border: var(--border-color) 1px solid;
@@ -15,6 +17,8 @@ div.context-menu {
 
 div.context-menu.show {
   display: flex;
+  opacity: 1;
+  pointer-events: initial;
 }
 
 div.context-menu button {
@@ -32,6 +36,10 @@ div.context-menu button span:not(.lucide) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+div.context-menu button:active {
+  transition: background-color var(--animation-duration);
 }
 
 div.context-menu hr {

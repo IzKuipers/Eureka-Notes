@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount, settled } from "svelte";
   import CenterLoader from "../../lib/CenterLoader.svelte";
   import { NoteIcon } from "../../ts/images";
   import { ViewerState } from "../../ts/state/viewer";
@@ -9,6 +10,9 @@
   const { read } = ViewerState!;
 
   let query = $state<string>("");
+  let input = $state<HTMLInputElement>();
+
+  onMount(() => setTimeout(input!.focus));
 
   function onkeydown(e: KeyboardEvent) {
     if (e.key === "Enter") dialog.search(query);
@@ -52,6 +56,7 @@
       type="text"
       placeholder={everywhere ? "Search everywhere" : `Search the notes in just ${$read?.folderName || "/"}`}
       bind:value={query}
+      bind:this={input}
       {onkeydown}
       autofocus
     />
