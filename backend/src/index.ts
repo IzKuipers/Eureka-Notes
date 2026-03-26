@@ -1,4 +1,3 @@
-import config from "../config.json";
 import { ApiInterface } from "./api";
 import { DetermineBuild } from "./build";
 import connectDB from "./db";
@@ -9,10 +8,7 @@ export async function Main() {
 
   DetermineBuild();
   await connectDB();
-
-  const api = new ApiInterface(config.port);
-
-  await api.start();
+  await ApiInterface.start();
 }
 
 Main();

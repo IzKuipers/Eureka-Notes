@@ -28,7 +28,7 @@
   height: var(--height, 128px);
   scale: 0.95;
   transition: scale var(--animation-duration);
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
 }
 

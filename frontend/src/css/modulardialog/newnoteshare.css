@@ -14,6 +14,8 @@
   padding-right: 7px;
   border: var(--border-color) 1px solid;
   margin-bottom: 15px;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .dialog.new-note-share div.expiry-selector span.lucide {

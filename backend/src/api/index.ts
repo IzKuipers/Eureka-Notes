@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import multer from "multer";
+import config from "../../config.json";
 import { Logger } from "../logging";
 import { Method } from "../types/api";
 import { corsOptions } from "./cors";
@@ -9,13 +10,12 @@ import errorHandler from "./error/handler";
 import { RouteDefinitions as RouterDefinitions } from "./routers/_definitions";
 import { trackRequests } from "./tracking";
 
-export let GlobalApiInstance: ApiInterface | undefined;
-
 export class ApiInterface {
-  App = express();
+  static App = express();
+  private static port = config.port;
 
-  constructor(private port = 3141, private routerDefinitions = RouterDefinitions) {
-    Logger.info("Constructing API");
+  static async start(): Promise<ApiInterface> {
+    Logger.info("Starting API");
 
     // 10MB field size max
     this.App.use(
@@ -24,17 +24,11 @@ export class ApiInterface {
       cors(corsOptions),
       errorHandler,
       cookieParser(),
-      trackRequests
+      trackRequests,
     );
-  }
-
-  async start(): Promise<ApiInterface> {
-    Logger.info("Starting API");
 
     this.App.options("*", cors(corsOptions));
     this.App.set("trust proxy", true);
-
-    GlobalApiInstance = this;
 
     this.assignRouters();
 
@@ -47,16 +41,16 @@ export class ApiInterface {
     });
   }
 
-  assignRouters() {
+  static assignRouters() {
     Logger.info("Assigning routers");
-    for (const path in this.routerDefinitions) {
+    for (const path in RouterDefinitions) {
       Logger.info(`Router => ${path}`);
 
       this.App.use(path, RouterDefinitions[path]);
     }
   }
 
-  MethodTranslations(): Record<Method, (...args: any[]) => any> {
+  static MethodTranslations(): Record<Method, (...args: any[]) => any> {
     return {
       get: this.App.get.bind(this.App),
       post: this.App.post.bind(this.App),

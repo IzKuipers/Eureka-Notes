@@ -16,7 +16,7 @@
   scale: 0.95;
   transition: scale var(--animation-duration);
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .message-dialog-wrapper.visible div.message-dialog {

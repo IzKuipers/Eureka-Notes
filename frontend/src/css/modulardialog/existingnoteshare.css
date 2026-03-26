@@ -9,6 +9,8 @@
 
 .dialog.existing-note-share div.information {
   border: var(--border-color) 1px solid;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .dialog.existing-note-share div.information div.item {
