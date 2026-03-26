@@ -1,12 +1,12 @@
-import type { ModularityDialogInstance } from "../../types/dialog";
+import type { ModularDialog } from "../../types/dialog";
 import { Sleep } from "../sleep";
 import { UUID } from "../uuid";
 import { Store } from "../writable";
 
-export class ModularityState {
-  public static store = Store<Map<string, ModularityDialogInstance>>(new Map([]));
+export class ModularDialogState {
+  public static store = Store<Map<string, ModularDialog>>(new Map([]));
 
-  public static async ShowDialog(dialog: typeof ModularityDialogInstance, ...props: any[]) {
+  public static async ShowDialog(dialog: typeof ModularDialog, ...props: any[]) {
     const uuid = UUID();
     const instance = new dialog(uuid, ...props);
     const allowOpen = await instance.openCondition(...props);
@@ -38,7 +38,7 @@ export class ModularityState {
     }, 100);
   }
 
-  static IsOpen(dialog: typeof ModularityDialogInstance) {
+  static IsOpen(dialog: typeof ModularDialog) {
     return !![...this.store()].find(([_, v]) => v instanceof dialog);
   }
 }

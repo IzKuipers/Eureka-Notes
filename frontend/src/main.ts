@@ -4,7 +4,7 @@ import AppShared from "./AppShared.svelte";
 import "./css/main.css";
 import { ServerConnector } from "./ts/api";
 import { KeyboardState } from "./ts/state/keyboard";
-import { ModularityState } from "./ts/state/modular";
+import { ModularDialogState } from "./ts/state/modular";
 import { ShareState } from "./ts/state/share";
 import { ViewerState } from "./ts/state/viewer";
 import { ContextMenuState } from "./ts/state/context";
@@ -26,7 +26,7 @@ async function Main() {
 
   if (shareValue) {
     document.title = "EUREKA Shared";
-    await ShareState?.initialize(shareValue);
+    await ShareState.initialize(shareValue);
   } else {
     await ViewerState.initialize();
   }

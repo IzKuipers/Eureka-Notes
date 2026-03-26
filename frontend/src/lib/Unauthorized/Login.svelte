@@ -22,7 +22,7 @@
     if (!username || !password) return;
 
     loading = true;
-    const token = await ServerConnector?.login(username, password);
+    const token = await ServerConnector.login(username, password);
 
     if (!token) {
       await BlockingOkay("Login failed", "The credentials you entered are invalid. Please try again.");

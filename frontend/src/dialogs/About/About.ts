@@ -1,8 +1,8 @@
 import type { Component } from "svelte";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import About from "./About.svelte";
 
-export class AboutDialog extends ModularityDialogInstance {
+export class AboutDialog extends ModularDialog {
   override buttons: DialogButton[] = [
     {
       caption: "Okay",

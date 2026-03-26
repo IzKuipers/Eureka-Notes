@@ -17,6 +17,8 @@ div.login-screen div.login-wrapper {
 div.login-screen div.dialog {
   width: 290px;
   height: fit-content;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
 div.login-screen div.dialog-body {

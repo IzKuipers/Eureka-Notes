@@ -22,7 +22,7 @@
     }
 
     loading = true;
-    const result = await ServerConnector?.register(username, password);
+    const result = await ServerConnector.register(username, password);
     loading = false;
 
     if (!result) {

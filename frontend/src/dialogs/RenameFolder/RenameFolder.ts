@@ -3,12 +3,12 @@ import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import type { ExistingEurekaFolder } from "../../types/folder";
 import type { EurekaNote } from "../../types/note";
 import RenameFolder from "./RenameFolder.svelte";
 
-export class RenameFolderDialog extends ModularityDialogInstance {
+export class RenameFolderDialog extends ModularDialog {
   override component = RenameFolder as Component;
   override buttons: DialogButton[] = [
     {
@@ -35,7 +35,7 @@ export class RenameFolderDialog extends ModularityDialogInstance {
 
     if (!newName || !folder) return;
 
-    const result = await ServerConnector?.renameFolder(folder._id, newName);
+    const result = await ServerConnector.renameFolder(folder._id, newName);
 
     if (!result) {
       await BlockingOkay(
@@ -45,15 +45,15 @@ export class RenameFolderDialog extends ModularityDialogInstance {
       return;
     }
 
-    await ViewerState?.refresh();
+    await ViewerState.refresh();
     this.close();
   }
   
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Renaming folder")
+    ViewerState.setTemporaryStatus("Renaming folder")
   }
 
   onClose(): void {
-    ViewerState?.resetStatus()
+    ViewerState.resetStatus()
   }
 }

@@ -24,7 +24,7 @@
     SEP_ITEM,
     {
       caption: "Rename this folder...",
-      action: () => ViewerState?.renameFolder(folder),
+      action: () => ViewerState.renameFolder(folder),
     },
     {
       caption: "Move this folder...",

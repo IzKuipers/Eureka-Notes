@@ -16,7 +16,7 @@
 
   async function navigate(folderId?: string) {
     loading = true;
-    currentFolder = await ServerConnector?.readFolderById(folderId || "");
+    currentFolder = await ServerConnector.readFolderById(folderId || "");
     outFolderId = currentFolder?.folderId || "";
     loading = false;
   }

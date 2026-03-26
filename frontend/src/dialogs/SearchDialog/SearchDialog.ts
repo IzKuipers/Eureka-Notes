@@ -1,13 +1,13 @@
 import type { Component } from "svelte";
 import { ServerConnector } from "../../ts/api";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import type { NoteSearchResults, PartialEurekaNote } from "../../types/note";
 import SearchDialogSvelte from "./SearchDialog.svelte";
 import { OpenedState } from "../../ts/state/opened";
 import { ViewerState } from "../../ts/state/viewer";
 
-export class SearchDialog extends ModularityDialogInstance {
+export class SearchDialog extends ModularDialog {
   override className = "search-dialog";
   override component = SearchDialogSvelte as Component;
 
@@ -29,10 +29,10 @@ export class SearchDialog extends ModularityDialogInstance {
     this.searching.set(true);
     this.loading.set(true);
 
-    const searchId = this.everywhere ? "everywhere" : ViewerState?.read()?.folderId;
+    const searchId = this.everywhere ? "everywhere" : ViewerState.read()?.folderId;
 
     // good god this is a fucking mess, STOP LOOKING AT IT ;-;
-    const results = await ServerConnector!.searchNotes(query, searchId || "root");
+    const results = await ServerConnector.searchNotes(query, searchId || "root");
 
     this.loading.set(false);
     this.results.set(results);
@@ -40,7 +40,7 @@ export class SearchDialog extends ModularityDialogInstance {
 
   openNote(note: PartialEurekaNote) {
     this.close();
-    OpenedState?.openNote(note);
+    OpenedState.openNote(note);
   }
 
   reset() {

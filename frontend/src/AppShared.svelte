@@ -4,7 +4,7 @@
   import CenterLoader from "./lib/CenterLoader.svelte";
   import ContextMenuRenderer from "./lib/ContextMenuRenderer.svelte";
   import DialogRenderer from "./lib/DialogRenderer.svelte";
-  import ModularityRenderer from "./lib/ModularityRenderer.svelte";
+  import ModularDialogRenderer from "./lib/ModularDialogRenderer.svelte";
   import StatusBar from "./lib/StatusBar.svelte";
   import Segment from "./lib/StatusBar/Segment.svelte";
   import { EurekaVersion } from "./ts/api/stores";
@@ -12,7 +12,7 @@
   import { ShareState } from "./ts/state/share";
   import { SEP_ITEM } from "./types/context";
 
-  const { shareInfo, loading } = ShareState!;
+  const { shareInfo, loading } = ShareState;
 </script>
 
 <div
@@ -20,7 +20,7 @@
   use:contextMenu={[
     {
       caption: "Refresh",
-      action: () => ShareState!.initialize(ShareState.shareValue!, ShareState.password),
+      action: () => ShareState.initialize(ShareState.shareValue!, ShareState.password),
     },
     {
       caption: "Copy link",
@@ -73,5 +73,5 @@
   {/if}
 </div>
 <DialogRenderer />
-<ModularityRenderer />
+<ModularDialogRenderer />
 <ContextMenuRenderer />

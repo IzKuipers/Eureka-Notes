@@ -2,11 +2,11 @@ import type { Component } from "svelte";
 import { ServerConnector } from "../../ts/api";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import type { ExistingEurekaFolder } from "../../types/folder";
 import MoveFolder from "./MoveFolder.svelte";
 
-export class MoveFolderDialog extends ModularityDialogInstance {
+export class MoveFolderDialog extends ModularDialog {
   override component = MoveFolder as Component;
   override buttons: DialogButton[] = [
     {
@@ -29,16 +29,16 @@ export class MoveFolderDialog extends ModularityDialogInstance {
   }
 
   async doMove() {
-    await ServerConnector?.moveFolder(this.folder._id, this.destinationFolder());
-    await ViewerState?.refresh();
+    await ServerConnector.moveFolder(this.folder._id, this.destinationFolder());
+    await ViewerState.refresh();
     this.close();
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Moving folder");
+    ViewerState.setTemporaryStatus("Moving folder");
   }
 
   onClose(): void {
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 }

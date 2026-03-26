@@ -7,7 +7,7 @@
 
   const { dialog }: { dialog: SearchDialog } = $props();
   const { searching, loading, results, everywhere } = dialog;
-  const { read } = ViewerState!;
+  const { read } = ViewerState;
 
   let query = $state<string>("");
   let input = $state<HTMLInputElement>();

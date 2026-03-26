@@ -5,7 +5,9 @@
 
 .dialog.new-note input {
   height: 24px;
-  width: 120px;
+  width: 160px;
+  border-radius: 4px;
+  padding: 0 5px;
 }
 
 .dialog.new-note div.dialog-body {

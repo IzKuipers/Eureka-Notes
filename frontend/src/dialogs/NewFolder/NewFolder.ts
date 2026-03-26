@@ -3,10 +3,10 @@ import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import NewFolder from "./NewFolder.svelte";
 
-export class NewFolderDialog extends ModularityDialogInstance {
+export class NewFolderDialog extends ModularDialog {
   override component = NewFolder as Component;
   override buttons: DialogButton[] = [
     {
@@ -26,7 +26,7 @@ export class NewFolderDialog extends ModularityDialogInstance {
 
     if (!saveName) return;
 
-    const note = await ServerConnector?.createFolder(`${ViewerState?.path()}/${saveName}`);
+    const note = await ServerConnector.createFolder(`${ViewerState.path()}/${saveName}`);
 
     if (!note) {
       await BlockingOkay(
@@ -36,16 +36,16 @@ export class NewFolderDialog extends ModularityDialogInstance {
       return;
     }
 
-    await ViewerState?.refresh();
+    await ViewerState.refresh();
     this.close();
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Creating a new folder");
+    ViewerState.setTemporaryStatus("Creating a new folder");
   }
 
   onClose(): void {
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 }

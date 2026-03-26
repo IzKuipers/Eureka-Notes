@@ -13,7 +13,7 @@
 
   const { state: State }: { state: EditorState } = $props();
   const { fullNote, writing, collapsed, maximized, modified, path, loading, visible } = State;
-  const { maxZIndex } = ViewerState!;
+  const { maxZIndex } = ViewerState;
 
   let zIndex = $state<number>($maxZIndex + 1);
   let editor = $state<HTMLDivElement>();

@@ -11,7 +11,7 @@
   import { OpenedState } from "../../../ts/state/opened";
 
   const { note, i }: { note: PartialEurekaNote; i: number } = $props();
-  const { selection, read } = ViewerState!;
+  const { selection, read } = ViewerState;
 
   function onclick(e: MouseEvent) {
     if (e.ctrlKey) {
@@ -58,12 +58,12 @@
   class="viewer-item"
   class:selected={$selection.find((n) => n._id === note._id)}
   {onclick}
-  ondblclick={() => OpenedState?.openNote(note)}
+  ondblclick={() => OpenedState.openNote(note)}
   title={note.name}
   use:contextMenu={[
     {
       caption: "Open note",
-      action: () => OpenedState?.openNote(note),
+      action: () => OpenedState.openNote(note),
     },
     SEP_ITEM,
     {
@@ -72,7 +72,7 @@
     },
     {
       caption: "Delete selection...",
-      action: () => ViewerState?.deleteSelection(),
+      action: () => ViewerState.deleteSelection(),
       disabled: () => !selection().length,
     },
     {
@@ -85,7 +85,7 @@
     SEP_ITEM,
     {
       caption: "Delete just this note",
-      action: () => ViewerState?.deleteSelection([note]),
+      action: () => ViewerState.deleteSelection([note]),
     },
     {
       caption: "Move just this note",
@@ -101,12 +101,12 @@
     {
       caption: "Conceal just this note",
       active: () => note.conceiled,
-      action: () => ViewerState?.toggleConcealed(note),
+      action: () => ViewerState.toggleConcealed(note),
     },
     {
       caption: "Pin just this note",
       active: () => note.pinned,
-      action: () => ViewerState?.togglePinned(note),
+      action: () => ViewerState.togglePinned(note),
     },
   ]}
   class:concealed={note.conceiled}

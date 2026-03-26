@@ -1,10 +1,10 @@
 import type { Component } from "svelte";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import SharePasswordDialogComponent from "./SharePasswordDialog.svelte";
 import { ShareState } from "../../ts/state/share";
 import { Store } from "../../ts/writable";
 
-export class SharePasswordDialog extends ModularityDialogInstance {
+export class SharePasswordDialog extends ModularDialog {
   override component = SharePasswordDialogComponent as Component;
   override className = "share-password";
   override buttons: DialogButton[] = [
@@ -32,6 +32,6 @@ export class SharePasswordDialog extends ModularityDialogInstance {
     if (!this.password()) return;
 
     this.close();
-    ShareState?.initialize(this.password());
+    ShareState.initialize(this.password());
   }
 }

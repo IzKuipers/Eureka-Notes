@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { DialogButton, ModularityDialogInstance } from "../../../types/dialog";
+  import type { DialogButton, ModularDialog } from "../../../types/dialog";
 
-  let { button, key, dialog }: { button: DialogButton; key: string; dialog: ModularityDialogInstance } = $props();
+  let { button, key, dialog }: { button: DialogButton; key: string; dialog: ModularDialog } = $props();
   let element = $state<HTMLButtonElement>();
 
   const { loading } = dialog;

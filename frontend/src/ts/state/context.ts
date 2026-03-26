@@ -45,6 +45,6 @@ export function contextMenu(node: HTMLElement, items: ContextMenuPopulation) {
     e.stopPropagation();
     e.stopImmediatePropagation();
     const { clientX, clientY } = e;
-    ContextMenuState?.showMenu(clientX, clientY, items);
+    ContextMenuState.showMenu(clientX, clientY, items);
   });
 }

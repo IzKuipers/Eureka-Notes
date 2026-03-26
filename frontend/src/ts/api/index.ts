@@ -111,7 +111,7 @@ export class ServerConnector {
     Preferences.set(userInfo.preferences);
     UserInfo.set(userInfo);
     LoggedIn.set(true);
-    await ViewerState?.initialize();
+    await ViewerState.initialize();
 
     return true;
   }
@@ -122,7 +122,7 @@ export class ServerConnector {
     Preferences.set({});
     LoggedIn.set(false);
     UserInfo.set(undefined);
-    OpenedState?.reset();
+    OpenedState.reset();
     this.token = undefined;
   }
 
@@ -266,7 +266,7 @@ export class ServerConnector {
     try {
       const response = await this.axios!.post(`/notes`, toFormData({ name, data, folderId }));
 
-      if (refresh) await ViewerState?.refresh();
+      if (refresh) await ViewerState.refresh();
 
       return response.data as ExistingEurekaNote;
     } catch (e) {

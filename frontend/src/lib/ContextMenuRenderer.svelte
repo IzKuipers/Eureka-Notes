@@ -1,11 +1,17 @@
 <script lang="ts">
   import { ContextMenuState } from "../ts/state/context";
+  import { ViewerState } from "../ts/state/viewer";
   import { UUID } from "../ts/uuid";
 
-  const { current } = ContextMenuState!;
+  const { current } = ContextMenuState;
+  const { maxZIndex } = ViewerState;
 </script>
 
-<div class="context-menu" class:show={$current.show} style="--x: {$current.x}px; --y: {$current.y}px;">
+<div
+  class="context-menu"
+  class:show={$current.show}
+  style="--x: {$current.x}px; --y: {$current.y}px; z-index: {$maxZIndex * 20};"
+>
   {#each $current.items as item (UUID())}
     {#if item.separator}
       <hr />
@@ -15,7 +21,7 @@
         disabled={item.disabled?.()}
         onclick={() => {
           item.action?.();
-          ContextMenuState?.hideMenu();
+          ContextMenuState.hideMenu();
         }}
       >
         <span>

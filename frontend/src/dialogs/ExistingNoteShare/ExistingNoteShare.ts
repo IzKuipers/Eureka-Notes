@@ -1,13 +1,13 @@
 import type { Component } from "svelte";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import { type ShareListItem } from "../../types/share";
 import { NewNoteShareDialog } from "../NewNoteShare/NewNoteShare";
 import ExistingNoteShare from "./ExistingNoteShare.svelte";
 import { BlockingOkay, Confirmation } from "../../ts/dialog";
 import { ServerConnector } from "../../ts/api";
 
-export class ExistingNoteShareDialog extends ModularityDialogInstance {
+export class ExistingNoteShareDialog extends ModularDialog {
   public override component = ExistingNoteShare as Component;
   public override className = "existing-note-share";
   public override buttons: DialogButton[] = [
@@ -35,7 +35,7 @@ export class ExistingNoteShareDialog extends ModularityDialogInstance {
   }
 
   async openCondition(): Promise<boolean> {
-    const share = (await ServerConnector?.getNoteShares(this.noteId))?.[0];
+    const share = (await ServerConnector.getNoteShares(this.noteId))?.[0];
 
     if (!share) {
       NewNoteShareDialog.Invoke(this.noteId);
@@ -46,7 +46,7 @@ export class ExistingNoteShareDialog extends ModularityDialogInstance {
   }
 
   async onOpen(): Promise<void> {
-    const share = (await ServerConnector?.getNoteShares(this.noteId))?.[0];
+    const share = (await ServerConnector.getNoteShares(this.noteId))?.[0];
 
     this.loading.set(true);
     this.shareInfo.set(share);
@@ -63,7 +63,7 @@ export class ExistingNoteShareDialog extends ModularityDialogInstance {
     const shareInfo = this.shareInfo();
     if (!shareInfo) return;
 
-    const result = await ServerConnector?.deleteShareById(shareInfo._id);
+    const result = await ServerConnector.deleteShareById(shareInfo._id);
 
     if (!result) {
       await BlockingOkay("Failed to delete share", "The share node could not be deleted. Please try again.", "trash-2");

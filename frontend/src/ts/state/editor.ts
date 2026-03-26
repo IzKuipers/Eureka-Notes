@@ -24,11 +24,11 @@ export class EditorState {
     this.partialNote = partial;
 
     this.fullNote.subscribe(() => {
-      ViewerState?.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
+      ViewerState.setTemporaryStatus(`Editing ${this.partialNote?.name}`);
     });
 
     this.collapsed.subscribe((v) => {
-      OpenedState?.updateHasCollapsed();
+      OpenedState.updateHasCollapsed();
     });
 
     this.currentFolder = ViewerState.path()!;
@@ -53,7 +53,7 @@ export class EditorState {
   async writeData() {
     this.writing.set(true);
 
-    await ServerConnector?.writeNote(this.partialNote!._id, this.fullNote().data);
+    await ServerConnector.writeNote(this.partialNote!._id, this.fullNote().data);
 
     this.fullNote.update((v) => {
       v.updatedAt = new Date().toISOString();
@@ -74,7 +74,7 @@ export class EditorState {
       this.visible.set(false);
       await Sleep(150);
 
-      OpenedState?.closeEditor(this);
+      OpenedState.closeEditor(this);
       return;
     }
 
@@ -86,14 +86,14 @@ export class EditorState {
         {
           caption: "Discard",
           action: () => {
-            OpenedState?.closeEditor(this);
+            OpenedState.closeEditor(this);
           },
         },
         {
           caption: "Save",
           action: async () => {
             await this.writeData();
-            OpenedState?.closeEditor(this);
+            OpenedState.closeEditor(this);
           },
           autofocus: true,
         },

@@ -10,7 +10,7 @@
 
   const { dialog }: { dialog: NewNoteDialog } = $props();
   const { saveName, saveContent, loading } = dialog;
-  const { path } = ViewerState!;
+  const { path } = ViewerState;
 
   let textarea = $state<HTMLTextAreaElement>();
 

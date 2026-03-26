@@ -7,7 +7,7 @@
   import StatusBar from "../StatusBar.svelte";
   import Segment from "../StatusBar/Segment.svelte";
 
-  const { read, status, selection } = ViewerState!;
+  const { read, status, selection } = ViewerState;
   Preferences;
   let currentTime = $state<string>();
   let interval: number;

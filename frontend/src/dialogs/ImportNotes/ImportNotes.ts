@@ -3,10 +3,10 @@ import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import ImportNotes from "./ImportNotes.svelte";
 
-export class ImportNotesDialog extends ModularityDialogInstance {
+export class ImportNotesDialog extends ModularDialog {
   public Done = Store<number>(0);
   public Total = Store<number>(100);
   public Skipped = Store<number>(0);
@@ -70,7 +70,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
             continue;
           }
 
-          const created = await ServerConnector?.createNote(file.name.replace(".txt", ""), text, folderId, false);
+          const created = await ServerConnector.createNote(file.name.replace(".txt", ""), text, folderId, false);
 
           if (!created) this.Errors.set(this.Errors() + 1);
 
@@ -93,7 +93,7 @@ export class ImportNotesDialog extends ModularityDialogInstance {
 
         this.Status.set("Finishing up...");
 
-        await ViewerState?.refresh();
+        await ViewerState.refresh();
 
         resolve();
         this.close();
@@ -103,10 +103,10 @@ export class ImportNotesDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Importing notes");
+    ViewerState.setTemporaryStatus("Importing notes");
   }
 
   onClose(): void {
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 }

@@ -3,12 +3,12 @@ import { ServerConnector } from "../../ts/api";
 import { BlockingOkay } from "../../ts/dialog";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import type { FolderRead } from "../../types/folder";
 import type { PartialEurekaNote } from "../../types/note";
 import MoveNotes from "./MoveNotes.svelte";
 
-export class MoveNotesDialog extends ModularityDialogInstance {
+export class MoveNotesDialog extends ModularDialog {
   override component = MoveNotes as Component;
   override buttons: DialogButton[] = [
     {
@@ -34,7 +34,7 @@ export class MoveNotesDialog extends ModularityDialogInstance {
 
     this.notes = props;
     this.total = this.notes.length;
-    this.folder = ViewerState?.read();
+    this.folder = ViewerState.read();
   }
 
   async doMove() {
@@ -43,7 +43,7 @@ export class MoveNotesDialog extends ModularityDialogInstance {
     for (const note of this.notes) {
       this.status.set(`Moving ${note.name}...`);
 
-      const moved = await ServerConnector?.moveNote(note._id, this.destinationFolder());
+      const moved = await ServerConnector.moveNote(note._id, this.destinationFolder());
       if (!moved) this.errors.set(this.errors() + 1);
 
       this.done.set(this.done() + 1);
@@ -58,15 +58,15 @@ export class MoveNotesDialog extends ModularityDialogInstance {
 
     this.status.set("Finishing up...");
 
-    await ViewerState?.refresh();
+    await ViewerState.refresh();
     this.close();
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Moving stuff");
+    ViewerState.setTemporaryStatus("Moving stuff");
   }
 
   onClose(): void {
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 }

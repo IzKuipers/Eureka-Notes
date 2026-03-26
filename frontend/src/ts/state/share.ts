@@ -14,7 +14,7 @@ export class ShareState {
   static async initialize(shareValue: string, password?: string) {
     this.loading.set(true);
     this.shareValue = shareValue;
-    const contentResult = await ServerConnector!.readNoteByShareValue(shareValue, password);
+    const contentResult = await ServerConnector.readNoteByShareValue(shareValue, password);
 
     if (!contentResult?.success) {
       this.handleUnsuccessfulRead(contentResult);

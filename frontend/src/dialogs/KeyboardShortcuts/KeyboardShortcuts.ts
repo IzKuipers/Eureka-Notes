@@ -1,8 +1,8 @@
 import type { Component } from "svelte";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import KeyboardShortcuts from "./KeyboardShortcuts.svelte";
 
-export class KeyboardShortcutsDialog extends ModularityDialogInstance {
+export class KeyboardShortcutsDialog extends ModularDialog {
   override className = "keyboard-shortcuts";
   override component = KeyboardShortcuts as Component;
   override buttons: DialogButton[] = [

@@ -4,10 +4,10 @@ import { BlockingOkay, ShowDialog } from "../../ts/dialog";
 import { OpenedState } from "../../ts/state/opened";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import NewNote from "./NewNote.svelte";
 
-export class NewNoteDialog extends ModularityDialogInstance {
+export class NewNoteDialog extends ModularDialog {
   override component = NewNote as Component;
   override buttons: DialogButton[] = [];
   override className = "new-note";
@@ -22,7 +22,7 @@ export class NewNoteDialog extends ModularityDialogInstance {
 
     this.loading.set(true)
 
-    const note = await ServerConnector?.createNote(saveName, saveContent, ViewerState?.read()?.folderId);
+    const note = await ServerConnector.createNote(saveName, saveContent, ViewerState.read()?.folderId);
 
     if (!note) {
       await BlockingOkay(
@@ -33,7 +33,7 @@ export class NewNoteDialog extends ModularityDialogInstance {
       return;
     }
 
-    await OpenedState?.openNote(note);
+    await OpenedState.openNote(note);
     this.close();
     this.loading.set(false);
   }
@@ -58,10 +58,10 @@ export class NewNoteDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Creating a new note")
+    ViewerState.setTemporaryStatus("Creating a new note")
   }
 
   onClose(): void {
-    ViewerState?.resetStatus()
+    ViewerState.resetStatus()
   }
 }

@@ -1,0 +1,56 @@
+@import url("./modulardialog/newnote.css");
+@import url("./modulardialog/newfolder.css");
+@import url("./modulardialog/deletenotes.css");
+@import url("./modulardialog/renamenote.css");
+@import url("./modulardialog/importnotes.css");
+@import url("./modulardialog/movefolder.css");
+@import url("./modulardialog/movenotes.css");
+@import url("./modulardialog/about.css");
+@import url("./modulardialog/search.css");
+@import url("./modulardialog/keyboardshortcuts.css");
+@import url("./modulardialog/existingnoteshare.css");
+@import url("./modulardialog/newnoteshare.css");
+@import url("./modulardialog/sharepassword.css");
+
+.modular-dialog-wrapper {
+  background-color: var(--background-transparent);
+  z-index: 100000000000000;
+  opacity: 0;
+  transition: opacity var(--animation-duration);
+}
+
+.modular-dialog-wrapper.visible {
+  opacity: 1;
+}
+
+.modular-dialog {
+  width: var(--width, 400px);
+  height: var(--height, 128px);
+  scale: 0.95;
+  transition: scale var(--animation-duration);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.modular-dialog-wrapper.visible .modular-dialog {
+  scale: 1;
+}
+
+.modular-dialog div.dialog-body {
+  overflow: hidden;
+}
+
+.modular-dialog div.dialog-body h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.modular-dialog div.dialog-body span.lucide {
+  color: var(--red);
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}

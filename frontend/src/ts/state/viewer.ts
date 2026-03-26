@@ -15,7 +15,7 @@ import { Connected, Connecting, LoggedIn } from "../api/stores";
 import { BlockingOkay, ShowDialog } from "../dialog";
 import { Store } from "../writable";
 import { KeyboardState } from "./keyboard";
-import { ModularityState } from "./modular";
+import { ModularDialogState } from "./modular";
 
 export const ViewerReady = Store<boolean>(false);
 
@@ -36,32 +36,32 @@ export class ViewerState {
     Connecting.set(false);
     if (!Connected() || !LoggedIn()) return;
 
-    KeyboardState?.loadAccelerator("Alt-N", "Create a new note", () => {
-      if (ModularityState?.IsOpen(NewNoteDialog)) return;
+    KeyboardState.loadAccelerator("Alt-N", "Create a new note", () => {
+      if (ModularDialogState.IsOpen(NewNoteDialog)) return;
       NewNoteDialog.Invoke();
     });
 
-    KeyboardState?.loadAccelerator("Alt-Shift-N", "Create a new folder", () => {
-      if (ModularityState?.IsOpen(NewFolderDialog)) return;
+    KeyboardState.loadAccelerator("Alt-Shift-N", "Create a new folder", () => {
+      if (ModularDialogState.IsOpen(NewFolderDialog)) return;
       NewFolderDialog.Invoke();
     });
 
-    KeyboardState?.loadAccelerator("Alt-Shift-S", "Search the notes in just this folder", () => {
-      if (ModularityState?.IsOpen(SearchDialog)) return;
+    KeyboardState.loadAccelerator("Alt-Shift-S", "Search the notes in just this folder", () => {
+      if (ModularDialogState.IsOpen(SearchDialog)) return;
       SearchDialog.Invoke(false);
     });
 
-    KeyboardState?.loadAccelerator("Alt-S", "Search all of your notes", () => {
-      if (ModularityState?.IsOpen(SearchDialog)) return;
+    KeyboardState.loadAccelerator("Alt-S", "Search all of your notes", () => {
+      if (ModularDialogState.IsOpen(SearchDialog)) return;
       SearchDialog.Invoke(true);
     });
 
-    KeyboardState?.loadAccelerator("Alt-R", "Refresh the folder listing", () => {
-      ViewerState?.refresh();
+    KeyboardState.loadAccelerator("Alt-R", "Refresh the folder listing", () => {
+      ViewerState.refresh();
     });
 
-    KeyboardState?.loadAccelerator("Ctrl-/", "Show keyboard shortcuts", () => {
-      if (ModularityState?.IsOpen(KeyboardShortcutsDialog)) return;
+    KeyboardState.loadAccelerator("Ctrl-/", "Show keyboard shortcuts", () => {
+      if (ModularDialogState.IsOpen(KeyboardShortcutsDialog)) return;
       KeyboardShortcutsDialog.Invoke();
     });
 
@@ -74,7 +74,7 @@ export class ViewerState {
     if (this.path() === path && !force) return false;
 
     this.loading.set(true);
-    const newContent = await ServerConnector?.readFolderByPath(path);
+    const newContent = await ServerConnector.readFolderByPath(path);
 
     if (!newContent) {
       await this.FolderNotFound();
@@ -138,7 +138,7 @@ export class ViewerState {
           caption: "Delete",
           action: async () => {
             if (notes.length === 1) {
-              await ServerConnector?.deleteNote(notes[0]._id);
+              await ServerConnector.deleteNote(notes[0]._id);
               await this.refresh();
             } else {
               DeleteNotesDialog.Invoke(...notes);
@@ -176,8 +176,8 @@ export class ViewerState {
           caption: "Delete",
           className: "red",
           action: async () => {
-            await ServerConnector?.deleteFolder(folder._id);
-            await ViewerState?.refresh();
+            await ServerConnector.deleteFolder(folder._id);
+            await ViewerState.refresh();
           },
           autofocus: true,
         },
@@ -200,7 +200,7 @@ export class ViewerState {
   }
 
   static async toggleConcealed(note: PartialEurekaNote) {
-    const result = await ServerConnector?.setNoteConcealed(note._id, !note.conceiled);
+    const result = await ServerConnector.setNoteConcealed(note._id, !note.conceiled);
 
     if (result)
       this.read.update((v) => {
@@ -213,7 +213,7 @@ export class ViewerState {
   }
 
   static async togglePinned(note: PartialEurekaNote) {
-    const result = await ServerConnector?.setNotePinned(note._id, !note.pinned);
+    const result = await ServerConnector.setNotePinned(note._id, !note.pinned);
 
     if (result)
       this.read.update((v) => {
@@ -226,7 +226,7 @@ export class ViewerState {
   }
 
   static async toggleConcealedFolder(folder: ExistingEurekaFolder) {
-    const result = await ServerConnector?.setFolderConcealed(folder._id, !folder.conceiled);
+    const result = await ServerConnector.setFolderConcealed(folder._id, !folder.conceiled);
 
     if (result)
       this.read.update((v) => {

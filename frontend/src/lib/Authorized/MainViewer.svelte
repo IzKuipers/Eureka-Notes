@@ -13,8 +13,8 @@
   import { ViewerState } from "../../ts/state/viewer";
   import { OpenedState } from "../../ts/state/opened";
 
-  const { loading, read, path, selection } = ViewerState!;
-  const { hasCollapsed } = OpenedState!;
+  const { loading, read, path, selection } = ViewerState;
+  const { hasCollapsed } = OpenedState;
 
   let pinned = $state<PartialEurekaNote[]>([]);
 
@@ -82,7 +82,7 @@
       <hr />
     {/if}
     {#if $path && $path !== "/"}
-      <button class="viewer-item parent" onclick={() => ViewerState?.navigate(GetParentDirectory($path))}>
+      <button class="viewer-item parent" onclick={() => ViewerState.navigate(GetParentDirectory($path))}>
         <img src={FolderIcon} alt="" />
         <span>..</span>
         <span class="lucide icon-corner-left-up"></span>

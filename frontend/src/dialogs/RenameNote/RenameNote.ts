@@ -4,11 +4,11 @@ import { BlockingOkay } from "../../ts/dialog";
 import { OpenedState } from "../../ts/state/opened";
 import { ViewerState } from "../../ts/state/viewer";
 import { Store } from "../../ts/writable";
-import { ModularityDialogInstance, type DialogButton } from "../../types/dialog";
+import { ModularDialog, type DialogButton } from "../../types/dialog";
 import type { EurekaNote, PartialEurekaNote } from "../../types/note";
 import RenameNote from "./RenameNote.svelte";
 
-export class RenameNoteDialog extends ModularityDialogInstance {
+export class RenameNoteDialog extends ModularDialog {
   override component = RenameNote as Component;
   override buttons: DialogButton[] = [
     {
@@ -35,7 +35,7 @@ export class RenameNoteDialog extends ModularityDialogInstance {
 
     if (!newName || !note) return;
 
-    const result = await ServerConnector?.renameNote(note._id, newName);
+    const result = await ServerConnector.renameNote(note._id, newName);
 
     if (!result) {
       await BlockingOkay(
@@ -45,11 +45,11 @@ export class RenameNoteDialog extends ModularityDialogInstance {
       return;
     }
 
-    await ViewerState?.refresh();
+    await ViewerState.refresh();
     this.close();
 
     // Below updater changes the note name in the opened editor to the name of the note.
-    OpenedState?.editors.update((os) => {
+    OpenedState.editors.update((os) => {
       const editor = os.get(note._id);
 
       if (!editor) return os;
@@ -66,10 +66,10 @@ export class RenameNoteDialog extends ModularityDialogInstance {
   }
 
   onOpen(): void {
-    ViewerState?.setTemporaryStatus("Renaming note");
+    ViewerState.setTemporaryStatus("Renaming note");
   }
 
   onClose(): void {
-    ViewerState?.resetStatus();
+    ViewerState.resetStatus();
   }
 }

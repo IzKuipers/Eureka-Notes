@@ -21,7 +21,7 @@ export function globalErrorHandler(e: any) {
             {
               caption: "Reload",
               action: () => {
-                ServerConnector?.resetCookies();
+                ServerConnector.resetCookies();
                 location.reload();
               },
             },
