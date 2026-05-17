@@ -32,6 +32,6 @@ export class SharePasswordDialog extends ModularDialog {
     if (!this.password()) return;
 
     this.close();
-    ShareState.initialize(this.password());
+    ShareState.initialize(ShareState.shareValue!, this.password());
   }
 }
